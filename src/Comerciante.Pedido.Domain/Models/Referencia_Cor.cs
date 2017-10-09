@@ -1,5 +1,6 @@
 ﻿using Comerciante.Pedido.Domain.Core.Models;
 using System;
+using System.Collections.Generic;
 
 namespace Comerciante.Pedido.Domain.Models
 {
@@ -15,5 +16,7 @@ namespace Comerciante.Pedido.Domain.Models
         public virtual Referencia Referencia { get; set; }
 
         public virtual Cor Cor { get; set; }
+
+        public virtual ICollection<Pedido_Referencia_Tamanho> Pedido_Referencia_Tamanhos { get; set; }
     }
 }

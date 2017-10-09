@@ -9,7 +9,6 @@ namespace Comerciante.Pedido.Domain.Models
     {
         public string Descricao { get; set; }
 
-
         //Entity Framework
         public virtual ICollection<Referencia_Colecao> Referencia_Colecoes { get; set; }
 
