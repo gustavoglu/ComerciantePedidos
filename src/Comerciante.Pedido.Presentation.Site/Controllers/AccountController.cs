@@ -10,6 +10,8 @@ using Comerciante.Pedido.Infra.Identity.Models;
 using Comerciante.Pedido.Infra.Identity.Models.AccountViewModels;
 using Comerciante.Pedido.Infra.Identity.Services;
 using Comerciante.Pedido.Infra.Identity.Extensions;
+using Comerciante.Pedido.Application.Interfaces;
+using Comerciante.Pedido.Application.ViewModels;
 
 namespace Comerciante.Pedido.Presentation.Site.Controllers
 {
@@ -21,17 +23,20 @@ namespace Comerciante.Pedido.Presentation.Site.Controllers
         private readonly SignInManager<Usuario> _signInManager;
         private readonly IEmailSender _emailSender;
         private readonly ILogger _logger;
+        private readonly IContaAppService _contaAppService;
 
         public AccountController(
             UserManager<Usuario> userManager,
             SignInManager<Usuario> signInManager,
             IEmailSender emailSender,
-            ILogger<AccountController> logger)
+            ILogger<AccountController> logger,
+            IContaAppService contaAppService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _emailSender = emailSender;
             _logger = logger;
+            _contaAppService = contaAppService;
         }
 
         [TempData]
@@ -221,6 +226,9 @@ namespace Comerciante.Pedido.Presentation.Site.Controllers
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
+                    var conta = new ContaViewModel() { Nome = model.Nome, Id = Guid.Parse(user.Id) };
+                    _contaAppService.Criar(conta);
+
                     _logger.LogInformation("User created a new account with password.");
 
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
@@ -231,6 +239,7 @@ namespace Comerciante.Pedido.Presentation.Site.Controllers
                     _logger.LogInformation("User created a new account with password.");
                     return RedirectToLocal(returnUrl);
                 }
+
                 AddErrors(result);
             }
 

@@ -1,12 +1,12 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Comerciante.Pedido.Infra.Identity.Context;
 using Comerciante.Pedido.Infra.Identity.Models;
 using Comerciante.Pedido.Infra.Identity.Services;
+using AutoMapper;
 
 
 namespace Comerciante.Pedido.Presentation.Site
@@ -28,6 +28,8 @@ namespace Comerciante.Pedido.Presentation.Site
             services.AddIdentity<Usuario, IdentityRole>()
                 .AddEntityFrameworkStores<ContextUsuarios>()
                 .AddDefaultTokenProviders();
+
+            services.AddAutoMapper();
 
             // Add application services.
             services.AddTransient<IEmailSender, EmailSender>();
