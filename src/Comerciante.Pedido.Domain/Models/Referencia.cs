@@ -11,8 +11,6 @@ namespace Comerciante.Pedido.Domain.Models
 
         public double Preco { get; set; }
 
-        public string ImgUri { get; set; }
-
         public bool Grade { get; set; }
 
         //Entity Framework
@@ -24,5 +22,6 @@ namespace Comerciante.Pedido.Domain.Models
 
         public virtual ICollection<Referencia_Cor> Referencia_Cores { get; set; }
 
+        public virtual ICollection<Referencia_Imagem> Referencia_Imagens { get; set; }
     }
 }

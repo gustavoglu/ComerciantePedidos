@@ -25,6 +25,7 @@ namespace Comerciante.Pedido.Infra.Data.Context
         public DbSet<Referencia_Tamanho> Referencia_Tamanhos { get; set; }
         public DbSet<Referencia> Referencias { get; set; }
         public DbSet<Tamanho> Tamanhos { get; set; }
+        public DbSet<Referencia_Imagem> Referencia_Imagens { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -42,6 +43,7 @@ namespace Comerciante.Pedido.Infra.Data.Context
             modelBuilder.AddConfiguration(new Referencia_TamanhoMap());
             modelBuilder.AddConfiguration(new ReferenciaMap());
             modelBuilder.AddConfiguration(new TamanhoMap());
+            modelBuilder.AddConfiguration(new Referencia_ImagemMap());
 
         }
 

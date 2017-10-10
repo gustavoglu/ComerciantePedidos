@@ -12,6 +12,8 @@ namespace Comerciante.Pedido.Domain.Models
 
         public Guid Id_pedido { get; set; }
 
+        public double Total { get; set; } = 0;
+
         //Entity Framework
         public virtual Referencia Referencia { get; set; }
 

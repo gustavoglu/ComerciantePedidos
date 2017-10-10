@@ -5,6 +5,7 @@ using Comerciante.Pedido.Domain.Interfaces.Repository;
 using Comerciante.Pedido.Infra.Data.Context;
 using Comerciante.Pedido.Infra.Data.Repository;
 using Comerciante.Pedido.Infra.Identity.Context;
+using Comerciante.Pedido.Infra.Identity.Services;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Comerciante.Pedido.Infra.IoC
@@ -20,7 +21,7 @@ namespace Comerciante.Pedido.Infra.IoC
 
             //Infra Data
             services.AddScoped<ContextPedidos>();
-            services.AddScoped<ContextUsuario>();
+            services.AddScoped<ContextUsuarios>();
 
             //Repository
             services.AddScoped<IColecaoRepository, ColecaoRepository>();
@@ -32,6 +33,7 @@ namespace Comerciante.Pedido.Infra.IoC
             services.AddScoped<IReferencia_CorRepository, Referencia_CorRepository>();
             services.AddScoped<IReferencia_TamanhoRepository, Referencia_TamanhoRepository>();
             services.AddScoped<IReferenciaRepository, ReferenciaRepository>();
+            services.AddScoped<IReferencia_ImagemRepository, Referencia_ImagemRepository>();
 
             //Services
             services.AddScoped<IColecaoAppService, ColecaoAppService>();
@@ -44,7 +46,11 @@ namespace Comerciante.Pedido.Infra.IoC
             services.AddScoped<IReferenciaAppService, ReferenciaAppService>();
             services.AddScoped<IReferencia_TamanhoAppService, Referencia_TamanhoAppService>();
             services.AddScoped<IReferenciaAppService, ReferenciaAppService>();
- 
+            services.AddScoped<IReferencia_ImagemAppService, Referencia_ImagemAppService>();
+
+            //Identity
+            services.AddSingleton<IEmailSender, EmailSender>();
+
         }
     }
 }

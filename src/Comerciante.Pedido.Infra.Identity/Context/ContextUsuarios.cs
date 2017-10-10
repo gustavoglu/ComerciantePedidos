@@ -5,8 +5,12 @@ using System.IO;
 
 namespace Comerciante.Pedido.Infra.Identity.Context
 {
-    public class ContextUsuario : IdentityDbContext
+    public class ContextUsuarios : IdentityDbContext
     {
+        public ContextUsuarios()
+        {
+
+        }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             var config = new ConfigurationBuilder()

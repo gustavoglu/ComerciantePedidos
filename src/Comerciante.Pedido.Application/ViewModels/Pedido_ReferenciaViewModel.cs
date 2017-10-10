@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Comerciante.Pedido.Application.ViewModels
 {
@@ -13,5 +11,7 @@ namespace Comerciante.Pedido.Application.ViewModels
         public int Quantidade { get; set; }
 
         public Guid Id_pedido { get; set; }
+
+        public double Total { get; set; } = 0;
     }
 }
