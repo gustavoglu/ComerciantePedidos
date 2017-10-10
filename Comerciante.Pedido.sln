@@ -11,7 +11,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Comerciante.Pedido.Infra.Da
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Comerciante.Pedido.Application", "src\Comerciante.Pedido.Application\Comerciante.Pedido.Application.csproj", "{14C80A5C-5A1A-4C9C-80C5-90CE2FDA4B6B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Comerciante.Pedido.Infra.Identity", "src\Comerciante.Pedido.Infra.Identity\Comerciante.Pedido.Infra.Identity.csproj", "{9829D9FE-24CD-4972-92F5-F384F2A7DC50}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Comerciante.Pedido.Infra.Identity", "src\Comerciante.Pedido.Infra.Identity\Comerciante.Pedido.Infra.Identity.csproj", "{9829D9FE-24CD-4972-92F5-F384F2A7DC50}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Comerciante.Pedido.Infra.IoC", "src\Comerciante.Pedido.Infra.IoC\Comerciante.Pedido.Infra.IoC.csproj", "{D5F51B49-45B7-4AA7-B673-4338CE430C74}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{9829D9FE-24CD-4972-92F5-F384F2A7DC50}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9829D9FE-24CD-4972-92F5-F384F2A7DC50}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9829D9FE-24CD-4972-92F5-F384F2A7DC50}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D5F51B49-45B7-4AA7-B673-4338CE430C74}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D5F51B49-45B7-4AA7-B673-4338CE430C74}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D5F51B49-45B7-4AA7-B673-4338CE430C74}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D5F51B49-45B7-4AA7-B673-4338CE430C74}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

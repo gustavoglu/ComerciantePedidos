@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="3.0.1" />
+    <PackageReference Include="Microsoft.extensions.dependencyInjection.abstractions" Version="2.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Comerciante.Pedido.Application\Comerciante.Pedido.Application.csproj" />
+    <ProjectReference Include="..\Comerciante.Pedido.Domain\Comerciante.Pedido.Domain.csproj" />
+    <ProjectReference Include="..\Comerciante.Pedido.Infra.Data\Comerciante.Pedido.Infra.Data.csproj" />
+    <ProjectReference Include="..\Comerciante.Pedido.Infra.Identity\Comerciante.Pedido.Infra.Identity.csproj" />
+  </ItemGroup>
+
+</Project>
