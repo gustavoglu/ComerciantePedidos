@@ -14,11 +14,15 @@ namespace Comerciante.Pedido.Infra.Data.Mapping
 
             builder.HasOne(prt => prt.Referencia_Tamanho)
                 .WithMany(rt => rt.Pedido_Referencia_Tamanhos)
-                .HasForeignKey(prt => prt.Id_referencia_tamanho);
+                .HasForeignKey(prt => prt.Id_referencia_tamanho)
+                .OnDelete(Microsoft.EntityFrameworkCore.DeleteBehavior.Restrict);
 
             builder.HasOne(prt => prt.Referencia_Cor)
              .WithMany(rc => rc.Pedido_Referencia_Tamanhos)
-             .HasForeignKey(prt => prt.Id_referencia_cor);
+             .HasForeignKey(prt => prt.Id_referencia_cor)
+             .OnDelete(Microsoft.EntityFrameworkCore.DeleteBehavior.Restrict);
+
+
 
         }
     }
