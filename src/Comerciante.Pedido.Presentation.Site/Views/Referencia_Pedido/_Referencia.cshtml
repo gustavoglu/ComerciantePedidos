@@ -1,0 +1,38 @@
+﻿@using Comerciante.Pedido.Application.ViewModels
+@model ReferenciaViewModel;
+
+<div id="divprincipal">
+    <div id="carousel" class="carousel slide col-sm-3 col-md-4" data-ride="carousel" data-interval="6000">
+
+        <ol class="carousel-indicators">
+            <li data-target="#carousel" data-slide-to="0" class="active"></li>
+            <li data-target="#carousel" data-slide-to="1"></li>
+            <li data-target="#carousel" data-slide-to="2"></li>
+        </ol>
+
+        <div class="carousel-inner" role="listbox">
+            <div class="item active">
+                <img width="200" height="200" src="https://dafitistatic-a.akamaihd.net/p/Rovitex-Vestido-Rovitex-Print-Multicolorido-9862-3673481-1-zoom.jpg" class="img-responsive" />
+            </div>
+            <div class="item">
+                <img width="200" height="200" src="https://dafitistatic-a.akamaihd.net/p/Rovitex-Vestido-Rovitex-Po%C3%A1s-Azul-7058-7773481-1-zoom.jpg" class="img-responsive" />
+            </div>
+            <div class="item">
+                <img width="200" height="200" src="https://dafitistatic-a.akamaihd.net/p/Rovitex-Blusa-Rovitex-Sweet-Preta-3632-8403191-1-zoom.jpg" class="img-responsive" />
+            </div>
+        </div>
+
+        <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
+            <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+            <span class="sr-only">Anterior</span>
+        </a>
+        <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
+            <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+            <span class="sr-only">Proximo</span>
+        </a>
+    </div>
+    <label asp-for="Codigo" class="label" />
+    <label asp-for="Descricao" class="label" />
+    <label asp-for="Preco" class="label" />
+    <button />
+</div>

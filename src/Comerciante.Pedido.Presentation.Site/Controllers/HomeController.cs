@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
-using Comerciante.Pedido.Infra.Identity.Models;
 using Comerciante.Pedido.Presentation.Site.Models;
 
 namespace Comerciante.Pedido.Presentation.Site.Controllers
@@ -13,7 +8,7 @@ namespace Comerciante.Pedido.Presentation.Site.Controllers
     {
         public IActionResult Index()
         {
-            return View();
+            return RedirectToAction("Referencias", "Pedido_Referencia");
         }
 
         public IActionResult About()

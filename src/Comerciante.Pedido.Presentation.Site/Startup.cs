@@ -7,7 +7,7 @@ using Comerciante.Pedido.Infra.Identity.Context;
 using Comerciante.Pedido.Infra.Identity.Models;
 using Comerciante.Pedido.Infra.Identity.Services;
 using AutoMapper;
-
+using Comerciante.Pedido.Infra.IoC;
 
 namespace Comerciante.Pedido.Presentation.Site
 {
@@ -25,7 +25,15 @@ namespace Comerciante.Pedido.Presentation.Site
         {
             services.AddDbContext<ContextUsuarios>();//(options =>options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddIdentity<Usuario, IdentityRole>()
+            services.AddIdentity<Usuario, IdentityRole>(o =>
+            {
+                o.Password.RequireDigit = false;
+                o.Password.RequiredLength = 6;
+                o.Password.RequiredUniqueChars = 0;
+                o.Password.RequireLowercase = false;
+                o.Password.RequireNonAlphanumeric = false;
+                o.Password.RequireUppercase = false;
+            })
                 .AddEntityFrameworkStores<ContextUsuarios>()
                 .AddDefaultTokenProviders();
 
@@ -35,6 +43,8 @@ namespace Comerciante.Pedido.Presentation.Site
             services.AddTransient<IEmailSender, EmailSender>();
 
             services.AddMvc();
+
+            NativeSimpleInjector.RegisterDependencys(services);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

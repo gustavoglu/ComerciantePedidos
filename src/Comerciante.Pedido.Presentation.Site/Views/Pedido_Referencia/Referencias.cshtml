@@ -1,0 +1,38 @@
+﻿@using Comerciante.Pedido.Application.ViewModels
+@model List<AddEditReferenciaViewModel>
+@{
+    ViewData["Title"] = "Referencias";
+}
+<h2>Referencias</h2>
+<a></a>
+<div class="container">
+    <div class="row">
+        @Html.Partial("_Referencia");
+    </div>
+</div>
+
+<div id="modalAddEditRef" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>TESTE</h2>
+            </div>
+            <div class="modal-body">
+
+            </div>
+            <div class="modal-footer">
+                <button id="btSalvar" type="button" class="btn btn-primary">Salvar</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+@section Scripts {
+    <script>
+        var modelSer = @Json.Serialize(Model);
+    </script>
+    <script src="~/js/referencias.js"></script>
+
+}

@@ -1,0 +1,60 @@
+﻿@using Comerciante.Pedido.Application.ViewModels
+@model  ReferenciaViewModel
+@{
+    string imagemA = string.Empty;
+    string imagemB = string.Empty;
+    if (Model.Referencia_Imagens.ToList().Any())
+    {
+        imagemA = Model.Referencia_Imagens.ToList()[0].Uri;
+        imagemB = Model.Referencia_Imagens.ToList()[1].Uri;
+    }
+}
+
+<div id="refCaroucel" class="container">
+    <div class="row">
+        <div class="col-sm-3 col-md-5">
+            <div class="thumbnail">
+                <div id="carousel" class="carousel slide center-block" data-ride="carousel" data-interval="6000">
+                    <ol class="carousel-indicators">
+                        <li data-target="#carousel" data-slide-to="0" class="active"></li>
+                        <li data-target="#carousel" data-slide-to="1"></li>
+                    </ol>
+                    <div class="carousel-inner" role="listbox">
+                        <div class="item active">
+                            <img src="@imagemA" width="250" height="250" class="img-responsive center-block" />
+                        </div>
+                        <div class="item">
+                            <img src="@imagemB" width="250" height="250" class="img-responsive center-block" />
+                        </div>
+                    </div>
+                    <div class="carousel-caption">
+                        <label class="label" >@Model.Codigo</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div>
+    <table id="tableAddRef" class="table">
+        <thead>
+            <tr data-bind="foreach : self.ViewModel.listTamanhos">
+                <th class="text-center" data-bind="text: descricao"></th>
+            </tr>
+        </thead>
+        <tbody data-bind="foreach : self.ViewModel.listCoresCampos">
+            <tr>
+                <td class="text-center center-block" data-bind="text : Cor.descricao"></td>
+                <!-- ko foreach :  Campos -->
+                <td>
+                    <input class="input-sm center-block" data-bind="textInput : Quantidade" size="6">
+                </td>
+                <!-- /ko -->
+                <td>
+                    <button data-bind="click : self.ViewModel.umDeCada " class="btn btn-info">Um de cada</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

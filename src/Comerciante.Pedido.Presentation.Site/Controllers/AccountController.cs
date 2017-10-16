@@ -223,11 +223,13 @@ namespace Comerciante.Pedido.Presentation.Site.Controllers
             if (ModelState.IsValid)
             {
                 var user = new Usuario { UserName = model.Email, Email = model.Email };
+                var conta = new ContaViewModel() { Nome = model.Nome, Id = Guid.Parse(user.Id) };
+                _contaAppService.Criar(conta);
+
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
-                    var conta = new ContaViewModel() { Nome = model.Nome, Id = Guid.Parse(user.Id) };
-                    _contaAppService.Criar(conta);
+
 
                     _logger.LogInformation("User created a new account with password.");
 

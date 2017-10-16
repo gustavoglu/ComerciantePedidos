@@ -1,69 +1,153 @@
-﻿@{
+﻿@using Comerciante.Pedido.Application.ViewModels
+@model AddEditReferenciaViewModel
+@{
     ViewData["Title"] = "Home Page";
 }
 
-<div id="myCarousel" class="carousel slide" data-ride="carousel" data-interval="6000">
-    <ol class="carousel-indicators">
-        <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-        <li data-target="#myCarousel" data-slide-to="1"></li>
-        <li data-target="#myCarousel" data-slide-to="2"></li>
-        <li data-target="#myCarousel" data-slide-to="3"></li>
-    </ol>
-    <div class="carousel-inner" role="listbox">
-        <div class="item active">
-            <img src="~/images/banner1.svg" alt="ASP.NET" class="img-responsive" />
-            <div class="carousel-caption" role="option">
-                <p>
-                    Learn how to build ASP.NET apps that can run anywhere.
-                    <a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkID=525028&clcid=0x409">
-                        Learn More
-                    </a>
-                </p>
-            </div>
-        </div>
-        <div class="item">
-            <img src="~/images/banner2.svg" alt="Visual Studio" class="img-responsive" />
-            <div class="carousel-caption" role="option">
-                <p>
-                    There are powerful new features in Visual Studio for building modern web apps.
-                    <a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkID=525030&clcid=0x409">
-                        Learn More
-                    </a>
-                </p>
-            </div>
-        </div>
-        <div class="item">
-            <img src="~/images/banner3.svg" alt="Package Management" class="img-responsive" />
-            <div class="carousel-caption" role="option">
-                <p>
-                    Bring in libraries from NuGet, Bower, and npm, and automate tasks using Grunt or Gulp.
-                    <a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkID=525029&clcid=0x409">
-                        Learn More
-                    </a>
-                </p>
-            </div>
-        </div>
-        <div class="item">
-            <img src="~/images/banner4.svg" alt="Microsoft Azure" class="img-responsive" />
-            <div class="carousel-caption" role="option">
-                <p>
-                    Learn how Microsoft's Azure cloud platform allows you to build, deploy, and scale web apps.
-                    <a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkID=525027&clcid=0x409">
-                        Learn More
-                    </a>
-                </p>
+
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm-3 col-md-4 col">
+            <div class="thumbnail">
+                <img width="200" height="200" src="https://dafitistatic-a.akamaihd.net/p/Rovitex-Vestido-Rovitex-Print-Multicolorido-9862-3673481-1-zoom.jpg" />
+                <div class="caption">
+                    <h2 class="text-left">@Model.Referencia.Codigo</h2>
+                    <h3 class="text-left">@Model.Referencia.Descricao</h3>
+                    <h4 class="text-right">@Model.Referencia.Preco</h4>
+                    <button class="btn btn-success">Adicionar ao Pedido</button>
+                </div>
             </div>
         </div>
     </div>
-    <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
-        <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-        <span class="sr-only">Previous</span>
-    </a>
-    <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
-        <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-        <span class="sr-only">Next</span>
-    </a>
+
+    <div id="modalAddRef" class="modal fade">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title">Adicionar Referencia @Model.Referencia.Codigo ao Pedido</h3>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    @await Html.PartialAsync("_AddEditRef", Model.Referencia)
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary">Salvar</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>
+
+
+@await Html.PartialAsync("_Referencia", Model)
+
+
+@*<div id="divprincipal">
+        <div id="carousel" class="carousel slide" data-ride="carousel" data-interval="6000">
+
+            <ol class="carousel-indicators">
+                <li data-target="#carousel" data-slide-to="0" class="active"></li>
+                <li data-target="#carousel" data-slide-to="1"></li>
+                <li data-target="#carousel" data-slide-to="2"></li>
+            </ol>
+
+            <div class="carousel-inner" role="listbox">
+                <div class="item active">
+                    <img src="https://dafitistatic-a.akamaihd.net/p/Rovitex-Vestido-Rovitex-Print-Multicolorido-9862-3673481-1-zoom.jpg" class="img-responsive" />
+                </div>
+                <div class="item">
+                    <img src="https://dafitistatic-a.akamaihd.net/p/Rovitex-Vestido-Rovitex-Po%C3%A1s-Azul-7058-7773481-1-zoom.jpg" class="img-responsive" />
+                </div>
+                <div class="item">
+                    <img src="https://dafitistatic-a.akamaihd.net/p/Rovitex-Blusa-Rovitex-Sweet-Preta-3632-8403191-1-zoom.jpg" class="img-responsive" />
+                </div>
+            </div>
+
+            <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
+                <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                <span class="sr-only">Anterior</span>
+            </a>
+            <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
+                <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                <span class="sr-only">Proximo</span>
+            </a>
+        </div>
+    </div>*@
+
+
+
+
+@*<div id="myCarousel" class="carousel slide" data-ride="carousel" data-interval="6000">
+        <ol class="carousel-indicators">
+            <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+            <li data-target="#myCarousel" data-slide-to="1"></li>
+            <li data-target="#myCarousel" data-slide-to="2"></li>
+            <li data-target="#myCarousel" data-slide-to="3"></li>
+        </ol>
+
+        <div class="carousel-inner" role="listbox">
+            <div class="item active">
+                <img src="https://dafitistatic-a.akamaihd.net/p/Rovitex-Vestido-Rovitex-Print-Multicolorido-9862-3673481-1-zoom.jpg" alt="ASP.NET" class="img-responsive" />
+                <div class="carousel-caption" role="option">
+                    <p>
+                        Learn how to build ASP.NET apps that can run anywhere.
+                        <a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkID=525028&clcid=0x409">
+                            Learn More
+                        </a>
+                    </p>
+                </div>
+            </div>
+            <div class="item">
+                <img src="~/images/banner2.svg" alt="Visual Studio" class="img-responsive" />
+                <div class="carousel-caption" role="option">
+                    <p>
+                        There are powerful new features in Visual Studio for building modern web apps.
+                        <a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkID=525030&clcid=0x409">
+                            Learn More
+                        </a>
+                    </p>
+                </div>
+            </div>
+            <div class="item">
+                <img src="~/images/banner3.svg" alt="Package Management" class="img-responsive" />
+                <div class="carousel-caption" role="option">
+                    <p>
+                        Bring in libraries from NuGet, Bower, and npm, and automate tasks using Grunt or Gulp.
+                        <a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkID=525029&clcid=0x409">
+                            Learn More
+                        </a>
+                    </p>
+                </div>
+            </div>
+            <div class="item">
+                <img src="~/images/banner4.svg" alt="Microsoft Azure" class="img-responsive" />
+                <div class="carousel-caption" role="option">
+                    <p>
+                        Learn how Microsoft's Azure cloud platform allows you to build, deploy, and scale web apps.
+                        <a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkID=525027&clcid=0x409">
+                            Learn More
+                        </a>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
+            <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span>
+        </a>
+        <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
+            <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
+        </a>
+    </div>*@
+
+
 
 <div class="row">
     <div class="col-md-3">
@@ -105,4 +189,104 @@
             <li><a href="https://go.microsoft.com/fwlink/?LinkID=398609">Publish to Microsoft Azure Web Apps</a></li>
         </ul>
     </div>
+
+
+
 </div>
+
+
+
+
+@section Scripts{
+    <script>
+
+        ko.virtualElements.allowedBindings.foreachprop = true;
+
+        var model;
+        var cores;
+        var tamanhos;
+
+        $(document).ready(function () {
+            model = ko.toJS(@Json.Serialize(Model.Pedido_Referencia_Tamanhos));
+            cores = ko.toJS(@Json.Serialize(Model.Cores));
+            tamanhos = ko.toJS(@Json.Serialize(Model.Tamanhos));
+
+            self.ViewModel = new viewModel();
+
+            var tamanhoDesc = ko.toJS( { id: null, descricao: 'Cores' });
+            ViewModel.listTamanhos.push(tamanhoDesc);
+
+            for (var j = 0; j < tamanhos.length; j++) {
+
+                var tamanho = tamanhos[j];
+                ViewModel.listTamanhos.push(tamanho);
+            }
+
+            $('#btAdd').click(function () {
+
+                $("#modalAddRef").modal("show");
+
+            });
+
+            for (var i = 0; i < cores.length; i++) {
+                var cor = cores[i];
+
+                var PedRefTamCor = new pedRefTamCor(cor);
+
+                for (var j = 0; j < tamanhos.length; j++) {
+
+                    var PedRefCampo = new pedRefCampo(cor, tamanho, 0);
+
+                    PedRefTamCor.Campos.push(PedRefCampo);
+                }
+
+                ViewModel.listCoresCampos.push(PedRefTamCor);
+            }
+
+            ko.applyBindings(ViewModel);
+
+        });
+
+        function viewModel() {
+            var self = this;
+
+            self.selectedRow = ko.observable();
+
+            self.listTamanhos = ko.observableArray();
+            self.listCoresCampos = ko.observableArray();
+
+            self.umDeCada = function (row) {
+
+                self.selectedRow(row);
+                var ref = ko.toJS(row);
+                var campos = ref.Campos;
+
+                for (var i = 0; i < self.selectedRow().Campos.length; i++) {
+
+                    self.selectedRow().Campos[i].Quantidade(1);
+                }
+            }
+        }
+
+        function pedRefTamCor(cor, imagemA,imagemB,imagemC, referencia) {
+
+            var self = this;
+            self.ImagemA = { Uri : '' };
+            self.ImagemB = { Uri: '' };
+            self.ImagemC = { Uri: '' };
+            self.Referencia = referencia;
+            self.Cor = cor;
+            self.Campos = [];
+        }
+
+        function pedRefCampo(cor,tamanho,quantidade) {
+            var self = this;
+            self.Id_referencia = @Model.Referencia.Id;
+            self.Cor = ko.observable(cor);
+            self.Tamanho = ko.observable(tamanho);
+            self.Quantidade = ko.observable(quantidade);
+        }
+
+    </script>
+
+}

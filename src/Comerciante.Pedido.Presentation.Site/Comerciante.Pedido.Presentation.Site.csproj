@@ -23,6 +23,11 @@
   <ItemGroup>
     <ProjectReference Include="..\Comerciante.Pedido.Application\Comerciante.Pedido.Application.csproj" />
     <ProjectReference Include="..\Comerciante.Pedido.Infra.Identity\Comerciante.Pedido.Infra.Identity.csproj" />
+    <ProjectReference Include="..\Comerciante.Pedido.Infra.IoC\Comerciante.Pedido.Infra.IoC.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Views\Pedido\" />
   </ItemGroup>
 
 </Project>

@@ -30,7 +30,7 @@ namespace Comerciante.Pedido.Application.Services
         public void Criar(ContaViewModel ContaViewModel)
         {
             var model = _mapper.Map<Conta>(ContaViewModel);
-            _contaRepository.Atualizar(model);
+            _contaRepository.Criar(model);
         }
 
         public void Criar(ICollection<ContaViewModel> ContaViewModels)

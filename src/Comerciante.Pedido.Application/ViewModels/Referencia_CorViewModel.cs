@@ -12,5 +12,6 @@ namespace Comerciante.Pedido.Application.ViewModels
 
         public double? Preco { get; set; } = 0;
 
+        public CorViewModel Cor  { get; set; }
     }
 }
