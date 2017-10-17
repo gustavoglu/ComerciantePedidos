@@ -1,33 +1,34 @@
-﻿<div data-bind="foreach : ViewModel.listReferencias">
-    <div class="col-sm-2 col-lg-4">
-        <div class="thumbnail">
-            <div id="carousel" class="carousel slide left" data-ride="carousel" data-interval="6000">
+﻿<div data-bind="foreach : ViewModel.listReferencias" >
+        <div class="col-sm-2 col-lg-4">
+            <div class="thumbnail">
+                <div id="carousel" class="carousel slide left" data-ride="carousel" data-interval="6000">
 
-                <ol class="carousel-indicators">
-                    <li data-target="#carousel" data-slide-to="0" class="active"></li>
-                    <li data-target="#carousel" data-slide-to="1"></li>
-                </ol>
+                    <ol class="carousel-indicators">
+                        <li data-target="#carousel" data-slide-to="0" class="active"></li>
+                        <li data-target="#carousel" data-slide-to="1"></li>
+                    </ol>
 
-                <div class="carousel-inner" role="listbox">
-                    <div class="item active">
-                        <img width="200" height="200" data-bind="attr:{src : self.ImagemA }" class="img-responsive center-block" />
-                    </div>
-                    <div class="item">
-                        <img width="200" height="200" data-bind="attr:{src : self.ImagemB }" class="img-responsive center-block" />
+                    <div class="carousel-inner" role="listbox">
+                        <div class="item active">
+                            <img width="200" height="200" data-bind="attr:{src : ImagemA }" class="img-responsive center-block" />
+                        </div>
+                        <div class="item">
+                            <img width="200" height="200" data-bind="attr:{src : ImagemB }" class="img-responsive center-block" />
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="caption">
-                <h2 class="text-left" data-bind="text : self.Codigo" />
-                <h3 class="text-left" data-bind="text : self.Descricao" />
-                <h4 class="text-right" data-bind="text : self.Preco" />
-                <button class="btAdd btn btn-success">
-                    <span class="glyphicon-plus">
-                        Adicionar ao Pedido
+                <div class="caption">
+                    <h2 class="text-left" data-bind="text : Codigo" />
+                    <h3 class="text-left" data-bind="text : Descricao" />
+                    <h4 class="text-right" data-bind="text :Preco" />
+                </div>
+                <button data-bind="click : ViewModel.AddAoPedido" class="btAdd btn btn-success btn-block">
+                    <span class="glyphicon glyphicon-plus">
                     </span>
+                    <span>Adicionar ao Pedido</span>
                 </button>
             </div>
         </div>
     </div>
-</div>
+

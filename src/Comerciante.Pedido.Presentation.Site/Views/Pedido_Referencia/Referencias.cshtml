@@ -5,20 +5,19 @@
 }
 <h2>Referencias</h2>
 <a></a>
-<div class="container">
-    <div class="row">
-        @Html.Partial("_Referencia");
-    </div>
-</div>
+
+@Html.Partial("_Referencia")
 
 <div id="modalAddEditRef" class="modal fade">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h2>TESTE</h2>
+                <h2 data-bind="text : ViewModel.addEditRef.Codigo">Adicionar </h2>
             </div>
-            <div class="modal-body">
-
+            <div  class="modal-body">
+                <div id="modalBodyAddEditRef">
+                    @Html.Partial("_AddEditRef")
+                </div>
             </div>
             <div class="modal-footer">
                 <button id="btSalvar" type="button" class="btn btn-primary">Salvar</button>
