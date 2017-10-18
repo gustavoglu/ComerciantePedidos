@@ -10,7 +10,7 @@ namespace Comerciante.Pedido.Application.Interfaces
 
         IEnumerable<PedidoViewModel> Criar(ICollection<PedidoViewModel> PedidoViewModels);
 
-        void Atualizar(PedidoViewModel PedidoViewModel);
+        PedidoViewModel Atualizar(PedidoViewModel PedidoViewModel);
 
         int Deletar(Guid id);
 

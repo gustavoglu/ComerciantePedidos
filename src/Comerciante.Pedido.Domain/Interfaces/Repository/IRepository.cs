@@ -7,11 +7,11 @@ namespace Comerciante.Pedido.Domain.Interfaces.Repository
 {
     public interface IRepository<T> : IDisposable where T : Entity
     {
-        void Criar(T obj);
+        T Criar(T obj);
 
-        void Criar(ICollection<T> obj);
+        IEnumerable<T> Criar(ICollection<T> obj);
 
-        void Atualizar(T obj);
+        T Atualizar(T obj);
 
         int Deletar(Guid id);
 

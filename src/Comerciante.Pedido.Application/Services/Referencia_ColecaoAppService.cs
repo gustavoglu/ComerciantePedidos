@@ -20,23 +20,23 @@ namespace Comerciante.Pedido.Application.Services
             _mapper = mapper;
         }
 
-        public void Atualizar(Referencia_ColecaoViewModel Referencia_ColecaoViewModel)
+        public Referencia_ColecaoViewModel Atualizar(Referencia_ColecaoViewModel Referencia_ColecaoViewModel)
         {
             var model = _referencia_ColecaoRepository.TrazerPorId(Referencia_ColecaoViewModel.Id.Value);
             var viewModel = _mapper.Map(Referencia_ColecaoViewModel, model);
-            _referencia_ColecaoRepository.Atualizar(viewModel);
+            return _mapper.Map<Referencia_ColecaoViewModel>(_referencia_ColecaoRepository.Atualizar(viewModel));
         }
 
-        public void Criar(Referencia_ColecaoViewModel Referencia_ColecaoViewModel)
+        public Referencia_ColecaoViewModel Criar(Referencia_ColecaoViewModel Referencia_ColecaoViewModel)
         {
             var model = _mapper.Map<Referencia_Colecao>(Referencia_ColecaoViewModel);
-            _referencia_ColecaoRepository.Criar(model);
+            return _mapper.Map<Referencia_ColecaoViewModel>(_referencia_ColecaoRepository.Criar(model));
         }
 
-        public void Criar(ICollection<Referencia_ColecaoViewModel> Referencia_ColecaoViewModels)
+        public IEnumerable<Referencia_ColecaoViewModel> Criar(ICollection<Referencia_ColecaoViewModel> Referencia_ColecaoViewModels)
         {
             var models = _mapper.Map<IEnumerable<Referencia_Colecao>>(Referencia_ColecaoViewModels);
-            _referencia_ColecaoRepository.Criar(models.ToList());
+            return _mapper.Map<IEnumerable<Referencia_ColecaoViewModel>>(_referencia_ColecaoRepository.Criar(models.ToList()).ToList());
         }
 
         public int Deletar(Guid id)

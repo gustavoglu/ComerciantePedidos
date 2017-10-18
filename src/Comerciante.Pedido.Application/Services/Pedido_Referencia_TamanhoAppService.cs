@@ -20,23 +20,23 @@ namespace Comerciante.Pedido.Application.Services
             _mapper = mapper;
         }
 
-        public void Atualizar(Pedido_Referencia_TamanhoViewModel Pedido_Referencia_TamanhoViewModel)
+        public Pedido_Referencia_TamanhoViewModel Atualizar(Pedido_Referencia_TamanhoViewModel Pedido_Referencia_TamanhoViewModel)
         {
             var model = _pedido_Referencia_TamanhoRepository.TrazerPorId(Pedido_Referencia_TamanhoViewModel.Id.Value);
             var viewModel = _mapper.Map(Pedido_Referencia_TamanhoViewModel, model);
-            _pedido_Referencia_TamanhoRepository.Atualizar(viewModel);
+            return _mapper.Map<Pedido_Referencia_TamanhoViewModel>(_pedido_Referencia_TamanhoRepository.Atualizar(viewModel));
         }
 
-        public void Criar(Pedido_Referencia_TamanhoViewModel Pedido_Referencia_TamanhoViewModel)
+        public Pedido_Referencia_TamanhoViewModel Criar(Pedido_Referencia_TamanhoViewModel Pedido_Referencia_TamanhoViewModel)
         {
             var model = _mapper.Map<Pedido_Referencia_Tamanho>(Pedido_Referencia_TamanhoViewModel);
-            _pedido_Referencia_TamanhoRepository.Criar(model);
+            return _mapper.Map<Pedido_Referencia_TamanhoViewModel>(_pedido_Referencia_TamanhoRepository.Criar(model));
         }
 
-        public void Criar(ICollection<Pedido_Referencia_TamanhoViewModel> Pedido_Referencia_TamanhoViewModels)
+        public IEnumerable<Pedido_Referencia_TamanhoViewModel> Criar(ICollection<Pedido_Referencia_TamanhoViewModel> Pedido_Referencia_TamanhoViewModels)
         {
             var models = _mapper.Map<IEnumerable<Pedido_Referencia_Tamanho>>(Pedido_Referencia_TamanhoViewModels);
-            _pedido_Referencia_TamanhoRepository.Criar(models.ToList());
+            return _mapper.Map<IEnumerable<Pedido_Referencia_TamanhoViewModel>>(_pedido_Referencia_TamanhoRepository.Criar(models.ToList()).ToList());
         }
 
         public int Deletar(Guid id)

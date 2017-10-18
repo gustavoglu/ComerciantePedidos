@@ -20,23 +20,23 @@ namespace Comerciante.Pedido.Application.Services
             _mapper = mapper;
         }
 
-        public void Atualizar(Referencia_ImagemViewModel Referencia_ImagemViewModel)
+        public Referencia_ImagemViewModel Atualizar(Referencia_ImagemViewModel Referencia_ImagemViewModel)
         {
             var model = _referencia_ImagemRepository.TrazerPorId(Referencia_ImagemViewModel.Id.Value);
             var viewModel = _mapper.Map(Referencia_ImagemViewModel, model);
-            _referencia_ImagemRepository.Atualizar(viewModel);
+            return _mapper.Map<Referencia_ImagemViewModel>(_referencia_ImagemRepository.Atualizar(viewModel));
         }
 
-        public void Criar(Referencia_ImagemViewModel Referencia_ImagemViewModel)
+        public Referencia_ImagemViewModel Criar(Referencia_ImagemViewModel Referencia_ImagemViewModel)
         {
             var model = _mapper.Map<Referencia_Imagem>(Referencia_ImagemViewModel);
-            _referencia_ImagemRepository.Criar(model);
+            return _mapper.Map<Referencia_ImagemViewModel>(_referencia_ImagemRepository.Criar(model));
         }
 
-        public void Criar(ICollection<Referencia_ImagemViewModel> Referencia_ImagemViewModels)
+        public IEnumerable<Referencia_ImagemViewModel> Criar(ICollection<Referencia_ImagemViewModel> Referencia_ImagemViewModels)
         {
             var models = _mapper.Map<IEnumerable<Referencia_Imagem>>(Referencia_ImagemViewModels);
-            _referencia_ImagemRepository.Criar(models.ToList());
+            return _mapper.Map<IEnumerable<Referencia_ImagemViewModel>>(_referencia_ImagemRepository.Criar(models.ToList()).ToList());
         }
 
         public int Deletar(Guid id)

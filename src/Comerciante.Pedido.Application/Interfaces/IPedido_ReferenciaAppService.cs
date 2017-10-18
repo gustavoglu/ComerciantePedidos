@@ -6,11 +6,11 @@ namespace Comerciante.Pedido.Application.Interfaces
 {
     public interface IPedido_ReferenciaAppService : IDisposable
     {
-        void Criar(Pedido_ReferenciaViewModel Pedido_ReferenciaViewModel);
+        Pedido_ReferenciaViewModel Criar(Pedido_ReferenciaViewModel Pedido_ReferenciaViewModel);
 
-        void Criar(ICollection<Pedido_ReferenciaViewModel> Pedido_ReferenciaViewModels);
+        IEnumerable<Pedido_ReferenciaViewModel> Criar(ICollection<Pedido_ReferenciaViewModel> Pedido_ReferenciaViewModels);
 
-        void Atualizar(Pedido_ReferenciaViewModel Pedido_ReferenciaViewModel);
+        Pedido_ReferenciaViewModel Atualizar(Pedido_ReferenciaViewModel Pedido_ReferenciaViewModel);
 
         int Deletar(Guid id);
 

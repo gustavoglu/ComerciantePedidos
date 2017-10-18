@@ -6,11 +6,11 @@ namespace Comerciante.Pedido.Application.Interfaces
 {
     public interface IPedido_Referencia_TamanhoAppService : IDisposable
     {
-        void Criar(Pedido_Referencia_TamanhoViewModel Pedido_Referencia_TamanhoViewModel);
+        Pedido_Referencia_TamanhoViewModel Criar(Pedido_Referencia_TamanhoViewModel Pedido_Referencia_TamanhoViewModel);
 
-        void Criar(ICollection<Pedido_Referencia_TamanhoViewModel> Pedido_Referencia_TamanhoViewModels);
+        IEnumerable <Pedido_Referencia_TamanhoViewModel> Criar(ICollection<Pedido_Referencia_TamanhoViewModel> Pedido_Referencia_TamanhoViewModels);
 
-        void Atualizar(Pedido_Referencia_TamanhoViewModel Pedido_Referencia_TamanhoViewModel);
+        Pedido_Referencia_TamanhoViewModel Atualizar(Pedido_Referencia_TamanhoViewModel Pedido_Referencia_TamanhoViewModel);
 
         int Deletar(Guid id);
 

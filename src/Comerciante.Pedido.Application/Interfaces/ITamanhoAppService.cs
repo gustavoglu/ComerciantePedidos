@@ -6,11 +6,11 @@ namespace Comerciante.Pedido.Application.Interfaces
 {
     public interface ITamanhoAppService : IDisposable
     {
-        void Criar(TamanhoViewModel TamanhoViewModel);
+        TamanhoViewModel Criar(TamanhoViewModel TamanhoViewModel);
 
-        void Criar(ICollection<TamanhoViewModel> TamanhoViewModels);
+        IEnumerable<TamanhoViewModel> Criar(ICollection<TamanhoViewModel> TamanhoViewModels);
 
-        void Atualizar(TamanhoViewModel TamanhoViewModel);
+        TamanhoViewModel Atualizar(TamanhoViewModel TamanhoViewModel);
 
         int Deletar(Guid id);
 

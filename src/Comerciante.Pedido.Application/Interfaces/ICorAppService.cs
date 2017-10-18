@@ -6,11 +6,11 @@ namespace Comerciante.Pedido.Application.Interfaces
 {
     public interface ICorAppService : IDisposable
     {
-        void Criar(CorViewModel CorViewModel);
+        CorViewModel Criar(CorViewModel CorViewModel);
 
-        void Criar(ICollection<CorViewModel> CorViewModels);
+        IEnumerable<CorViewModel> Criar(ICollection<CorViewModel> CorViewModels);
 
-        void Atualizar(CorViewModel CorViewModel);
+        CorViewModel Atualizar(CorViewModel CorViewModel);
 
         int Deletar(Guid id);
 

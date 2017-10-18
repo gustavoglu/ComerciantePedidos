@@ -6,11 +6,11 @@ namespace Comerciante.Pedido.Application.Interfaces
 {
     public interface IReferencia_CorAppService : IDisposable
     {
-        void Criar(Referencia_CorViewModel Referencia_CorViewModel);
+        Referencia_CorViewModel Criar(Referencia_CorViewModel Referencia_CorViewModel);
 
-        void Criar(ICollection<Referencia_CorViewModel> Referencia_CorViewModels);
+        IEnumerable<Referencia_CorViewModel> Criar(ICollection<Referencia_CorViewModel> Referencia_CorViewModels);
 
-        void Atualizar(Referencia_CorViewModel Referencia_CorViewModel);
+        Referencia_CorViewModel Atualizar(Referencia_CorViewModel Referencia_CorViewModel);
 
         int Deletar(Guid id);
 

@@ -21,24 +21,27 @@ namespace Comerciante.Pedido.Infra.Data.Repository
             DbSet = _db.Set<T>();
         }
 
-        public virtual void Atualizar(T obj)
+        public virtual T Atualizar(T obj)
         {
             DbSet.Update(obj);
             Save();
+            return TrazerPorId(obj.Id.Value);
         }
 
-        public virtual void Criar(T obj)
+        public virtual T Criar(T obj)
         {
             DbSet.Add(obj);
             Save();
+            return TrazerPorId(obj.Id.Value);
         }
 
-        public virtual void Criar(ICollection<T> obj)
+        public virtual IEnumerable<T> Criar(ICollection<T> obj)
         {
             foreach (var objeto in obj)
                 DbSet.Add(objeto);
 
             Save();
+            return obj;
         }
 
         public virtual int Deletar(Guid id)

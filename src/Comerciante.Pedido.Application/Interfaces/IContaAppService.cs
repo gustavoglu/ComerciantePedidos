@@ -6,11 +6,11 @@ namespace Comerciante.Pedido.Application.Interfaces
 {
     public interface IContaAppService : IDisposable
     {
-        void Criar(ContaViewModel ContaViewModel);
+        ContaViewModel Criar(ContaViewModel ContaViewModel);
 
-        void Criar(ICollection<ContaViewModel> ContaViewModels);
+        IEnumerable<ContaViewModel> Criar(ICollection<ContaViewModel> ContaViewModels);
 
-        void Atualizar(ContaViewModel ContaViewModel);
+        ContaViewModel Atualizar(ContaViewModel ContaViewModel);
 
         int Deletar(Guid id);
 

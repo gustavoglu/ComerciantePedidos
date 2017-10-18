@@ -23,19 +23,18 @@ namespace Comerciante.Pedido.Application.Services
             _mapper = mapper;
         }
 
-        public void Atualizar(PedidoViewModel PedidoViewModel)
+        public PedidoViewModel Atualizar(PedidoViewModel PedidoViewModel)
         {
             var model = _pedidoRepository.TrazerPorId(PedidoViewModel.Id.Value);
             var viewModel = _mapper.Map(PedidoViewModel, model);
-            _pedidoRepository.Atualizar(viewModel);
+            return _mapper.Map<PedidoViewModel>(_pedidoRepository.Atualizar(viewModel));
         }
 
         public PedidoViewModel Criar(PedidoViewModel PedidoViewModel)
         {
             if (_user.IsAuthenticated()) { PedidoViewModel.Id_cliente = Guid.Parse(_user.UserId); PedidoViewModel.Numero = NovoNumero(); }
             var model = _mapper.Map<Domain.Models.Pedido>(PedidoViewModel);
-            _pedidoRepository.Criar(model);
-            return PedidoViewModel;
+            return _mapper.Map<PedidoViewModel>(_pedidoRepository.Criar(model));
         }
 
         public IEnumerable<PedidoViewModel> Criar(ICollection<PedidoViewModel> PedidoViewModels)
