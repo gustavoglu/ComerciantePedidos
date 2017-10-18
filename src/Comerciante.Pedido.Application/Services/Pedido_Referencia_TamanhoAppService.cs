@@ -22,7 +22,7 @@ namespace Comerciante.Pedido.Application.Services
 
         public void Atualizar(Pedido_Referencia_TamanhoViewModel Pedido_Referencia_TamanhoViewModel)
         {
-            var model = _pedido_Referencia_TamanhoRepository.TrazerPorId(Pedido_Referencia_TamanhoViewModel.Id);
+            var model = _pedido_Referencia_TamanhoRepository.TrazerPorId(Pedido_Referencia_TamanhoViewModel.Id.Value);
             var viewModel = _mapper.Map(Pedido_Referencia_TamanhoViewModel, model);
             _pedido_Referencia_TamanhoRepository.Atualizar(viewModel);
         }
@@ -30,7 +30,7 @@ namespace Comerciante.Pedido.Application.Services
         public void Criar(Pedido_Referencia_TamanhoViewModel Pedido_Referencia_TamanhoViewModel)
         {
             var model = _mapper.Map<Pedido_Referencia_Tamanho>(Pedido_Referencia_TamanhoViewModel);
-            _pedido_Referencia_TamanhoRepository.Atualizar(model);
+            _pedido_Referencia_TamanhoRepository.Criar(model);
         }
 
         public void Criar(ICollection<Pedido_Referencia_TamanhoViewModel> Pedido_Referencia_TamanhoViewModels)

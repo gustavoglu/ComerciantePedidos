@@ -22,7 +22,7 @@ namespace Comerciante.Pedido.Application.Services
 
         public void Atualizar(Referencia_ImagemViewModel Referencia_ImagemViewModel)
         {
-            var model = _referencia_ImagemRepository.TrazerPorId(Referencia_ImagemViewModel.Id);
+            var model = _referencia_ImagemRepository.TrazerPorId(Referencia_ImagemViewModel.Id.Value);
             var viewModel = _mapper.Map(Referencia_ImagemViewModel, model);
             _referencia_ImagemRepository.Atualizar(viewModel);
         }
@@ -30,7 +30,7 @@ namespace Comerciante.Pedido.Application.Services
         public void Criar(Referencia_ImagemViewModel Referencia_ImagemViewModel)
         {
             var model = _mapper.Map<Referencia_Imagem>(Referencia_ImagemViewModel);
-            _referencia_ImagemRepository.Atualizar(model);
+            _referencia_ImagemRepository.Criar(model);
         }
 
         public void Criar(ICollection<Referencia_ImagemViewModel> Referencia_ImagemViewModels)

@@ -13,7 +13,8 @@ namespace Comerciante.Pedido.Infra.Data.Mapping
 
             builder.HasOne(p => p.Colecao)
                 .WithMany(c => c.Pedidos)
-                .HasForeignKey(p => p.Id_colecao);
+                .HasForeignKey(p => p.Id_colecao)
+                .IsRequired(false);
         }
     }
 }

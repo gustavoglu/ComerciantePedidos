@@ -12,7 +12,7 @@ namespace Comerciante.Pedido.Domain.Models
 
         public Guid Id_cliente { get; set; }
 
-        public Guid Id_colecao { get; set; }
+        public Guid? Id_colecao { get; set; }
 
 
         //Entity Framework

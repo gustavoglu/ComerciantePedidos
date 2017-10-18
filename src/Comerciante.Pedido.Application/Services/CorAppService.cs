@@ -22,7 +22,7 @@ namespace Comerciante.Pedido.Application.Services
 
         public void Atualizar(CorViewModel CorViewModel)
         {
-            var model = _corRepository.TrazerPorId(CorViewModel.Id);
+            var model = _corRepository.TrazerPorId(CorViewModel.Id.Value);
             var viewModel = _mapper.Map(CorViewModel, model);
             _corRepository.Atualizar(viewModel);
         }
@@ -30,7 +30,7 @@ namespace Comerciante.Pedido.Application.Services
         public void Criar(CorViewModel CorViewModel)
         {
             var model = _mapper.Map<Cor>(CorViewModel);
-            _corRepository.Atualizar(model);
+            _corRepository.Criar(model);
         }
 
         public void Criar(ICollection<CorViewModel> CorViewModels)

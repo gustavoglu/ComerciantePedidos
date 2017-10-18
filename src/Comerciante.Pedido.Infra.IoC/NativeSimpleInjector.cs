@@ -1,10 +1,12 @@
 ﻿using AutoMapper;
 using Comerciante.Pedido.Application.Interfaces;
 using Comerciante.Pedido.Application.Services;
+using Comerciante.Pedido.Domain.Interfaces;
 using Comerciante.Pedido.Domain.Interfaces.Repository;
 using Comerciante.Pedido.Infra.Data.Context;
 using Comerciante.Pedido.Infra.Data.Repository;
 using Comerciante.Pedido.Infra.Identity.Context;
+using Comerciante.Pedido.Infra.Identity.Models;
 using Comerciante.Pedido.Infra.Identity.Services;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -50,6 +52,7 @@ namespace Comerciante.Pedido.Infra.IoC
 
             //Identity
             services.AddSingleton<IEmailSender, EmailSender>();
+            services.AddSingleton<IUser, AspNetUser>();
 
         }
     }

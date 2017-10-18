@@ -32,16 +32,16 @@
                 <th class="text-center" data-bind="text: descricao"></th>
             </tr>
         </thead>
-        <tbody data-bind="foreach : ViewModel.addEditRef.Cores">
+        <tbody data-bind="foreach : ViewModel.addEditRef.Campos">
             <tr>
-                <td class="text-center center-block" data-bind="text : descricao"></td>
-                <!-- ko foreach :  ViewModel.addEditRef.Campos -->
+                <td class="text-center center-block" data-bind="text : Cor.descricao"></td>
+                <!-- ko foreach :  Campos -->
                 <td>
                     <input class="input-sm center-block" data-bind="textInput : Quantidade" size="6">
                 </td>
                 <!-- /ko -->
                 <td>
-                    <button class="btn btn-info">Um de cada</button>
+                    <button data-bind="click : ViewModel.umDeCada" class="btn btn-info">Um de cada</button>
                 </td>
             </tr>
         </tbody>

@@ -22,7 +22,7 @@ namespace Comerciante.Pedido.Application.Services
 
         public void Atualizar(TamanhoViewModel TamanhoViewModel)
         {
-            var model = _tamanhoRepository.TrazerPorId(TamanhoViewModel.Id);
+            var model = _tamanhoRepository.TrazerPorId(TamanhoViewModel.Id.Value);
             var viewModel = _mapper.Map(TamanhoViewModel, model);
             _tamanhoRepository.Atualizar(viewModel);
         }
@@ -30,7 +30,7 @@ namespace Comerciante.Pedido.Application.Services
         public void Criar(TamanhoViewModel TamanhoViewModel)
         {
             var model = _mapper.Map<Tamanho>(TamanhoViewModel);
-            _tamanhoRepository.Atualizar(model);
+            _tamanhoRepository.Criar(model);
         }
 
         public void Criar(ICollection<TamanhoViewModel> TamanhoViewModels)

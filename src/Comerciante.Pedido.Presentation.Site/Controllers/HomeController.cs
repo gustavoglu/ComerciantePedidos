@@ -8,7 +8,7 @@ namespace Comerciante.Pedido.Presentation.Site.Controllers
     {
         public IActionResult Index()
         {
-            return RedirectToAction("Referencias", "Pedido_Referencia");
+            return RedirectToAction("MeusPedidos", "Pedidos");
         }
 
         public IActionResult About()

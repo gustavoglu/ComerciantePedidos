@@ -12,8 +12,8 @@ namespace Comerciante.Pedido.Infra.Data.Repository
     public class Repository<T> : IRepository<T> where T : Entity
     {
 
-        private readonly ContextPedidos _db;
-        private readonly DbSet<T> DbSet;
+        protected readonly ContextPedidos _db;
+        protected readonly DbSet<T> DbSet;
 
         public Repository(ContextPedidos db)
         {
@@ -21,19 +21,19 @@ namespace Comerciante.Pedido.Infra.Data.Repository
             DbSet = _db.Set<T>();
         }
 
-        public void Atualizar(T obj)
+        public virtual void Atualizar(T obj)
         {
             DbSet.Update(obj);
             Save();
         }
 
-        public void Criar(T obj)
+        public virtual void Criar(T obj)
         {
             DbSet.Add(obj);
             Save();
         }
 
-        public void Criar(ICollection<T> obj)
+        public virtual void Criar(ICollection<T> obj)
         {
             foreach (var objeto in obj)
                 DbSet.Add(objeto);
@@ -41,44 +41,44 @@ namespace Comerciante.Pedido.Infra.Data.Repository
             Save();
         }
 
-        public int Deletar(Guid id)
+        public virtual int Deletar(Guid id)
         {
             var obj = this.TrazerPorId(id);
             DbSet.Remove(obj);
             return Save();
         }
 
-        public IEnumerable<T> Pesquisar(Expression<Func<T, bool>> predicate)
+        public virtual IEnumerable<T> Pesquisar(Expression<Func<T, bool>> predicate)
         {
             return DbSet.Where(predicate);
         }
 
-        public IEnumerable<T> PesquisarAtivos(Expression<Func<T, bool>> predicate)
+        public virtual IEnumerable<T> PesquisarAtivos(Expression<Func<T, bool>> predicate)
         {
             return DbSet.Where(o => o.Deletado == false).Where(predicate);
         }
 
-        public IEnumerable<T> PesquisarDeletados(Expression<Func<T, bool>> predicate)
+        public virtual IEnumerable<T> PesquisarDeletados(Expression<Func<T, bool>> predicate)
         {
             return DbSet.Where(o => o.Deletado == true).Where(predicate);
         }
 
-        public IEnumerable<T> TrazerAtivos()
+        public virtual IEnumerable<T> TrazerAtivos()
         {
             return DbSet.Where(o => o.Deletado == false);
         }
 
-        public IEnumerable<T> TrazerDeletados()
+        public virtual IEnumerable<T> TrazerDeletados()
         {
             return DbSet.Where(o => o.Deletado == true);
         }
 
-        public T TrazerPorId(Guid id)
+        public virtual T TrazerPorId(Guid id)
         {
             return DbSet.FirstOrDefault(o => o.Id == id);
         }
 
-        public IEnumerable<T> TrazerTodos()
+        public virtual IEnumerable<T> TrazerTodos()
         {
             return DbSet;
         }

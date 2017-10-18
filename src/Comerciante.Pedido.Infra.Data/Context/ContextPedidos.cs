@@ -1,4 +1,5 @@
 ﻿using Comerciante.Pedido.Domain.Core.Models;
+using Comerciante.Pedido.Domain.Interfaces;
 using Comerciante.Pedido.Domain.Models;
 using Comerciante.Pedido.Infra.Data.Extensions;
 using Comerciante.Pedido.Infra.Data.Mapping;
@@ -14,6 +15,18 @@ namespace Comerciante.Pedido.Infra.Data.Context
 {
     public class ContextPedidos : DbContext
     {
+        private readonly IUser _user;
+
+        public ContextPedidos()
+        {
+
+        }
+
+        public ContextPedidos(IUser user)
+        {
+            _user = user;
+        }
+
         public DbSet<Colecao> Colecoes { get; set; }
         public DbSet<Conta> Contas { get; set; }
         public DbSet<Cor> Cores { get; set; }
@@ -81,6 +94,14 @@ namespace Comerciante.Pedido.Infra.Data.Context
             {
                 Entity entity = ((Entity)entityEntry.Entity);
                 entity.CriadoEm = DateTime.Now;
+
+                try
+                {
+                    if (_user.IsAuthenticated())
+                    {
+                        entity.CriadoPor = _user.UserName;
+                    }
+                } catch (Exception){}
             }
         }
 
@@ -90,6 +111,14 @@ namespace Comerciante.Pedido.Infra.Data.Context
             {
                 Entity entity = ((Entity)entityEntry.Entity);
                 entity.AtualizadoEm = DateTime.Now;
+                try
+                {
+                    if (_user.IsAuthenticated())
+                    {
+                        entity.AtualizadoPor = _user.UserName;
+                    }
+                }
+                catch (Exception) { }
             }
         }
 
@@ -99,6 +128,15 @@ namespace Comerciante.Pedido.Infra.Data.Context
             {
                 Entity entity = ((Entity)entityEntry.Entity);
                 entity.DeletadoEm = DateTime.Now;
+
+                try
+                {
+                    if (_user.IsAuthenticated())
+                    {
+                        entity.DeletadoPor = _user.UserName;
+                    }
+                }
+                catch (Exception) { }
             }
         }
 

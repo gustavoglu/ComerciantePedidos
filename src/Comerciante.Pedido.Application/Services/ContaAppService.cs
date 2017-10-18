@@ -22,7 +22,7 @@ namespace Comerciante.Pedido.Application.Services
 
         public void Atualizar(ContaViewModel ContaViewModel)
         {
-            var model = _contaRepository.TrazerPorId(ContaViewModel.Id);
+            var model = _contaRepository.TrazerPorId(ContaViewModel.Id.Value);
             var viewModel = _mapper.Map(ContaViewModel, model);
             _contaRepository.Atualizar(viewModel);
         }

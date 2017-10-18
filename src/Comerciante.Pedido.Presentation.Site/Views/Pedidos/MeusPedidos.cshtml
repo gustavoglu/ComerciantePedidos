@@ -1,0 +1,47 @@
+﻿@using Comerciante.Pedido.Application.ViewModels;
+@model List<PedidoViewModel>
+
+
+@{
+    ViewData["Title"] = "Meus Pedidos";
+}
+<h2>Meus Pedidos</h2>
+<button onclick="window.location.href = '@Url.Action("Criar")'" class="btn btn-success">
+  Novo Pedido
+</button>
+<div id="pedidoContent">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Ped. Numero</th>
+                <th>Total</th>
+            </tr>
+        </thead>
+        <tbody data-bind="foreach : ViewModel.pedidos">
+            <tr>
+                <td data-bind="text : numero"></td>
+                <td data-bind="text : total"></td>
+                <td>
+                    <button data-bind="click : ViewModel.editarPedido" class="btn btn-warning">
+                        <span class="glyphicon glyphicon-edit"></span>
+                        <span>Editar</span>
+                    </button>
+                    <button data-bind="click : ViewModel.excluirPedido" class="btn btn-danger">
+                        <span class="glyphicon glyphicon-remove"></span>
+                        <span>Excluir</span>
+                    </button>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+</div>
+
+
+@section scripts {
+
+    <script>
+        var modelSer = @Json.Serialize(Model);
+    </script>
+    <script src="~/js/meusPedidos.js"></script>
+}

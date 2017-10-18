@@ -6,9 +6,9 @@ namespace Comerciante.Pedido.Application.Interfaces
 {
     public interface IPedidoAppService : IDisposable
     {
-        void Criar(PedidoViewModel PedidoViewModel);
+        PedidoViewModel Criar(PedidoViewModel PedidoViewModel);
 
-        void Criar(ICollection<PedidoViewModel> PedidoViewModels);
+        IEnumerable<PedidoViewModel> Criar(ICollection<PedidoViewModel> PedidoViewModels);
 
         void Atualizar(PedidoViewModel PedidoViewModel);
 
@@ -21,5 +21,7 @@ namespace Comerciante.Pedido.Application.Interfaces
         IEnumerable<PedidoViewModel> TrazerAtivos();
 
         IEnumerable<PedidoViewModel> TrazerDeletados();
+
+        int NovoNumero();
     }
 }

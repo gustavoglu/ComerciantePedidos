@@ -13,7 +13,7 @@ namespace Comerciante.Pedido.Application.ViewModels
             Referencia_Imagens = new List<Referencia_ImagemViewModel>();
         }
 
-        public Guid Id { get; set; }
+        public Guid? Id { get; set; }
 
         [Display(Name = "Ref")]
         public string Codigo { get; set; }

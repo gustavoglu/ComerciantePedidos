@@ -34,17 +34,27 @@ function viewModel() {
         ViewModel.selectedRow(row);
         var model = ko.toJS(row);
 
-        self.addEditRef.Codigo(model.Codigo);
-        self.addEditRef.Descricao(model.Descricao);
-        self.addEditRef.Preco(model.Preco);
-        self.addEditRef.ImagemA(model.ImagemA);
-        self.addEditRef.ImagemB(model.ImagemB);
-        self.addEditRef.Tamanhos(model.Tamanhos);
-        self.addEditRef.Cores(model.Cores);
-        self.addEditRef.Campos(model.Campos);
+        self.atualizarAddEditRef(model.Codigo, model.Descricao, model.Preco, model.ImagemA, model.ImagemB, model.Tamanhos, model.Cores, model.Campos);
 
         $('#modalAddEditRef').modal('show');
 
+    }
+
+    self.salvarRef = function (){
+
+        alert(ko.toJSON(ViewModel.addEditRef))
+    }
+
+    self.atualizarAddEditRef = function (codigo, descricao, preco, imagemA, imagemB, tamanhos, cores, campos) {
+
+        self.addEditRef.Codigo(codigo);
+        self.addEditRef.Descricao(descricao);
+        self.addEditRef.Preco(preco);
+        self.addEditRef.ImagemA(imagemA);
+        self.addEditRef.ImagemB(imagemB);
+        self.addEditRef.Tamanhos(tamanhos);
+        self.addEditRef.Cores(cores);
+        self.addEditRef.Campos(campos);
     }
 
     self.addEditRef = {
@@ -66,6 +76,31 @@ function viewModel() {
         self.Cor = ko.observable(cor);
         self.Tamanho = ko.observable(tamanho);
         self.Quantidade = ko.observable(quantidade);
+
+        self.addUm = function () {
+
+            self.Quantidade(1);
+        }
+
+    }
+
+
+    self.refQtd = function (cor, tamanhos, campos) {
+
+        var self = this;
+        self.Cor = ko.observable(cor);
+        self.Tamanho = ko.observableArray(tamanhos);
+        self.Campos = ko.observableArray(campos);
+
+        self.umDeCada = function () {
+
+            for (var i = 0; i < self.Campos.length; i++) {
+
+                self.Campos[i].AddUm();
+            }
+            alert(ko.toJSON(ViewModel.addEditRef.Campos));
+        }
+
     }
 
     self.referencia = function (codigo, descricao, preco, imagemA, imagemB, tamanhos, cores, campos) {
@@ -83,20 +118,34 @@ function viewModel() {
 
     self.criaCampos = function (cores, tamanhos) {
 
+        var refQtds = [];
         var campos = [];
 
         for (var i = 0; i < cores.length; i++) {
+
             var cor = cores[i];
+
+            var campo;
 
             for (var j = 0; j < tamanhos.length; j++) {
 
                 var tamanho = tamanhos[j];
-                var campo = new self.campo(cor, tamanho, 0);
-                campos.push(campo);
+
+                if (tamanho.descricao != null) {
+
+                    campo = new self.campo(cor, tamanho, 0);
+                    campos.push(campo);
+                }
             }
+
+            var RefQtd = new self.refQtd(cor, tamanhos, campos);
+            refQtds.push(RefQtd);
+
+            campos = [];
+
         }
 
-        return campos;
+        return refQtds;
     }
 
     self.criaTamanhos = function (tamanhos) {
@@ -110,5 +159,22 @@ function viewModel() {
         }
 
         return tamanhosCriados;
+    }
+
+
+    self.umDeCada = function (row) {
+
+        var cor = row.Cor.descricao;
+
+        ko.utils.arrayForEach(ViewModel.addEditRef.Campos(), function (campo) {
+
+            if (campo.Cor.descricao == cor) {
+
+                ko.utils.arrayForEach(campo.Campos, function (campoQtd) {
+                    campoQtd.quantidade = 1;
+
+                });
+            }
+        });
     }
 }

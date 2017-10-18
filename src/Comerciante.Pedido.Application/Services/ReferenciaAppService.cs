@@ -22,7 +22,7 @@ namespace Comerciante.Pedido.Application.Services
 
         public void Atualizar(ReferenciaViewModel ReferenciaViewModel)
         {
-            var model = _referenciaRepository.TrazerPorId(ReferenciaViewModel.Id);
+            var model = _referenciaRepository.TrazerPorId(ReferenciaViewModel.Id.Value);
             var viewModel = _mapper.Map(ReferenciaViewModel, model);
             _referenciaRepository.Atualizar(viewModel);
         }
@@ -30,7 +30,7 @@ namespace Comerciante.Pedido.Application.Services
         public void Criar(ReferenciaViewModel ReferenciaViewModel)
         {
             var model = _mapper.Map<Referencia>(ReferenciaViewModel);
-            _referenciaRepository.Atualizar(model);
+            _referenciaRepository.Criar(model);
         }
 
         public void Criar(ICollection<ReferenciaViewModel> ReferenciaViewModels)

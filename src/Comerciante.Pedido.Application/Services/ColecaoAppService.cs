@@ -22,7 +22,7 @@ namespace Comerciante.Pedido.Application.Services
 
         public void Atualizar(ColecaoViewModel ColecaoViewModel)
         {
-            var model = _colecaoRepository.TrazerPorId(ColecaoViewModel.Id);
+            var model = _colecaoRepository.TrazerPorId(ColecaoViewModel.Id.Value);
             var viewModel = _mapper.Map(ColecaoViewModel, model);
             _colecaoRepository.Atualizar(viewModel);
         }
@@ -30,7 +30,7 @@ namespace Comerciante.Pedido.Application.Services
         public void Criar(ColecaoViewModel ColecaoViewModel)
         {
             var model = _mapper.Map<Colecao>(ColecaoViewModel);
-            _colecaoRepository.Atualizar(model);
+            _colecaoRepository.Criar(model);
         }
 
         public void Criar(ICollection<ColecaoViewModel> ColecaoViewModels)

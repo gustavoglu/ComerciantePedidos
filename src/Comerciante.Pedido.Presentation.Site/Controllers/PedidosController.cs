@@ -4,26 +4,50 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Comerciante.Pedido.Application.ViewModels;
+using Microsoft.AspNetCore.Authorization;
+using Comerciante.Pedido.Application.Interfaces;
 
 namespace Comerciante.Pedido.Presentation.Site.Controllers
 {
-    public class Pedido_ReferenciaController : Controller
+    [Authorize]
+    public class PedidosController : Controller
     {
-        public IActionResult Index()
+        private readonly IPedidoAppService _pedidoAppService;
+        public PedidosController(IPedidoAppService pedidoAppService)
         {
-            return View();
+            _pedidoAppService = pedidoAppService;
         }
 
-        public IActionResult AddEditPedidoReferencia()
+        public IActionResult MeusPedidos()
         {
-            return PartialView("_ModalAddRef");
+            var pedidos = _pedidoAppService.TrazerAtivos();
+            return View(pedidos);
         }
 
-        public IActionResult Referencias(EditarPedidoViewModel editarPedidoViewModel)
+        public IActionResult Criar()
         {
-            editarPedidoViewModel.AddEditReferencias = AddEditRefMockList();
-            return View(editarPedidoViewModel);
+            var pedidoCriado = _pedidoAppService.Criar(new PedidoViewModel() { Id = Guid.NewGuid() });
+            return RedirectToAction("Editar", pedidoCriado.Id);
         }
+
+        public IActionResult Editar(Guid id_pedido)
+        {
+            var pedido = _pedidoAppService.TrazerPorId(id_pedido);
+            return View(new EditarPedidoViewModel { Pedido = pedido, AddEditReferencias = AddEditRefMockList() });
+        }
+
+        List<PedidoViewModel> PedidosMock()
+        {
+            return new List<PedidoViewModel>
+            {
+                new PedidoViewModel { Numero  = 1, Total = 500},
+                new PedidoViewModel { Numero  = 2, Total = 5450},
+                new PedidoViewModel { Numero  = 3, Total = 100},
+                new PedidoViewModel { Numero  = 4, Total = 5600},
+                new PedidoViewModel { Numero  = 5, Total = 700},
+            };
+        }
+
 
         private List<AddEditReferenciaViewModel> AddEditRefMockList()
         {
