@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Comerciante.Pedido.Application.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Comerciante.Pedido.Application.Interfaces;
+using Microsoft.AspNetCore.Routing;
 
 namespace Comerciante.Pedido.Presentation.Site.Controllers
 {
@@ -18,19 +19,22 @@ namespace Comerciante.Pedido.Presentation.Site.Controllers
             _pedidoAppService = pedidoAppService;
         }
 
+        [HttpGet]
         public IActionResult MeusPedidos()
         {
             var pedidos = _pedidoAppService.TrazerAtivos();
             return View(pedidos);
         }
 
+       
         public IActionResult Criar()
         {
             var pedidoCriado = _pedidoAppService.Criar(new PedidoViewModel());
             var editarPedidoViewModel = new EditarPedidoViewModel { Pedido = pedidoCriado, AddEditReferencias = AddEditRefMockList() };
-            return RedirectToAction("Editar","Pedidos",pedidoCriado.Id.ToString());
+            return RedirectToAction("Editar", new { id_pedido = pedidoCriado.Id });
         }
 
+        [HttpGet]
         [Route("Pedidos/Editar/{id_pedido:Guid}")]
         public IActionResult Editar(Guid? id_pedido)
         {

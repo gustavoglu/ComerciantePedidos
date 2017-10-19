@@ -22,14 +22,17 @@
                 <td data-bind="text : numero"></td>
                 <td data-bind="text : total"></td>
                 <td>
-                    <button data-bind="click : ViewModel.editarPedido" class="btn btn-warning">
-                        <span class="glyphicon glyphicon-edit"></span>
-                        <span>Editar</span>
-                    </button>
-                    <button data-bind="click : ViewModel.excluirPedido" class="btn btn-danger">
-                        <span class="glyphicon glyphicon-remove"></span>
-                        <span>Excluir</span>
-                    </button>
+                    <div class="col-md-offset-8 col-md-4" style="float: right">
+                        <button data-bind="click : ViewModel.editarPedido" class="btn btn-warning">
+                            <span class="glyphicon glyphicon-edit"></span>
+                            <span>Editar</span>
+                        </button>
+                        <button data-bind="click : ViewModel.excluirPedido" class="btn btn-danger">
+                            <span class="glyphicon glyphicon-remove"></span>
+                            <span>Excluir</span>
+                        </button>
+                    </div>
+
                 </td>
             </tr>
 

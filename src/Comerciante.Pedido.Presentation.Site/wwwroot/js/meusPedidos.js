@@ -14,7 +14,15 @@ function viewModel(model) {
 
     self.editarPedido = function (row) {
 
-        alert('editar');
+        var id = row.id;
+
+        window.location.href = '/Pedidos/Editar/' + id;
+
+        //$.ajax({
+
+        //    type: 'POST',
+        //    url: '/Pedidos/Editar/' + id,
+        //});
     }
 
     self.excluirPedido = function (row) {
@@ -34,8 +42,7 @@ function viewModel(model) {
 
     self.novoPedido = function () {
 
-        location.href = "/Criar";
-
+        window.location.href = '/Pedidos/Criar';
     }
 
 }
