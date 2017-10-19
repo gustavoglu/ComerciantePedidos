@@ -19,7 +19,17 @@ function viewModel(model) {
 
     self.excluirPedido = function (row) {
 
-        alert('excluir');
+        var id = row.id;
+
+        $.ajax({
+
+            type: 'DELETE',
+            contentType: 'application/json',
+            url: '/Pedidos/Deletar/' + id,
+        }).done(function (data) {
+            if (data)
+                self.pedidos.remove(row);
+        });
     }
 
     self.novoPedido = function () {

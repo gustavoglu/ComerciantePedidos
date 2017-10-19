@@ -26,14 +26,28 @@ namespace Comerciante.Pedido.Presentation.Site.Controllers
 
         public IActionResult Criar()
         {
-            var pedidoCriado = _pedidoAppService.Criar(new PedidoViewModel() { Id = Guid.NewGuid() });
-            return RedirectToAction("Editar", pedidoCriado.Id);
+            var pedidoCriado = _pedidoAppService.Criar(new PedidoViewModel());
+            var editarPedidoViewModel = new EditarPedidoViewModel { Pedido = pedidoCriado, AddEditReferencias = AddEditRefMockList() };
+            return RedirectToAction("Editar","Pedidos",pedidoCriado.Id.ToString());
         }
 
-        public IActionResult Editar(Guid id_pedido)
+        [Route("Pedidos/Editar/{id_pedido:Guid}")]
+        public IActionResult Editar(Guid? id_pedido)
         {
-            var pedido = _pedidoAppService.TrazerPorId(id_pedido);
-            return View(new EditarPedidoViewModel { Pedido = pedido, AddEditReferencias = AddEditRefMockList() });
+            if (!id_pedido.HasValue || id_pedido == Guid.Empty) return RedirectToAction("MeusPedidos");
+            var pedido = _pedidoAppService.TrazerPorId(id_pedido.Value);
+            return View("Editar", new EditarPedidoViewModel { Pedido = pedido, AddEditReferencias = AddEditRefMockList() });
+        }
+
+        [HttpDelete]
+        [Route("Pedidos/Deletar/{id_pedido:Guid}")]
+        public IActionResult Deletar(Guid id_pedido)
+        {
+            bool okDelete = _pedidoAppService.Deletar(id_pedido) > 0;
+            if (!okDelete)
+                return null;
+
+            return Json(id_pedido);
         }
 
         List<PedidoViewModel> PedidosMock()

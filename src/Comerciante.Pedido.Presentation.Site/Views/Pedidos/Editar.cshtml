@@ -3,9 +3,15 @@
 @{
     ViewData["Title"] = $"Editando Pedido Nº {Model.Pedido.Numero}";
 }
-<h2>Referencias</h2>
-<h1>Adicione as Referencias que deseja ao Pedido Nº @Model.Pedido.Numero</h1>
-<button class=" btn btn-warning"> Referencias já Adicionadas</button>
+<h2>Pedido Nº @Model.Pedido.Numero</h2>
+
+<h1>Referencias</h1>
+<a></a>
+<div class="form-group">
+    <div class="row">
+        <button class="btn btn-warning pull-right">Referências já adicionadas</button>
+    </div>
+</div>
 <a></a>
 
 @Html.Partial("_Referencia")
@@ -16,7 +22,7 @@
             <div class="modal-header">
                 <h2 data-bind="text : ViewModel.addEditRef.Codigo">Adicionar </h2>
             </div>
-            <div  class="modal-body">
+            <div class="modal-body">
                 <div id="modalBodyAddEditRef">
                     @Html.Partial("_AddEditRef")
                 </div>
