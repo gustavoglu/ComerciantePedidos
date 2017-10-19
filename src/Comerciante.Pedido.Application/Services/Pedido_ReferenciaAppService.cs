@@ -54,6 +54,16 @@ namespace Comerciante.Pedido.Application.Services
             return _mapper.Map<IEnumerable<Pedido_ReferenciaViewModel>>(_pedido_ReferenciaRepository.TrazerAtivos());
         }
 
+        public IEnumerable<Pedido_ReferenciaViewModel> TrazerAtivosInclude_Pedido_Referencia_TamanhosPorPedido(Guid id_pedido)
+        {
+            return _mapper.Map<IEnumerable<Pedido_ReferenciaViewModel>>(_pedido_ReferenciaRepository.TrazerAtivosIncludePedido_Referencia_TamanhosPorPedido(id_pedido).ToList());
+        }
+
+        public IEnumerable<Pedido_ReferenciaViewModel> TrazerAtivosPorPedido(Guid id_pedido)
+        {
+            return _mapper.Map<IEnumerable<Pedido_ReferenciaViewModel>>(_pedido_ReferenciaRepository.Pesquisar(pr => pr.Id_pedido == id_pedido).ToList());
+        }
+
         public IEnumerable<Pedido_ReferenciaViewModel> TrazerDeletados()
         {
             return _mapper.Map<IEnumerable<Pedido_ReferenciaViewModel>>(_pedido_ReferenciaRepository.TrazerDeletados());

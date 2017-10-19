@@ -21,5 +21,8 @@ namespace Comerciante.Pedido.Application.Interfaces
         IEnumerable<Pedido_Referencia_TamanhoViewModel> TrazerAtivos();
 
         IEnumerable<Pedido_Referencia_TamanhoViewModel> TrazerDeletados();
+
+        IEnumerable<Pedido_Referencia_TamanhoViewModel> TrazerAtivosPorReferencia();
+
     }
 }

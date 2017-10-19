@@ -23,5 +23,7 @@ namespace Comerciante.Pedido.Application.Interfaces
         IEnumerable<PedidoViewModel> TrazerDeletados();
 
         int NovoNumero();
+
+        TotalPedidoViewModel TrazerTotais(Guid id);
     }
 }

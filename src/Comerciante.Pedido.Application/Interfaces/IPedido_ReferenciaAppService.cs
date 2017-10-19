@@ -20,6 +20,11 @@ namespace Comerciante.Pedido.Application.Interfaces
 
         IEnumerable<Pedido_ReferenciaViewModel> TrazerAtivos();
 
+        IEnumerable<Pedido_ReferenciaViewModel> TrazerAtivosInclude_Pedido_Referencia_TamanhosPorPedido(Guid id_pedido);
+
         IEnumerable<Pedido_ReferenciaViewModel> TrazerDeletados();
+
+        IEnumerable<Pedido_ReferenciaViewModel> TrazerAtivosPorPedido(Guid id_pedido);
+
     }
 }

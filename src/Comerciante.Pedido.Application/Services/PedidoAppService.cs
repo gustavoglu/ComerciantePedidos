@@ -13,13 +13,15 @@ namespace Comerciante.Pedido.Application.Services
     {
 
         private readonly IPedidoRepository _pedidoRepository;
+        private readonly IPedido_ReferenciaAppService _pedido_referenciaAppService;
         private readonly IMapper _mapper;
         private readonly IUser _user;
 
-        public PedidoAppService(IPedidoRepository pedidoRepository, IMapper mapper, IUser user)
+        public PedidoAppService(IPedidoRepository pedidoRepository, IPedido_ReferenciaAppService pedido_referenciaAppService, IMapper mapper, IUser user)
         {
             _user = user;
             _pedidoRepository = pedidoRepository;
+            _pedido_referenciaAppService = pedido_referenciaAppService;
             _mapper = mapper;
         }
 
@@ -71,8 +73,7 @@ namespace Comerciante.Pedido.Application.Services
 
         public int NovoNumero()
         {
-            int count = this.TrazerTodos().ToList().Count;
-            return count == 0 ? 1 : count++;
+            return this.TrazerTodos().ToList().Count  +1;
         }
 
         public IEnumerable<PedidoViewModel> TrazerAtivos()
@@ -93,6 +94,17 @@ namespace Comerciante.Pedido.Application.Services
         public IEnumerable<PedidoViewModel> TrazerTodos()
         {
             return _mapper.Map<IEnumerable<PedidoViewModel>>(_pedidoRepository.TrazerTodos());
+        }
+
+        public TotalPedidoViewModel TrazerTotais(Guid id)
+        {
+            var pedidoReferencias = _pedido_referenciaAppService.TrazerAtivosInclude_Pedido_Referencia_TamanhosPorPedido(id).ToList();
+            var pedidoReferenciasTam = pedidoReferencias.Select(pr => pr.Pedido_Referencia_Tamanhos);
+
+            double totalPedido = _pedidoRepository.TrazerPorId(id).Total;
+            int totalReferencias = pedidoReferencias.Count;
+            int totalPecas = _pedido_referenciaAppService.TrazerAtivosInclude_Pedido_Referencia_TamanhosPorPedido(id).Select(pr => pr.Pedido_Referencia_Tamanhos).ToList().Count;
+
         }
     }
 }
