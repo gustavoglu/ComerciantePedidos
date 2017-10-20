@@ -16,10 +16,13 @@ $(document).ready(function () {
         var imagemA = model.referencia.referencia_Imagens[0].uri;
         var imagemB = model.referencia.referencia_Imagens[1].uri;
         var campos = ViewModel.criaCampos(cores, tamanhos);
-        var Referencia = new ViewModel.referencia(model.referencia.codigo, model.referencia.descricao, model.referencia.preco, imagemA, imagemB, tamanhos, cores, campos);
+        var Referencia = new ViewModel.referencia(model.referencia.id, model.referencia.codigo, model.referencia.descricao, model.referencia.preco, imagemA, imagemB, tamanhos, cores, campos);
 
         ViewModel.listReferencias.push(Referencia);
     }
+
+    ViewModel.getTotais();
+
 });
 
 
@@ -28,25 +31,55 @@ function viewModel() {
     var self = this;
     self.selectedRow = ko.observable();
     self.listReferencias = ko.observableArray();
+    self.totais = {
+        totalPedido: ko.observable('0'),
+        totalPecas: ko.observable('0'),
+        totalReferencias: ko.observable('0')
+    }
+
+
+    self.getTotais = function () {
+
+        var idpedido = {};
+        idpedido.id = pedidoSer.id;
+
+        $.ajax({
+            type: 'GET',
+            contentType: 'application/json',
+            url: '/Pedidos/TotalPedido/' + idpedido.id,
+        }).done(function (data) {
+
+            if (data) {
+                self.totais.totalPedido(data.totalPedido);
+                self.totais.totalPecas(data.totalPecas);
+                self.totais.totalReferencias(data.totalReferencias);
+            }
+        });
+    }
 
     self.AddAoPedido = function (row) {
 
         ViewModel.selectedRow(row);
         var model = ko.toJS(row);
 
-        self.atualizarAddEditRef(model.Codigo, model.Descricao, model.Preco, model.ImagemA, model.ImagemB, model.Tamanhos, model.Cores, model.Campos);
+        self.atualizarAddEditRef(model.Id, model.Codigo, model.Descricao, model.Preco, model.ImagemA, model.ImagemB, model.Tamanhos, model.Cores, model.Campos);
+
+        var pedidoReferencia = self.criaPedidoReferencia(self.addEditRef.Id(), self.addEditRef.Campos());
+
+        alert(ko.toJSON(pedidoReferencia));
 
         $('#modalAddEditRef').modal('show');
 
     }
 
-    self.salvarRef = function (){
+    self.salvarRef = function () {
 
         alert(ko.toJSON(ViewModel.addEditRef))
     }
 
-    self.atualizarAddEditRef = function (codigo, descricao, preco, imagemA, imagemB, tamanhos, cores, campos) {
+    self.atualizarAddEditRef = function (id_referencia, codigo, descricao, preco, imagemA, imagemB, tamanhos, cores, campos) {
 
+        self.addEditRef.Id(id_referencia);
         self.addEditRef.Codigo(codigo);
         self.addEditRef.Descricao(descricao);
         self.addEditRef.Preco(preco);
@@ -58,7 +91,8 @@ function viewModel() {
     }
 
     self.addEditRef = {
-
+        Id: ko.observable(),
+        Id_referencia: ko.observable(),
         Codigo: ko.observable(),
         Descricao: ko.observable(),
         Preco: ko.observable(),
@@ -103,9 +137,10 @@ function viewModel() {
 
     }
 
-    self.referencia = function (codigo, descricao, preco, imagemA, imagemB, tamanhos, cores, campos) {
+    self.referencia = function (id, codigo, descricao, preco, imagemA, imagemB, tamanhos, cores, campos) {
 
         var self = this;
+        self.Id = ko.observable(id);
         self.Codigo = ko.observable(codigo);
         self.Descricao = ko.observable(descricao);
         self.Preco = ko.observable(preco);
@@ -131,7 +166,7 @@ function viewModel() {
 
                 var tamanho = tamanhos[j];
 
-                if (tamanho.descricao != null) {
+                if (tamanho.descricao) {
 
                     campo = new self.campo(cor, tamanho, 0);
                     campos.push(campo);
@@ -177,4 +212,38 @@ function viewModel() {
             }
         });
     }
+
+    self.criaPedidoReferencia = function (id_referencia, campos) {
+
+        var referenciaPedido = {
+            Id_referencia: id_referencia,
+            Id_pedido: pedidoSer.id
+        }
+        var pedido_Referencia_Tamanhos = [];
+        for (var i = 0; i < campos.length; i++) {
+
+            var campoTamanhos = campos[i].Campos;
+
+            for (var j = 0; j < campoTamanhos.length; j++) {
+
+                var tamanho = campoTamanhos[i];
+
+                var pedido_Referencia_Tamanho = {
+                    Id_referencia_tamanho: tamanho.Tamanho.id,
+                    Id_referencia_cor: tamanho.Cor.id,
+                    Quantidade: tamanho.Quantidade
+                }
+
+                pedido_Referencia_Tamanhos.push(pedido_Referencia_Tamanho);
+            }
+        }
+
+        referenciaPedido.Pedido_Referencia_Tamanhos = pedido_Referencia_Tamanhos;
+
+        alert(ko.toJSON(referenciaPedido));
+
+        return { pedidoReferencia: referenciaPedido };
+
+    }
+
 }

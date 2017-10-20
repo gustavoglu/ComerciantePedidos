@@ -54,16 +54,13 @@ namespace Comerciante.Pedido.Presentation.Site.Controllers
             return Json(id_pedido);
         }
 
-        List<PedidoViewModel> PedidosMock()
+        [HttpGet]
+        [Route("Pedidos/TotalPedido/{id:Guid}")]
+        public JsonResult TotalPedido(Guid? id)
         {
-            return new List<PedidoViewModel>
-            {
-                new PedidoViewModel { Numero  = 1, Total = 500},
-                new PedidoViewModel { Numero  = 2, Total = 5450},
-                new PedidoViewModel { Numero  = 3, Total = 100},
-                new PedidoViewModel { Numero  = 4, Total = 5600},
-                new PedidoViewModel { Numero  = 5, Total = 700},
-            };
+            if (!id.HasValue || id.Value == Guid.Empty) return null;
+            var totalPedido = _pedidoAppService.TrazerTotais(id.Value);
+            return Json(totalPedido);
         }
 
 
@@ -81,18 +78,18 @@ namespace Comerciante.Pedido.Presentation.Site.Controllers
         {
             List<Referencia_CorViewModel> cores = new List<Referencia_CorViewModel>
             {
-                new Referencia_CorViewModel{ Cor = new CorViewModel{ Descricao = "Azul"}},
-                new Referencia_CorViewModel{ Cor = new CorViewModel{ Descricao = "Amarelo"}},
-                new Referencia_CorViewModel{ Cor = new CorViewModel{ Descricao = "Vermelho"}},
-                new Referencia_CorViewModel{ Cor = new CorViewModel{ Descricao = "Verde"}},
+                new Referencia_CorViewModel{ Cor = new CorViewModel{ Id =  Guid.NewGuid(), Descricao = "Azul"}},
+                new Referencia_CorViewModel{ Cor = new CorViewModel{ Id =  Guid.NewGuid(),Descricao = "Amarelo"}},
+                new Referencia_CorViewModel{ Cor = new CorViewModel{ Id =  Guid.NewGuid(),Descricao = "Vermelho"}},
+                new Referencia_CorViewModel{ Cor = new CorViewModel{ Id =  Guid.NewGuid(),Descricao = "Verde"}},
             };
 
             List<Referencia_TamanhoViewModel> tamanhos = new List<Referencia_TamanhoViewModel>
             {
-                new Referencia_TamanhoViewModel{ Tamanho =  new TamanhoViewModel{ Descricao = "P"}},
-                new Referencia_TamanhoViewModel{ Tamanho =  new TamanhoViewModel{ Descricao = "M"}},
-                new Referencia_TamanhoViewModel{ Tamanho =  new TamanhoViewModel{ Descricao = "G"}},
-                new Referencia_TamanhoViewModel{ Tamanho =  new TamanhoViewModel{ Descricao = "G"}},
+                new Referencia_TamanhoViewModel{ Tamanho =  new TamanhoViewModel{ Id =  Guid.NewGuid(),Descricao = "P"}},
+                new Referencia_TamanhoViewModel{ Tamanho =  new TamanhoViewModel{ Id =  Guid.NewGuid(),Descricao = "M"}},
+                new Referencia_TamanhoViewModel{ Tamanho =  new TamanhoViewModel{ Id =  Guid.NewGuid(),Descricao = "G"}},
+                new Referencia_TamanhoViewModel{ Tamanho =  new TamanhoViewModel{ Id =  Guid.NewGuid(),Descricao = "G"}},
             };
 
             List<Referencia_ImagemViewModel> imagens = new List<Referencia_ImagemViewModel>
@@ -103,6 +100,7 @@ namespace Comerciante.Pedido.Presentation.Site.Controllers
 
             ReferenciaViewModel referencia = new ReferenciaViewModel
             {
+                Id = Guid.NewGuid(),
                 Codigo = "30654",
                 Descricao = "CAMISA REGATA",
                 Preco = 15.50,

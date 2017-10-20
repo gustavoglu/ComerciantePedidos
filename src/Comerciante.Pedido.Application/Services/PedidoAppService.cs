@@ -73,7 +73,7 @@ namespace Comerciante.Pedido.Application.Services
 
         public int NovoNumero()
         {
-            return this.TrazerTodos().ToList().Count  +1;
+            return this.TrazerTodos().ToList().Count + 1;
         }
 
         public IEnumerable<PedidoViewModel> TrazerAtivos()
@@ -99,11 +99,16 @@ namespace Comerciante.Pedido.Application.Services
         public TotalPedidoViewModel TrazerTotais(Guid id)
         {
             var pedidoReferencias = _pedido_referenciaAppService.TrazerAtivosInclude_Pedido_Referencia_TamanhosPorPedido(id).ToList();
-            var pedidoReferenciasTam = pedidoReferencias.Select(pr => pr.Pedido_Referencia_Tamanhos);
+            var pedidoReferenciasTams = from pedidoRef in pedidoReferencias
+                                        from pedRefTams in pedidoRef.Pedido_Referencia_Tamanhos
+                                        where pedRefTams.Quantidade > 0
+                                        select pedRefTams;
 
             double totalPedido = _pedidoRepository.TrazerPorId(id).Total;
             int totalReferencias = pedidoReferencias.Count;
-            int totalPecas = _pedido_referenciaAppService.TrazerAtivosInclude_Pedido_Referencia_TamanhosPorPedido(id).Select(pr => pr.Pedido_Referencia_Tamanhos).ToList().Count;
+            int totalPecas = pedidoReferenciasTams.ToList().Sum(prf => prf.Quantidade);
+
+            return new TotalPedidoViewModel { TotalPecas = totalPecas, TotalPedido = totalPecas, TotalReferencias = totalReferencias };
 
         }
     }

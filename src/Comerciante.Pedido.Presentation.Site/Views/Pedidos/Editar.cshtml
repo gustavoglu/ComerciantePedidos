@@ -6,21 +6,28 @@
 <h2>Pedido Nº @Model.Pedido.Numero</h2>
 
 <h1>Referencias</h1>
-<hr/>
+<hr />
 <div class=" form-group form-inline">
     <div class="form-group">
-        <div >
+        <div>
             <button class="btn btn-warning pull-right">Referências já adicionadas</button>
         </div>
     </div>
-    <div class="form-group pull-right" >
-        <div >
+    <div class="form-group pull-right">
+        <div>
             <button class="btn btn-info " style="float:right">Finalizar Pedido</button>
         </div>
     </div>
 </div>
 
-<hr/>
+<hr />
+<h3>Totais</h3>
+<div class="form-group form-inline">
+    <h4>Total Pedido: R$ <span data-bind="text : ViewModel.totais.totalPedido"></span></h4>
+    <h5> Total Peças: <span data-bind="text : ViewModel.totais.totalPecas"></span></h5>
+    <h5>Total Referências: <span data-bind="text : ViewModel.totais.totalReferencias"></span> </h5>
+</div>
+<hr />
 
 @Html.Partial("_Referencia")
 
@@ -47,6 +54,7 @@
 @section Scripts {
     <script>
         var modelSer = @Json.Serialize(Model.AddEditReferencias);
+        var pedidoSer = @Json.Serialize(Model.Pedido);
     </script>
     <script src="~/js/referencias.js"></script>
 

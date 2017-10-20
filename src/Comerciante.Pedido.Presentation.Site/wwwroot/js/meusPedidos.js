@@ -3,8 +3,6 @@
 var ViewModel = new viewModel(model);
 ko.applyBindings(ViewModel);
 
-
-
 function viewModel(model) {
 
     var self = this;
@@ -17,12 +15,6 @@ function viewModel(model) {
         var id = row.id;
 
         window.location.href = '/Pedidos/Editar/' + id;
-
-        //$.ajax({
-
-        //    type: 'POST',
-        //    url: '/Pedidos/Editar/' + id,
-        //});
     }
 
     self.excluirPedido = function (row) {

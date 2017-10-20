@@ -54,6 +54,11 @@ namespace Comerciante.Pedido.Application.Services
             return _mapper.Map<IEnumerable<Pedido_Referencia_TamanhoViewModel>>(_pedido_Referencia_TamanhoRepository.TrazerAtivos());
         }
 
+        public IEnumerable<Pedido_Referencia_TamanhoViewModel> TrazerAtivosPorReferencia()
+        {
+            throw new NotImplementedException();
+        }
+
         public IEnumerable<Pedido_Referencia_TamanhoViewModel> TrazerDeletados()
         {
             return _mapper.Map<IEnumerable<Pedido_Referencia_TamanhoViewModel>>(_pedido_Referencia_TamanhoRepository.TrazerDeletados());

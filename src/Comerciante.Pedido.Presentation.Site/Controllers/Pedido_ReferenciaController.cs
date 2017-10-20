@@ -19,6 +19,11 @@ namespace Comerciante.Pedido.Presentation.Site.Controllers
             return PartialView("_ModalAddRef");
         }
 
+        //public JsonResult CriarReferenciaPedido(Pedido_ReferenciaViewModel pedidoReferencia)
+        //{
+        
+        //}
+
         public IActionResult Referencias(EditarPedidoViewModel editarPedidoViewModel)
         {
             editarPedidoViewModel.AddEditReferencias = AddEditRefMockList();
