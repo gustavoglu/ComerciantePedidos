@@ -11,6 +11,8 @@ $(document).ready(function () {
 
         var model = modelJS[i];
 
+        alert(model.referencia.tamanhos);
+
         var cores = model.cores;
         var tamanhos = ViewModel.criaTamanhos(model.tamanhos);
         var imagemA = model.referencia.referencia_Imagens[0].uri;
@@ -24,7 +26,6 @@ $(document).ready(function () {
     ViewModel.getTotais();
 
 });
-
 
 function viewModel() {
 
@@ -66,7 +67,7 @@ function viewModel() {
 
         var pedidoReferencia = self.criaPedidoReferencia(self.addEditRef.Id(), self.addEditRef.Campos());
 
-        alert(ko.toJSON(pedidoReferencia));
+        self.enviaPedidoReferencia(pedidoReferencia);
 
         $('#modalAddEditRef').modal('show');
 
@@ -156,6 +157,9 @@ function viewModel() {
         var refQtds = [];
         var campos = [];
 
+        alert(ko.toJSON(tamanhos));
+
+
         for (var i = 0; i < cores.length; i++) {
 
             var cor = cores[i];
@@ -166,7 +170,7 @@ function viewModel() {
 
                 var tamanho = tamanhos[j];
 
-                if (tamanho.descricao) {
+                if (tamanho.descricao != null) {
 
                     campo = new self.campo(cor, tamanho, 0);
                     campos.push(campo);
@@ -216,8 +220,12 @@ function viewModel() {
     self.criaPedidoReferencia = function (id_referencia, campos) {
 
         var referenciaPedido = {
+            Id : null,
             Id_referencia: id_referencia,
-            Id_pedido: pedidoSer.id
+            Id_pedido: pedidoSer.id,
+            Quantidade: 0,
+            Total: 0,
+            Pedido_Referencia_Tamanhos: []
         }
         var pedido_Referencia_Tamanhos = [];
         for (var i = 0; i < campos.length; i++) {
@@ -242,8 +250,26 @@ function viewModel() {
 
         alert(ko.toJSON(referenciaPedido));
 
-        return { pedidoReferencia: referenciaPedido };
+        return referenciaPedido;
 
+    }
+
+    self.enviaPedidoReferencia = function (pedido_referencia) {
+
+        var pedidoReferencia = ko.toJSON(pedido_referencia);
+
+        $.ajax({
+            type: 'POST',
+            dataType: 'json',
+            contentType: 'application/json',
+            url: '/Pedido_Referencia/CriarReferenciaPedido',
+            data: pedidoReferencia
+        }).done(function (data) {
+
+            if (data)
+                alert('Referencia Adicionada ao Pedido');
+                
+        });
     }
 
 }

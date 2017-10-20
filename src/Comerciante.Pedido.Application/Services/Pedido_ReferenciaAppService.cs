@@ -22,6 +22,11 @@ namespace Comerciante.Pedido.Application.Services
 
         public Pedido_ReferenciaViewModel Atualizar(Pedido_ReferenciaViewModel Pedido_ReferenciaViewModel)
         {
+            var pedido_Referencia = _pedido_ReferenciaRepository.Pesquisar(pr => pr.Id_pedido == Pedido_ReferenciaViewModel.Id_pedido && pr.Id_referencia == Pedido_ReferenciaViewModel.Id_referencia).FirstOrDefault();
+
+            if (pedido_Referencia != null)
+                _pedido_ReferenciaRepository.Deletar(pedido_Referencia.Id.Value);
+
             var model = _pedido_ReferenciaRepository.TrazerPorId(Pedido_ReferenciaViewModel.Id.Value);
             var viewModel = _mapper.Map(Pedido_ReferenciaViewModel, model);
             return _mapper.Map<Pedido_ReferenciaViewModel>(_pedido_ReferenciaRepository.Atualizar(viewModel));
@@ -51,7 +56,8 @@ namespace Comerciante.Pedido.Application.Services
 
         public IEnumerable<Pedido_ReferenciaViewModel> TrazerAtivos()
         {
-            return _mapper.Map<IEnumerable<Pedido_ReferenciaViewModel>>(_pedido_ReferenciaRepository.TrazerAtivos());
+            var list = _mapper.Map<IEnumerable<Pedido_ReferenciaViewModel>>(_pedido_ReferenciaRepository.TrazerAtivos().ToList());
+            return list;
         }
 
         public IEnumerable<Pedido_ReferenciaViewModel> TrazerAtivosInclude_Pedido_Referencia_TamanhosPorPedido(Guid id_pedido)

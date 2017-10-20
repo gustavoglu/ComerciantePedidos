@@ -1,14 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using Comerciante.Pedido.Application.ViewModels;
+using Comerciante.Pedido.Application.Interfaces;
 
 namespace Comerciante.Pedido.Presentation.Site.Controllers
 {
     public class Pedido_ReferenciaController : Controller
     {
+
+        private readonly IPedido_ReferenciaAppService _pedido_refenreciaAppService;
+
+        public Pedido_ReferenciaController(IPedido_ReferenciaAppService pedido_refenreciaAppService)
+        {
+            _pedido_refenreciaAppService = pedido_refenreciaAppService;
+        }
+
         public IActionResult Index()
         {
             return View();
@@ -19,10 +25,11 @@ namespace Comerciante.Pedido.Presentation.Site.Controllers
             return PartialView("_ModalAddRef");
         }
 
-        //public JsonResult CriarReferenciaPedido(Pedido_ReferenciaViewModel pedidoReferencia)
-        //{
-        
-        //}
+        [HttpPost]
+        public JsonResult CriarReferenciaPedido([FromBody]Pedido_ReferenciaViewModel pedidoReferencia)
+        {
+            return Json(pedidoReferencia);
+        }
 
         public IActionResult Referencias(EditarPedidoViewModel editarPedidoViewModel)
         {

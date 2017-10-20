@@ -14,8 +14,10 @@ namespace Comerciante.Pedido.Presentation.Site.Controllers
     public class PedidosController : Controller
     {
         private readonly IPedidoAppService _pedidoAppService;
-        public PedidosController(IPedidoAppService pedidoAppService)
+        private readonly IReferenciaAppService _referenciaAppService;
+        public PedidosController(IPedidoAppService pedidoAppService, IReferenciaAppService referenciaAppService)
         {
+            _referenciaAppService = referenciaAppService;
             _pedidoAppService = pedidoAppService;
         }
 
@@ -26,7 +28,7 @@ namespace Comerciante.Pedido.Presentation.Site.Controllers
             return View(pedidos);
         }
 
-       
+
         public IActionResult Criar()
         {
             var pedidoCriado = _pedidoAppService.Criar(new PedidoViewModel());
@@ -40,7 +42,14 @@ namespace Comerciante.Pedido.Presentation.Site.Controllers
         {
             if (!id_pedido.HasValue || id_pedido == Guid.Empty) return RedirectToAction("MeusPedidos");
             var pedido = _pedidoAppService.TrazerPorId(id_pedido.Value);
-            return View("Editar", new EditarPedidoViewModel { Pedido = pedido, AddEditReferencias = AddEditRefMockList() });
+            var referencias = _referenciaAppService.TrazerAtivos().ToList();
+            var refList = referencias.ToList();
+            //var addEditReferencias = from referencia in referencias.ToList() select new AddEditReferenciaViewModel { Referencia = referencia };
+            List<AddEditReferenciaViewModel> list = new List<AddEditReferenciaViewModel>();
+            foreach (var referencia in referencias)
+                list.Add( new AddEditReferenciaViewModel { Referencia = referencia });
+
+            return View("Editar", new EditarPedidoViewModel { Pedido = pedido, AddEditReferencias = list });
         }
 
         [HttpDelete]
@@ -89,7 +98,7 @@ namespace Comerciante.Pedido.Presentation.Site.Controllers
                 new Referencia_TamanhoViewModel{ Tamanho =  new TamanhoViewModel{ Id =  Guid.NewGuid(),Descricao = "P"}},
                 new Referencia_TamanhoViewModel{ Tamanho =  new TamanhoViewModel{ Id =  Guid.NewGuid(),Descricao = "M"}},
                 new Referencia_TamanhoViewModel{ Tamanho =  new TamanhoViewModel{ Id =  Guid.NewGuid(),Descricao = "G"}},
-                new Referencia_TamanhoViewModel{ Tamanho =  new TamanhoViewModel{ Id =  Guid.NewGuid(),Descricao = "G"}},
+                new Referencia_TamanhoViewModel{ Tamanho =  new TamanhoViewModel{ Id =  Guid.NewGuid(),Descricao = "GG"}},
             };
 
             List<Referencia_ImagemViewModel> imagens = new List<Referencia_ImagemViewModel>
