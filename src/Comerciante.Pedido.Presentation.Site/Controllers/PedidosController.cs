@@ -14,9 +14,11 @@ namespace Comerciante.Pedido.Presentation.Site.Controllers
     public class PedidosController : Controller
     {
         private readonly IPedidoAppService _pedidoAppService;
+        private readonly IPedido_ReferenciaAppService _pedido_ReferenciaAppService;
         private readonly IReferenciaAppService _referenciaAppService;
-        public PedidosController(IPedidoAppService pedidoAppService, IReferenciaAppService referenciaAppService)
+        public PedidosController(IPedidoAppService pedidoAppService, IReferenciaAppService referenciaAppService, IPedido_ReferenciaAppService pedido_ReferenciaAppService)
         {
+            _pedido_ReferenciaAppService = pedido_ReferenciaAppService;
             _referenciaAppService = referenciaAppService;
             _pedidoAppService = pedidoAppService;
         }
@@ -28,6 +30,13 @@ namespace Comerciante.Pedido.Presentation.Site.Controllers
             return View(pedidos);
         }
 
+        [Route("Pedidos/ReferenciasAdicionadas/{id:Guid}")]
+        public IActionResult ReferenciasAdicionadas(Guid id)
+        {
+            var pedidoReferencias = _pedido_ReferenciaAppService.TrazerAtivos();
+            var pedido = _pedidoAppService.TrazerPorId(id);
+            return View(new PedidoReferenciaJaAddViewModel { Pedido = pedido, Pedido_Referencias = pedidoReferencias.ToList() });
+        }
 
         public IActionResult Criar()
         {

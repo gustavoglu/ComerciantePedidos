@@ -77,13 +77,13 @@ namespace Comerciante.Pedido.Infra.Data.Context
             var deletados = ChangeTracker.Entries().Where(e => e.Entity is Entity && e.State == EntityState.Deleted);
 
             if (adicionados.Any())
-                AdicionaEntitys(adicionados);
+                AdicionaEntitys(adicionados.ToList());
 
             if (atualizados.Any())
-                AtualizaEntitys(atualizados);
+                AtualizaEntitys(atualizados.ToList());
 
             if (deletados.Any())
-                DeletaEntitys(deletados);
+                DeletaEntitys(deletados.ToList());
 
             return base.SaveChanges();
         }

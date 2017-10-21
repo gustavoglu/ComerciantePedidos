@@ -10,7 +10,7 @@
 <div class=" form-group form-inline">
     <div class="form-group">
         <div>
-            <button class="btn btn-warning pull-right">Referências já adicionadas</button>
+            <button data-bind="click : ViewModel.refJaAdicionadas" class="btn btn-warning pull-right">Referências já adicionadas</button>
         </div>
     </div>
     <div class="form-group pull-right">
@@ -29,8 +29,9 @@
 </div>
 <hr />
 
-@Html.Partial("_Referencia")
-
+<div class="col-lg-12">
+    @Html.Partial("_Referencia")
+</div>
 <div id="modalAddEditRef" class="modal fade">
     <div class="modal-dialog">
         <div class="modal-content">

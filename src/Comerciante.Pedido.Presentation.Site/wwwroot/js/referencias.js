@@ -11,8 +11,6 @@ $(document).ready(function () {
 
         var model = modelJS[i];
 
-        alert(model.referencia.tamanhos);
-
         var cores = model.cores;
         var tamanhos = ViewModel.criaTamanhos(model.tamanhos);
         var imagemA = model.referencia.referencia_Imagens[0].uri;
@@ -152,9 +150,6 @@ function viewModel() {
         var refQtds = [];
         var campos = [];
 
-        alert(ko.toJSON(tamanhos));
-
-
         for (var i = 0; i < cores.length; i++) {
 
             var cor = cores[i];
@@ -243,10 +238,7 @@ function viewModel() {
 
         referenciaPedido.Pedido_Referencia_Tamanhos = pedido_Referencia_Tamanhos;
 
-        alert(ko.toJSON(referenciaPedido));
-
         return referenciaPedido;
-
     }
 
     self.enviaPedidoReferencia = function () {
@@ -263,10 +255,18 @@ function viewModel() {
             data: pedidoReferencia
         }).done(function (data) {
 
-            if (data)
+            $('#modalAddEditRef').modal('toggle');
+
+            if (data) {
+                self.getTotais();
                 alert('Referencia Adicionada ao Pedido');
-                
+            }
+          
         });
+    }
+
+    self.refJaAdicionadas = function () {
+        window.location.href = '/Pedidos/ReferenciasAdicionadas/' + pedidoSer.id;
     }
 
 }

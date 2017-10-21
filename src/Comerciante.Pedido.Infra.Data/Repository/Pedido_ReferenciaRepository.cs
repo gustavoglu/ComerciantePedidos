@@ -25,6 +25,13 @@ namespace Comerciante.Pedido.Infra.Data.Repository
             return this.Save();
         }
 
+        public override IEnumerable<Pedido_Referencia> TrazerAtivos()
+        {
+            return DbSet
+                .Include(pr => pr.Referencia)
+                .Where(pr => pr.Deletado == false);
+        }
+
         public IEnumerable<Pedido_Referencia> TrazerAtivosIncludePedido_Referencia_TamanhosPorPedido(Guid id_pedido)
         {
             return DbSet.Where(pr => pr.Deletado == false && pr.Id_pedido == id_pedido)

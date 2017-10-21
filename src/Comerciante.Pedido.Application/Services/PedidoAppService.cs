@@ -108,7 +108,7 @@ namespace Comerciante.Pedido.Application.Services
             int totalReferencias = pedidoReferencias.Count;
             int totalPecas = pedidoReferenciasTams.ToList().Sum(prf => prf.Quantidade);
 
-            return new TotalPedidoViewModel { TotalPecas = totalPecas, TotalPedido = totalPecas, TotalReferencias = totalReferencias };
+            return new TotalPedidoViewModel { TotalPecas = totalPecas, TotalPedido = totalPedido, TotalReferencias = totalReferencias };
 
         }
     }

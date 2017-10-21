@@ -20,5 +20,7 @@ namespace Comerciante.Pedido.Application.ViewModels
         public double Total { get; set; } = 0;
 
         public virtual ICollection<Pedido_Referencia_TamanhoViewModel> Pedido_Referencia_Tamanhos { get; set; }
+
+        public virtual ReferenciaViewModel Referencia { get; set; }
     }
 }

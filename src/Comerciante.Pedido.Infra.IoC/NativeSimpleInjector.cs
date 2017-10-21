@@ -30,6 +30,7 @@ namespace Comerciante.Pedido.Infra.IoC
             services.AddScoped<IContaRepository, ContaRepository>();
             services.AddScoped<ICorRepository, CorRepository>();
             services.AddScoped<IPedido_ReferenciaRepository, Pedido_ReferenciaRepository>();
+            services.AddScoped<IPedido_Referencia_TamanhoRepository, Pedido_Referencia_TamanhoRepository>();
             services.AddScoped<IPedidoRepository, PedidoRepository>();
             services.AddScoped<IReferencia_ColecaoRepository, Referencia_ColecaoRepository>();
             services.AddScoped<IReferencia_CorRepository, Referencia_CorRepository>();
@@ -44,6 +45,7 @@ namespace Comerciante.Pedido.Infra.IoC
             services.AddScoped<IPedido_ReferenciaAppService, Pedido_ReferenciaAppService>();
             services.AddScoped<IPedidoAppService, PedidoAppService>();
             services.AddScoped<IReferencia_ColecaoAppService, Referencia_ColecaoAppService>();
+            services.AddScoped<IPedido_Referencia_TamanhoAppService, Pedido_Referencia_TamanhoAppService>();
             services.AddScoped<IReferencia_CorAppService, Referencia_CorAppService>();
             services.AddScoped<IReferenciaAppService, ReferenciaAppService>();
             services.AddScoped<IReferencia_TamanhoAppService, Referencia_TamanhoAppService>();

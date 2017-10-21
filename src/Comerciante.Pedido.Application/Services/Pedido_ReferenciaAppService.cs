@@ -12,13 +12,15 @@ namespace Comerciante.Pedido.Application.Services
     public class Pedido_ReferenciaAppService : IPedido_ReferenciaAppService
     {
         private readonly IPedido_ReferenciaRepository _pedido_ReferenciaRepository;
+        private readonly IPedido_Referencia_TamanhoRepository _pedido_Referencia_TamanhoRepository;
         private readonly IReferenciaRepository _referenciaRepository;
-        private readonly IPedidoAppService _pedidoAppService;
+        private readonly IPedidoRepository _pedidoRepository;
         private readonly IMapper _mapper;
 
-        public Pedido_ReferenciaAppService(IPedido_ReferenciaRepository pedido_ReferenciaRepository, IReferenciaRepository referenciaRepository, IPedidoAppService pedidoAppService,IMapper mapper)
+        public Pedido_ReferenciaAppService(IPedido_ReferenciaRepository pedido_ReferenciaRepository, IPedido_Referencia_TamanhoRepository pedido_Referencia_TamanhoRepository, IReferenciaRepository referenciaRepository, IPedidoRepository pedidoRepository, IMapper mapper)
         {
-            _pedidoAppService = pedidoAppService;
+            _pedido_Referencia_TamanhoRepository = pedido_Referencia_TamanhoRepository;
+            _pedidoRepository = pedidoRepository;
             _referenciaRepository = referenciaRepository;
             _pedido_ReferenciaRepository = pedido_ReferenciaRepository;
             _mapper = mapper;
@@ -49,7 +51,7 @@ namespace Comerciante.Pedido.Application.Services
         public Pedido_ReferenciaViewModel Criar(Pedido_ReferenciaViewModel Pedido_ReferenciaViewModel)
         {
 
-            var pedido = _pedidoAppService.TrazerPorId(Pedido_ReferenciaViewModel.Id_pedido.Value);
+            var pedido = _pedidoRepository.TrazerPorId(Pedido_ReferenciaViewModel.Id_pedido.Value);
 
             var referencia = _referenciaRepository.TrazerPorId(Pedido_ReferenciaViewModel.Id_referencia.Value);
 
@@ -57,8 +59,7 @@ namespace Comerciante.Pedido.Application.Services
 
             if (pedido_Referencia != null)
             {
-                pedido.Total = pedido.Total - pedido_Referencia.Total;
-                _pedido_ReferenciaRepository.Deletar(pedido_Referencia.Id.Value);
+                this.Deletar(pedido_Referencia.Id.Value);
             }
 
             var pedido_Referencia_TamanhosMaiorZero = Pedido_ReferenciaViewModel.Pedido_Referencia_Tamanhos.Where(prt => prt.Quantidade > 0);
@@ -74,7 +75,7 @@ namespace Comerciante.Pedido.Application.Services
 
             pedido.Total = pedido.Total + somaTotal;
 
-            _pedidoAppService.Atualizar(pedido);
+            _pedidoRepository.Atualizar(pedido);
 
             return pedidoReferenciaCriado;
         }
@@ -87,7 +88,21 @@ namespace Comerciante.Pedido.Application.Services
 
         public int Deletar(Guid id)
         {
-            return _pedido_ReferenciaRepository.Deletar(id);
+            var pedido_referencia = this.TrazerPorId(id);
+            var pedido = _pedidoRepository.TrazerPorId(pedido_referencia.Id_pedido.Value);
+
+            var pedido_referencia_tamanhos = _pedido_Referencia_TamanhoRepository.PesquisarAtivos(prt => prt.Id_pedido_referencia == id);
+
+            if (pedido_referencia_tamanhos.Any())
+                _pedido_Referencia_TamanhoRepository.Deletar(pedido_referencia_tamanhos);
+
+
+            var linhas = _pedido_ReferenciaRepository.Deletar(id);
+
+            pedido.Total = pedido.Total - pedido_referencia.Total;
+            _pedidoRepository.Atualizar(pedido);
+
+            return linhas;
         }
 
         public void Dispose()

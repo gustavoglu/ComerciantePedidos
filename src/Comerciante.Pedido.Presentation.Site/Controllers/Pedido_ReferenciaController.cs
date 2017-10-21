@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Comerciante.Pedido.Application.ViewModels;
 using Comerciante.Pedido.Application.Interfaces;
+using System;
 
 namespace Comerciante.Pedido.Presentation.Site.Controllers
 {
@@ -23,6 +24,14 @@ namespace Comerciante.Pedido.Presentation.Site.Controllers
         public IActionResult AddEditPedidoReferencia()
         {
             return PartialView("_ModalAddRef");
+        }
+
+        [HttpPost]
+        public JsonResult Deletar([FromBody]Guid id)
+        {
+            bool deletado = _pedido_refenreciaAppService.Deletar(id) > 0;
+            if (!deletado) return Json(null);
+            return Json(id);
         }
 
         [HttpPost]

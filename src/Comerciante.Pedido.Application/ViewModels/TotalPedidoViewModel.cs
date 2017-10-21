@@ -2,7 +2,7 @@
 {
     public class TotalPedidoViewModel
     {
-        public int TotalPedido { get; set; } = 0;
+        public double TotalPedido { get; set; } = 0;
 
         public int TotalReferencias { get; set; } = 0;
 
