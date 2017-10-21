@@ -51,12 +51,12 @@ namespace Comerciante.Pedido.Application.Services
 
         public IEnumerable<ReferenciaViewModel> TrazerAtivos()
         {
-            return _mapper.Map<IEnumerable<ReferenciaViewModel>>(_referenciaRepository.TrazerAtivos());
+            return _mapper.Map<IEnumerable<ReferenciaViewModel>>(_referenciaRepository.TrazerAtivos().ToList());
         }
 
         public IEnumerable<ReferenciaViewModel> TrazerDeletados()
         {
-            return _mapper.Map<IEnumerable<ReferenciaViewModel>>(_referenciaRepository.TrazerDeletados());
+            return _mapper.Map<IEnumerable<ReferenciaViewModel>>(_referenciaRepository.TrazerDeletados().ToList());
         }
 
         public ReferenciaViewModel TrazerPorId(Guid id)
@@ -66,7 +66,7 @@ namespace Comerciante.Pedido.Application.Services
 
         public IEnumerable<ReferenciaViewModel> TrazerTodos()
         {
-            return _mapper.Map<IEnumerable<ReferenciaViewModel>>(_referenciaRepository.TrazerTodos());
+            return _mapper.Map<IEnumerable<ReferenciaViewModel>>(_referenciaRepository.TrazerTodos().ToList());
         }
     }
 }

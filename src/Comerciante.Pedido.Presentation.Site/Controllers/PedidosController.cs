@@ -43,13 +43,8 @@ namespace Comerciante.Pedido.Presentation.Site.Controllers
             if (!id_pedido.HasValue || id_pedido == Guid.Empty) return RedirectToAction("MeusPedidos");
             var pedido = _pedidoAppService.TrazerPorId(id_pedido.Value);
             var referencias = _referenciaAppService.TrazerAtivos().ToList();
-            var refList = referencias.ToList();
-            //var addEditReferencias = from referencia in referencias.ToList() select new AddEditReferenciaViewModel { Referencia = referencia };
-            List<AddEditReferenciaViewModel> list = new List<AddEditReferenciaViewModel>();
-            foreach (var referencia in referencias)
-                list.Add( new AddEditReferenciaViewModel { Referencia = referencia });
-
-            return View("Editar", new EditarPedidoViewModel { Pedido = pedido, AddEditReferencias = list });
+            var addEditReferencias = from referencia in referencias select new AddEditReferenciaViewModel(referencia);
+            return View("Editar", new EditarPedidoViewModel { Pedido = pedido, AddEditReferencias = addEditReferencias.ToList() });
         }
 
         [HttpDelete]
@@ -78,7 +73,7 @@ namespace Comerciante.Pedido.Presentation.Site.Controllers
             List<AddEditReferenciaViewModel> list = new List<AddEditReferenciaViewModel>();
             for (int i = 0; i < 15; i++)
             {
-                list.Add(new AddEditReferenciaViewModel { Referencia = RefMock() });
+                list.Add(new AddEditReferenciaViewModel(RefMock()));
             }
             return list;
         }

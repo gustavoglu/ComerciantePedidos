@@ -10,7 +10,7 @@ namespace Comerciante.Pedido.Domain.Models
 
         public Guid Id_tamanho { get; set; }
 
-        public double? Total { get; set; } = 0;
+        public double? Preco { get; set; } = 0;
 
         //Entity Framework
         public virtual Referencia Referencia { get; set; }

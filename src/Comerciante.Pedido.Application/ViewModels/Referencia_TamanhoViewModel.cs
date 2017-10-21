@@ -10,7 +10,7 @@ namespace Comerciante.Pedido.Application.ViewModels
 
         public Guid? Id_tamanho { get; set; }
 
-        public double? Total { get; set; } = 0;
+        public double? Preco { get; set; } = 0;
 
         public TamanhoViewModel Tamanho  { get; set; }
     }

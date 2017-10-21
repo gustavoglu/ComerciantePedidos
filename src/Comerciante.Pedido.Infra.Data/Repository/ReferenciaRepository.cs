@@ -4,6 +4,7 @@ using Comerciante.Pedido.Domain.Models;
 using Comerciante.Pedido.Infra.Data.Context;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using System;
 
 namespace Comerciante.Pedido.Infra.Data.Repository
 {
@@ -15,13 +16,24 @@ namespace Comerciante.Pedido.Infra.Data.Repository
 
         public override IEnumerable<Referencia> TrazerAtivos()
         {
-            var list = this.DbSet
+            return DbSet
                 .Include(r => r.Referencia_Cores)
+                    .ThenInclude(rc => rc.Cor)
                 .Include(r => r.Referencia_Tamanhos)
+                    .ThenInclude(rt => rt.Tamanho)
                 .Include(r => r.Referencia_Imagens)
                 .Where(r => r.Deletado == false);
+        }
 
-            return list;
+        public override Referencia TrazerPorId(Guid id)
+        {
+            return DbSet
+                .Include(r => r.Referencia_Cores)
+                    .ThenInclude(rc => rc.Cor)
+                .Include(r => r.Referencia_Tamanhos)
+                    .ThenInclude(rt => rt.Tamanho)
+                .Include(r => r.Referencia_Imagens)
+                .FirstOrDefault(r => r.Deletado == false && r.Id == id);
         }
     }
 }

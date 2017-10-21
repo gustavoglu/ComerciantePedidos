@@ -65,12 +65,7 @@ function viewModel() {
 
         self.atualizarAddEditRef(model.Id, model.Codigo, model.Descricao, model.Preco, model.ImagemA, model.ImagemB, model.Tamanhos, model.Cores, model.Campos);
 
-        var pedidoReferencia = self.criaPedidoReferencia(self.addEditRef.Id(), self.addEditRef.Campos());
-
-        self.enviaPedidoReferencia(pedidoReferencia);
-
         $('#modalAddEditRef').modal('show');
-
     }
 
     self.salvarRef = function () {
@@ -235,10 +230,10 @@ function viewModel() {
             for (var j = 0; j < campoTamanhos.length; j++) {
 
                 var tamanho = campoTamanhos[i];
-
+               
                 var pedido_Referencia_Tamanho = {
-                    Id_referencia_tamanho: tamanho.Tamanho.id,
-                    Id_referencia_cor: tamanho.Cor.id,
+                    Id_referencia_tamanho: tamanho.Tamanho.id_referencia_tamanho,
+                    Id_referencia_cor: tamanho.Cor.id_referencia_cor,
                     Quantidade: tamanho.Quantidade
                 }
 
@@ -254,7 +249,9 @@ function viewModel() {
 
     }
 
-    self.enviaPedidoReferencia = function (pedido_referencia) {
+    self.enviaPedidoReferencia = function () {
+
+        var pedido_referencia = self.criaPedidoReferencia(self.addEditRef.Id(), self.addEditRef.Campos());
 
         var pedidoReferencia = ko.toJSON(pedido_referencia);
 

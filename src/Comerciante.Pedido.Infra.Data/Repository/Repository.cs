@@ -46,7 +46,7 @@ namespace Comerciante.Pedido.Infra.Data.Repository
 
         public virtual int Deletar(Guid id)
         {
-            var obj = this.TrazerPorId(id);
+            var obj = DbSet.Find(id);
             DbSet.Remove(obj);
             return Save();
         }
@@ -92,7 +92,7 @@ namespace Comerciante.Pedido.Infra.Data.Repository
             GC.SuppressFinalize(this);
         }
 
-        int Save()
+        protected int Save()
         {
             return _db.SaveChanges();
         }

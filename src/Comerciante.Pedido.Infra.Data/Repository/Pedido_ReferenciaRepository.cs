@@ -15,6 +15,16 @@ namespace Comerciante.Pedido.Infra.Data.Repository
 
         }
 
+        public override int Deletar(Guid id)
+        {
+            var obj = DbSet.
+                Include(pr => pr.Pedido_Referencia_Tamanhos)
+                .FirstOrDefault(pr => pr.Id == id);
+
+             DbSet.Remove(obj);
+            return this.Save();
+        }
+
         public IEnumerable<Pedido_Referencia> TrazerAtivosIncludePedido_Referencia_TamanhosPorPedido(Guid id_pedido)
         {
             return DbSet.Where(pr => pr.Deletado == false && pr.Id_pedido == id_pedido)

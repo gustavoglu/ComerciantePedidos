@@ -28,6 +28,7 @@ namespace Comerciante.Pedido.Presentation.Site.Controllers
         [HttpPost]
         public JsonResult CriarReferenciaPedido([FromBody]Pedido_ReferenciaViewModel pedidoReferencia)
         {
+            var pedido_referenciaCriado = _pedido_refenreciaAppService.Criar(pedidoReferencia);
             return Json(pedidoReferencia);
         }
 
@@ -42,7 +43,7 @@ namespace Comerciante.Pedido.Presentation.Site.Controllers
             List<AddEditReferenciaViewModel> list = new List<AddEditReferenciaViewModel>();
             for (int i = 0; i < 15; i++)
             {
-                list.Add(new AddEditReferenciaViewModel { Referencia = RefMock() });
+                list.Add(new AddEditReferenciaViewModel(RefMock()));
             }
             return list;
         }

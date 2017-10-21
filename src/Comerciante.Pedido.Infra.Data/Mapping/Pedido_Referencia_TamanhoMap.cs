@@ -10,7 +10,8 @@ namespace Comerciante.Pedido.Infra.Data.Mapping
         {
             builder.HasOne(prt => prt.Pedido_Referencia)
                 .WithMany(pr => pr.Pedido_Referencia_Tamanhos)
-                .HasForeignKey(prt => prt.Id_pedido_referencia);
+                .HasForeignKey(prt => prt.Id_pedido_referencia)
+                .OnDelete( Microsoft.EntityFrameworkCore.DeleteBehavior.Cascade);
 
             builder.HasOne(prt => prt.Referencia_Tamanho)
                 .WithMany(rt => rt.Pedido_Referencia_Tamanhos)

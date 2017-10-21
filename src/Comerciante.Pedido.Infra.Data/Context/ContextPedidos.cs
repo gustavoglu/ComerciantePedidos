@@ -119,7 +119,11 @@ namespace Comerciante.Pedido.Infra.Data.Context
                     }
                 }
                 catch (Exception) { }
+
+  
             }
+
+
         }
 
         private void DeletaEntitys(IEnumerable<EntityEntry> deletados)
@@ -128,6 +132,7 @@ namespace Comerciante.Pedido.Infra.Data.Context
             {
                 Entity entity = ((Entity)entityEntry.Entity);
                 entity.DeletadoEm = DateTime.Now;
+                entity.Deletado = true;
 
                 try
                 {
@@ -137,6 +142,7 @@ namespace Comerciante.Pedido.Infra.Data.Context
                     }
                 }
                 catch (Exception) { }
+                entityEntry.State = EntityState.Modified;
             }
         }
 

@@ -12,30 +12,71 @@ namespace Comerciante.Pedido.Application.Services
     public class Pedido_ReferenciaAppService : IPedido_ReferenciaAppService
     {
         private readonly IPedido_ReferenciaRepository _pedido_ReferenciaRepository;
+        private readonly IReferenciaRepository _referenciaRepository;
+        private readonly IPedidoAppService _pedidoAppService;
         private readonly IMapper _mapper;
 
-        public Pedido_ReferenciaAppService(IPedido_ReferenciaRepository pedido_ReferenciaRepository, IMapper mapper)
+        public Pedido_ReferenciaAppService(IPedido_ReferenciaRepository pedido_ReferenciaRepository, IReferenciaRepository referenciaRepository, IPedidoAppService pedidoAppService,IMapper mapper)
         {
+            _pedidoAppService = pedidoAppService;
+            _referenciaRepository = referenciaRepository;
             _pedido_ReferenciaRepository = pedido_ReferenciaRepository;
             _mapper = mapper;
         }
 
         public Pedido_ReferenciaViewModel Atualizar(Pedido_ReferenciaViewModel Pedido_ReferenciaViewModel)
         {
-            var pedido_Referencia = _pedido_ReferenciaRepository.Pesquisar(pr => pr.Id_pedido == Pedido_ReferenciaViewModel.Id_pedido && pr.Id_referencia == Pedido_ReferenciaViewModel.Id_referencia).FirstOrDefault();
-
-            if (pedido_Referencia != null)
-                _pedido_ReferenciaRepository.Deletar(pedido_Referencia.Id.Value);
-
             var model = _pedido_ReferenciaRepository.TrazerPorId(Pedido_ReferenciaViewModel.Id.Value);
             var viewModel = _mapper.Map(Pedido_ReferenciaViewModel, model);
             return _mapper.Map<Pedido_ReferenciaViewModel>(_pedido_ReferenciaRepository.Atualizar(viewModel));
         }
 
+        private double SomaTotalPedido_Referencia_Tamanhos(IEnumerable<Pedido_Referencia_TamanhoViewModel> pedido_referencia_tamanhosVM, Referencia referencia)
+        {
+            double somaTotal = 0;
+
+            foreach (var pedido_Referencia_Tamanho in pedido_referencia_tamanhosVM)
+            {
+                var referenciaTamanho = referencia.Referencia_Tamanhos.FirstOrDefault(rt => rt.Id == pedido_Referencia_Tamanho.Id_referencia_tamanho);
+                double valor = referenciaTamanho.Preco.HasValue && referenciaTamanho.Preco.Value > 0 ? referenciaTamanho.Preco.Value : referencia.Preco;
+                double total = pedido_Referencia_Tamanho.Quantidade * valor;
+                somaTotal = somaTotal + total;
+            }
+
+            return somaTotal;
+        }
+
         public Pedido_ReferenciaViewModel Criar(Pedido_ReferenciaViewModel Pedido_ReferenciaViewModel)
         {
+
+            var pedido = _pedidoAppService.TrazerPorId(Pedido_ReferenciaViewModel.Id_pedido.Value);
+
+            var referencia = _referenciaRepository.TrazerPorId(Pedido_ReferenciaViewModel.Id_referencia.Value);
+
+            var pedido_Referencia = _pedido_ReferenciaRepository.PesquisarAtivos(pr => pr.Id_pedido == Pedido_ReferenciaViewModel.Id_pedido && pr.Id_referencia == Pedido_ReferenciaViewModel.Id_referencia).FirstOrDefault();
+
+            if (pedido_Referencia != null)
+            {
+                pedido.Total = pedido.Total - pedido_Referencia.Total;
+                _pedido_ReferenciaRepository.Deletar(pedido_Referencia.Id.Value);
+            }
+
+            var pedido_Referencia_TamanhosMaiorZero = Pedido_ReferenciaViewModel.Pedido_Referencia_Tamanhos.Where(prt => prt.Quantidade > 0);
+
+            Pedido_ReferenciaViewModel.Quantidade = pedido_Referencia_TamanhosMaiorZero.Sum(prt => prt.Quantidade);
+
+            double somaTotal = SomaTotalPedido_Referencia_Tamanhos(pedido_Referencia_TamanhosMaiorZero, referencia);
+
+            Pedido_ReferenciaViewModel.Total = somaTotal;
+
             var model = _mapper.Map<Pedido_Referencia>(Pedido_ReferenciaViewModel);
-            return _mapper.Map<Pedido_ReferenciaViewModel>(_pedido_ReferenciaRepository.Criar(model));
+            var pedidoReferenciaCriado = _mapper.Map<Pedido_ReferenciaViewModel>(_pedido_ReferenciaRepository.Criar(model));
+
+            pedido.Total = pedido.Total + somaTotal;
+
+            _pedidoAppService.Atualizar(pedido);
+
+            return pedidoReferenciaCriado;
         }
 
         public IEnumerable<Pedido_ReferenciaViewModel> Criar(ICollection<Pedido_ReferenciaViewModel> Pedido_ReferenciaViewModels)
