@@ -10,6 +10,10 @@ function viewModel(model) {
 
     self.pedidos = ko.observableArray(model);
 
+    self.notificarPedidoExcluido = function () {
+        $.notify({ title: 'Sucesso!', message: 'Pedido Excludo com sucesso' }, { type: 'warning' });
+    }
+
     self.editarPedido = function (row) {
 
         var id = row.id;
@@ -27,8 +31,10 @@ function viewModel(model) {
             contentType: 'application/json',
             url: '/Pedidos/Deletar/' + id,
         }).done(function (data) {
-            if (data)
+            if (data) {
                 self.pedidos.remove(row);
+                self.notificarPedidoExcluido();
+            }
         });
     }
 

@@ -23,6 +23,8 @@ $(document).ready(function () {
 
     ViewModel.getTotais();
 
+
+
 });
 
 function viewModel() {
@@ -36,6 +38,9 @@ function viewModel() {
         totalReferencias: ko.observable('0')
     }
 
+    self.notificarRefAdd = function () {
+        $.notify({ title: 'Sucesso!', message: 'Referência Adicionada' },{type: 'success' });
+    }
 
     self.getTotais = function () {
 
@@ -259,7 +264,7 @@ function viewModel() {
 
             if (data) {
                 self.getTotais();
-                alert('Referencia Adicionada ao Pedido');
+                self.notificarRefAdd();
             }
           
         });

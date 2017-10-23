@@ -16,6 +16,10 @@ function viewModel() {
     self.pedidoReferencias = ko.observableArray();
     self.selectedRow = ko.observable();
 
+    self.notificarRefExcluida = function () {
+        $.notify({ title: 'Sucesso!', message: 'Referência Excluida do Pedido' }, { type: 'warning' });
+    }
+
     self.excluir = function (row) {
 
         var id = ko.toJSON(row.id);
@@ -32,6 +36,7 @@ function viewModel() {
             if (data) {
 
                 self.pedidoReferencias.remove(row);
+                self.notificarRefExcluida();
             }
         });
 
