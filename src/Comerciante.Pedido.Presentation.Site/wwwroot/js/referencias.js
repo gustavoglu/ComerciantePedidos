@@ -23,7 +23,7 @@ $(document).ready(function () {
 
     ViewModel.getTotais();
 
-
+    ViewModel.getReferenciasJaAdd();
 
 });
 
@@ -32,6 +32,8 @@ function viewModel() {
     var self = this;
     self.selectedRow = ko.observable();
     self.listReferencias = ko.observableArray();
+    self.listReferenciasJaAdd = ko.observableArray();
+
     self.totais = {
         totalPedido: ko.observable('0'),
         totalPecas: ko.observable('0'),
@@ -39,7 +41,7 @@ function viewModel() {
     }
 
     self.notificarRefAdd = function () {
-        $.notify({ title: 'Sucesso!', message: 'Referência Adicionada' },{type: 'success' });
+        $.notify({ title: 'Sucesso!', message: 'Referência Adicionada' }, { type: 'success' });
     }
 
     self.getTotais = function () {
@@ -59,6 +61,64 @@ function viewModel() {
                 self.totais.totalReferencias(data.totalReferencias);
             }
         });
+    }
+
+    self.getReferenciasJaAdd = function () {
+
+ 
+        $.ajax({
+            type: 'POST',
+            dataType: 'json',
+            contentType: 'application/json',
+            url: '/Pedidos/ReferenciasJaAdicionadas/',
+            data: ko.toJSON(pedidoSer.id)
+        }).done(function (data) {
+
+            if (data) {
+                self.atualizaRefJaAdd(data);
+            } else {
+                if (self.listReferenciasJaAdd().length > 0) {
+                    self.listReferenciasJaAdd.removeAll();
+                }
+            }
+        });
+
+    }
+
+    self.atualizaRefJaAdd = function (referencias) {
+
+        self.listReferenciasJaAdd.removeAll();
+        for (var i = 0; i < referencias.length; i++) {
+            var referencia = referencias[i];
+            self.listReferenciasJaAdd.push(referencia);
+        }
+    }
+
+    self.notificarRefExcluida = function () {
+        $.notify({ title: 'Sucesso!', message: 'Referência Excluida do Pedido' }, { type: 'warning' });
+    }
+
+    self.excluirReferencia = function (row) {
+
+        var id = ko.toJSON(row.id);
+
+        self.selectedRow(row);
+
+        $.ajax({
+            type: 'POST',
+            dataType: 'json',
+            contentType: 'application/json',
+            url: '/Pedido_Referencia/Deletar/',
+            data: id
+        }).done(function (data) {
+            if (data) {
+
+                self.listReferenciasJaAdd.remove(row);
+                self.notificarRefExcluida();
+                self.getTotais();
+            }
+        });
+
     }
 
     self.AddAoPedido = function (row) {
@@ -215,7 +275,7 @@ function viewModel() {
     self.criaPedidoReferencia = function (id_referencia, campos) {
 
         var referenciaPedido = {
-            Id : null,
+            Id: null,
             Id_referencia: id_referencia,
             Id_pedido: pedidoSer.id,
             Quantidade: 0,
@@ -230,7 +290,7 @@ function viewModel() {
             for (var j = 0; j < campoTamanhos.length; j++) {
 
                 var tamanho = campoTamanhos[i];
-               
+
                 var pedido_Referencia_Tamanho = {
                     Id_referencia_tamanho: tamanho.Tamanho.id_referencia_tamanho,
                     Id_referencia_cor: tamanho.Cor.id_referencia_cor,
@@ -266,7 +326,9 @@ function viewModel() {
                 self.getTotais();
                 self.notificarRefAdd();
             }
-          
+
+            self.getReferenciasJaAdd();
+
         });
     }
 

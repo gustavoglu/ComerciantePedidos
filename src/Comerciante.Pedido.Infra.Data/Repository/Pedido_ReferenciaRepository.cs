@@ -5,6 +5,7 @@ using Comerciante.Pedido.Infra.Data.Context;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System;
+using System.Linq.Expressions;
 
 namespace Comerciante.Pedido.Infra.Data.Repository
 {
@@ -31,6 +32,13 @@ namespace Comerciante.Pedido.Infra.Data.Repository
                 .Include(pr => pr.Referencia)
                 .Where(pr => pr.Deletado == false);
         }
+        public override IEnumerable<Pedido_Referencia> PesquisarAtivos(Expression<Func<Pedido_Referencia, bool>> predicate)
+        {
+            return DbSet.Include(pr => pr.Referencia)
+                .Where(pr => pr.Deletado == false)
+                .Where(predicate);
+        }
+
 
         public IEnumerable<Pedido_Referencia> TrazerAtivosIncludePedido_Referencia_TamanhosPorPedido(Guid id_pedido)
         {

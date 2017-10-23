@@ -123,7 +123,7 @@ namespace Comerciante.Pedido.Application.Services
 
         public IEnumerable<Pedido_ReferenciaViewModel> TrazerAtivosPorPedido(Guid id_pedido)
         {
-            return _mapper.Map<IEnumerable<Pedido_ReferenciaViewModel>>(_pedido_ReferenciaRepository.Pesquisar(pr => pr.Id_pedido == id_pedido).ToList());
+            return _mapper.Map<IEnumerable<Pedido_ReferenciaViewModel>>(_pedido_ReferenciaRepository.PesquisarAtivos(pr => pr.Id_pedido == id_pedido).ToList());
         }
 
         public IEnumerable<Pedido_ReferenciaViewModel> TrazerDeletados()

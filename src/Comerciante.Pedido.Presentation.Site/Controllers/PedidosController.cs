@@ -30,6 +30,13 @@ namespace Comerciante.Pedido.Presentation.Site.Controllers
             return View(pedidos);
         }
 
+        [HttpPost]
+        public JsonResult ReferenciasJaAdicionadas([FromBody]Guid id)
+        {
+            var pedidoReferencias = _pedido_ReferenciaAppService.TrazerAtivosPorPedido(id);
+            return Json(pedidoReferencias);
+        }
+
         [Route("Pedidos/ReferenciasAdicionadas/{id:Guid}")]
         public IActionResult ReferenciasAdicionadas(Guid id)
         {
