@@ -14,12 +14,14 @@ namespace Comerciante.Pedido.Application.Services
 
         private readonly IPedidoRepository _pedidoRepository;
         private readonly IPedido_ReferenciaAppService _pedido_referenciaAppService;
+        private readonly IPedido_ReferenciaRepository _pedido_referenciaRepository;
         private readonly IMapper _mapper;
         private readonly IUser _user;
 
-        public PedidoAppService(IPedidoRepository pedidoRepository, IPedido_ReferenciaAppService pedido_referenciaAppService, IMapper mapper, IUser user)
+        public PedidoAppService(IPedidoRepository pedidoRepository, IPedido_ReferenciaAppService pedido_referenciaAppService, IPedido_ReferenciaRepository pedido_referenciaRepository, IMapper mapper, IUser user)
         {
             _user = user;
+            _pedido_referenciaRepository = pedido_referenciaRepository;
             _pedidoRepository = pedidoRepository;
             _pedido_referenciaAppService = pedido_referenciaAppService;
             _mapper = mapper;
@@ -98,7 +100,7 @@ namespace Comerciante.Pedido.Application.Services
 
         public TotalPedidoViewModel TrazerTotais(Guid id)
         {
-            var pedidoReferencias = _pedido_referenciaAppService.TrazerAtivosInclude_Pedido_Referencia_TamanhosPorPedido(id).ToList();
+            var pedidoReferencias = _pedido_referenciaRepository.TrazerAtivosIncludePedido_Referencia_TamanhosPorPedido(id).ToList();
             var pedidoReferenciasTams = from pedidoRef in pedidoReferencias
                                         from pedRefTams in pedidoRef.Pedido_Referencia_Tamanhos
                                         where pedRefTams.Quantidade > 0

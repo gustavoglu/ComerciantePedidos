@@ -3,61 +3,56 @@
 @{
     ViewData["Title"] = $"Editando Pedido Nº {Model.Pedido.Numero}";
 }
-<h2>Pedido Nº @Model.Pedido.Numero</h2>
-
-<h1>Referencias</h1>
 <div class="col-lg-12">
-    <div class="col-lg-8">
-        <hr />
-
-        <div class=" form-group form-inline">
-            <div class="form-group">
-                <div>
-                    <button data-bind="click : ViewModel.refJaAdicionadas" class="btn btn-warning pull-right">Referências já adicionadas</button>
-                </div>
-            </div>
-            <div class="form-group pull-right">
-                <div>
-                    <button class="btn btn-info " style="float:right">Finalizar Pedido</button>
-                </div>
+    <div class="form-horizontal col-lg-12" style="padding:10px">
+        <div class="col-lg-3 left">
+            <h1>Pedido Nº @Model.Pedido.Numero</h1>
+            <div class="">
+                <button class="btn btn-info btn-block pull-left">Finalizar Pedido</button>
             </div>
         </div>
-
-        <hr />
-        <h3>Totais</h3>
-        <div class="form-inline col-lg-12">
-            <h4>Total Pedido: R$ <span data-bind="text : ViewModel.totais.totalPedido"></span></h4><h5> Total Peças: <span data-bind="text : ViewModel.totais.totalPecas"></span></h5><h5>Total Referências: <span data-bind="text : ViewModel.totais.totalReferencias"></span> </h5>
+        <div class="panel panel-primary pull-right" style="margin:15px">
+            <div class="panel-heading">
+                <h2 class="panel-title">Totais</h2>
+            </div>
+            <div class="" style="padding:15px">
+                <h3 class="text-success">Total Pedido: R$ <span class="text-success" data-bind="text : ViewModel.totais.totalPedido"></span></h3>
+                <h4 class="text-info"> Total Peças: <span class="text-info" data-bind="text : ViewModel.totais.totalPecas"></span></h4>
+                <h4 class="text-info">Total Referências: <span class="text-info" data-bind="text : ViewModel.totais.totalReferencias"></span></h4>
+            </div>
         </div>
-        <hr />
+    </div>
 
-        <div class="col-lg-12">
+    <div class="form-group">
+        <h2 class="text-center">Referências</h2>
+        <hr />
+    </div>
+        <div class="col-lg-8">
             @Html.Partial("_Referencia")
         </div>
-    </div>
-    <div class="col-lg-3">
+    <div class="col-lg-4">
         @Html.Partial("_RefJaAdd")
     </div>
-</div>
-<div id="modalAddEditRef" class="modal fade">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2 data-bind="text : ViewModel.addEditRef.Codigo">Adicionar </h2>
-            </div>
-            <div class="modal-body">
-                <div id="modalBodyAddEditRef">
-                    @Html.Partial("_AddEditRef")
+
+    <div id="modalAddEditRef" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 data-bind="text : ViewModel.addEditRef.Codigo">Adicionar </h2>
                 </div>
-            </div>
-            <div class="modal-footer">
-                <button id="btSalvar" data-bind="click : ViewModel.enviaPedidoReferencia" type="button" class="btn btn-primary">Salvar</button>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                <div class="modal-body">
+                    <div id="modalBodyAddEditRef">
+                        @Html.Partial("_AddEditRef")
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="btSalvar" data-bind="click : ViewModel.enviaPedidoReferencia" type="button" class="btn btn-primary">Salvar</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                </div>
             </div>
         </div>
     </div>
-
 </div>
-
 @section Scripts {
     <script>
         var modelSer = @Json.Serialize(Model.AddEditReferencias);

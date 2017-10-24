@@ -34,6 +34,11 @@ function viewModel() {
     self.listReferencias = ko.observableArray();
     self.listReferenciasJaAdd = ko.observableArray();
 
+
+    self.teste = function (row) {
+        alert(ko.toJSON(row));
+    }
+
     self.totais = {
         totalPedido: ko.observable('0'),
         totalPecas: ko.observable('0'),
@@ -65,7 +70,7 @@ function viewModel() {
 
     self.getReferenciasJaAdd = function () {
 
- 
+
         $.ajax({
             type: 'POST',
             dataType: 'json',
@@ -289,7 +294,7 @@ function viewModel() {
 
             for (var j = 0; j < campoTamanhos.length; j++) {
 
-                var tamanho = campoTamanhos[i];
+                var tamanho = campoTamanhos[j];
 
                 var pedido_Referencia_Tamanho = {
                     Id_referencia_tamanho: tamanho.Tamanho.id_referencia_tamanho,
