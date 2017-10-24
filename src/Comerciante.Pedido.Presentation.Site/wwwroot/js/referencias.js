@@ -36,7 +36,7 @@ function viewModel() {
 
 
     self.teste = function (row) {
-        alert(ko.toJSON(row));
+        //alert(ko.toJSON(row));
     }
 
     self.totais = {
@@ -138,7 +138,7 @@ function viewModel() {
 
     self.salvarRef = function () {
 
-        alert(ko.toJSON(ViewModel.addEditRef))
+        // alert(ko.toJSON(ViewModel.addEditRef))
     }
 
     self.atualizarAddEditRef = function (id_referencia, codigo, descricao, preco, imagemA, imagemB, tamanhos, cores, campos) {
@@ -164,7 +164,7 @@ function viewModel() {
         ImagemB: ko.observable(),
         Tamanhos: ko.observable(),
         Cores: ko.observable(),
-        Campos: ko.observable()
+        Campos: ko.observableArray()
     }
 
 
@@ -190,13 +190,25 @@ function viewModel() {
         self.Tamanho = ko.observableArray(tamanhos);
         self.Campos = ko.observableArray(campos);
 
-        self.umDeCada = function () {
+        self.umDeCada = function (row) {
 
-            for (var i = 0; i < self.Campos.length; i++) {
+            for (var i = 0; i < self.Campos().length; i++) {
 
-                self.Campos[i].AddUm();
+                var campo = self.Campos()[i];
+                
+                var obj = ko.utils.arrayFirst(ViewModel.addEditRef.Campos()[i], function (item) {
+
+                    return item.Cor.descricao == campo.Cor.descricao &&
+                        item.Tamanho.descricao == campo.Tamanho.descricao;
+
+                });
+
+                alert(ko.toJSON(obj));
+
+                obj.Quantidade(1);
+
+                alert(ko.toJSON(obj));
             }
-            alert(ko.toJSON(ViewModel.addEditRef.Campos));
         }
 
     }
@@ -258,23 +270,6 @@ function viewModel() {
         }
 
         return tamanhosCriados;
-    }
-
-
-    self.umDeCada = function (row) {
-
-        var cor = row.Cor.descricao;
-
-        ko.utils.arrayForEach(ViewModel.addEditRef.Campos(), function (campo) {
-
-            if (campo.Cor.descricao == cor) {
-
-                ko.utils.arrayForEach(campo.Campos, function (campoQtd) {
-                    campoQtd.quantidade = 1;
-
-                });
-            }
-        });
     }
 
     self.criaPedidoReferencia = function (id_referencia, campos) {
