@@ -1,22 +1,31 @@
 ﻿
 <div class="container referencia">
+    <div>
+        
+        <label class="h3" data-bind="text : ViewModel.addEditRef.Codigo"></label>  
+        <label class="h3"> / </label>
+        <label class="h3" data-bind="text : ViewModel.addEditRef.Descricao"></label>  
+        <label class="h3"> / Preço</label>
+        <label class="h3 text-success" data-bind="text : ViewModel.addEditRef.Preco"></label>
+    </div>
     <div class="row">
-        <div class="col-sm-3 col-md-5">
+        <div class="col-sm-3 col-md-5 center-block">
             <div class="thumbnail">
-                <div id="carousel" class="carousel slide center-block" data-ride="carousel" data-interval="6000">
+                <div id="carousel" class="carousel slide " data-ride="carousel" data-interval="6000">
                     <ol class="carousel-indicators">
                         <li data-target="#carousel" data-slide-to="0" class="active"></li>
                         <li data-target="#carousel" data-slide-to="1"></li>
                     </ol>
                     <div class="carousel-inner" role="listbox">
                         <div class="item active">
-                            <img data-bind="attr : { src : ViewModel.addEditRef.ImagemA }" width="250" height="250" class="img-responsive center-block" />
+                            <img data-bind="attr : { src : ViewModel.addEditRef.ImagemA }" width="225" height="225" class="img-responsive center-block" />
                         </div>
                         <div class="item">
-                            <img data-bind="attr : { src : ViewModel.addEditRef.ImagemB }" width="250" height="250" class="img-responsive center-block" />
+                            <img data-bind="attr : { src : ViewModel.addEditRef.ImagemB }" width="225" height="225" class="img-responsive center-block" />
                         </div>
                     </div>
                     <div class="carousel-caption">
+        
                         <label data-bind="text : ViewModel.addEditRef.Codigo" class="label" ></label>
                     </div>
                 </div>
@@ -25,8 +34,8 @@
     </div>
 </div>
 
-<div>
-    <table id="tableAddRef" class="table">
+<div id="tableAddRef" data-bind="visible : !ViewModel.addEditRef.Grade()">
+    <table class="table">
         <thead>
             <tr data-bind="foreach : ViewModel.addEditRef.Tamanhos">
                 <th class="text-center" data-bind="text: descricao"></th>
@@ -46,4 +55,15 @@
             </tr>
         </tbody>
     </table>
+</div>
+
+<div id="gradeInput" data-bind="visible : ViewModel.addEditRef.Grade">
+    <div class="form-horizontal">
+        <label class="h4">Qtd Grade: </label>
+        <input data-bind="textInput : ViewModel.addEditRef.QtdGrade" class="input-sm" size="6" disabled />
+        <button class="btn btn-info" data-bind="click : ViewModel.addGrade">
+            <span class="glyphicon glyphicon-plus"></span>
+            Adicionar Grade
+        </button>
+    </div>
 </div>

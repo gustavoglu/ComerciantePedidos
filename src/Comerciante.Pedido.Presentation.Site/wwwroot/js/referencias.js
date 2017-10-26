@@ -16,7 +16,7 @@ $(document).ready(function () {
         var imagemA = model.referencia.referencia_Imagens[0].uri;
         var imagemB = model.referencia.referencia_Imagens[1].uri;
         var campos = ViewModel.criaCampos(cores, tamanhos);
-        var Referencia = new ViewModel.referencia(model.referencia.id, model.referencia.codigo, model.referencia.descricao, model.referencia.preco, imagemA, imagemB, tamanhos, cores, campos);
+        var Referencia = new ViewModel.referencia(model.referencia.id, model.referencia.codigo, model.referencia.descricao, model.referencia.preco, imagemA, imagemB, tamanhos, cores, campos, model.referencia.grade);
 
         ViewModel.listReferencias.push(Referencia);
     }
@@ -131,7 +131,7 @@ function viewModel() {
         ViewModel.selectedRow(row);
         var model = ko.toJS(row);
 
-        self.atualizarAddEditRef(model.Id, model.Codigo, model.Descricao, model.Preco, model.ImagemA, model.ImagemB, model.Tamanhos, model.Cores, model.Campos);
+        self.atualizarAddEditRef(model.Id, model.Codigo, model.Descricao, model.Preco, model.ImagemA, model.ImagemB, model.Tamanhos, model.Cores, model.Campos, model.Grade, model.Grade ? 6 : 0);
 
         $('#modalAddEditRef').modal('show');
     }
@@ -141,7 +141,7 @@ function viewModel() {
         // alert(ko.toJSON(ViewModel.addEditRef))
     }
 
-    self.atualizarAddEditRef = function (id_referencia, codigo, descricao, preco, imagemA, imagemB, tamanhos, cores, campos) {
+    self.atualizarAddEditRef = function (id_referencia, codigo, descricao, preco, imagemA, imagemB, tamanhos, cores, campos, grade, qtdGrade) {
 
         self.addEditRef.Id(id_referencia);
         self.addEditRef.Codigo(codigo);
@@ -152,6 +152,8 @@ function viewModel() {
         self.addEditRef.Tamanhos(tamanhos);
         self.addEditRef.Cores(cores);
         self.addEditRef.Campos(campos);
+        self.addEditRef.QtdGrade(qtdGrade);
+        self.addEditRef.Grade(grade);
     }
 
     self.addEditRef = {
@@ -164,9 +166,16 @@ function viewModel() {
         ImagemB: ko.observable(),
         Tamanhos: ko.observable(),
         Cores: ko.observable(),
-        Campos: ko.observableArray()
+        Grade: ko.observable(),
+        QtdGrade: ko.observable(),
+        Campos: ko.observableArray(),
+
     }
 
+    self.addGrade = function () {
+        var qtdGrade = self.addEditRef.QtdGrade();
+        ViewModel.addEditRef.QtdGrade(qtdGrade + 6);
+    }
 
     self.campo = function (cor, tamanho, quantidade) {
 
@@ -176,12 +185,9 @@ function viewModel() {
         self.Quantidade = ko.observable(quantidade);
 
         self.addUm = function () {
-
             self.Quantidade(1);
         }
-
     }
-
 
     self.refQtd = function (cor, tamanhos, campos) {
 
@@ -195,7 +201,7 @@ function viewModel() {
             for (var i = 0; i < self.Campos().length; i++) {
 
                 var campo = self.Campos()[i];
-                
+
                 var obj = ko.utils.arrayFirst(ViewModel.addEditRef.Campos()[i], function (item) {
 
                     return item.Cor.descricao == campo.Cor.descricao &&
@@ -213,7 +219,7 @@ function viewModel() {
 
     }
 
-    self.referencia = function (id, codigo, descricao, preco, imagemA, imagemB, tamanhos, cores, campos) {
+    self.referencia = function (id, codigo, descricao, preco, imagemA, imagemB, tamanhos, cores, campos, grade) {
 
         var self = this;
         self.Id = ko.observable(id);
@@ -225,6 +231,7 @@ function viewModel() {
         self.Tamanhos = tamanhos;
         self.Cores = cores;
         self.Campos = ko.observableArray(campos);
+        self.Grade = ko.observable(grade);
     }
 
     self.criaCampos = function (cores, tamanhos) {
@@ -272,45 +279,55 @@ function viewModel() {
         return tamanhosCriados;
     }
 
-    self.criaPedidoReferencia = function (id_referencia, campos) {
+    self.criaPedidoReferencia = function (id_referencia, campos, qtdGrade) {
 
         var referenciaPedido = {
             Id: null,
             Id_referencia: id_referencia,
             Id_pedido: pedidoSer.id,
-            Quantidade: 0,
+            Quantidade: qtdGrade,
             Total: 0,
             Pedido_Referencia_Tamanhos: []
         }
         var pedido_Referencia_Tamanhos = [];
-        for (var i = 0; i < campos.length; i++) {
 
-            var campoTamanhos = campos[i].Campos;
+        if (qtdGrade == 0 || qtdGrade == null) {
 
-            for (var j = 0; j < campoTamanhos.length; j++) {
+            for (var i = 0; i < campos.length; i++) {
 
-                var tamanho = campoTamanhos[j];
+                var campoTamanhos = campos[i].Campos;
 
-                var pedido_Referencia_Tamanho = {
-                    Id_referencia_tamanho: tamanho.Tamanho.id_referencia_tamanho,
-                    Id_referencia_cor: tamanho.Cor.id_referencia_cor,
-                    Quantidade: tamanho.Quantidade ? tamanho.Quantidade : 0 
+                for (var j = 0; j < campoTamanhos.length; j++) {
+
+                    var tamanho = campoTamanhos[j];
+
+                    var pedido_Referencia_Tamanho = {
+                        Id_referencia_tamanho: tamanho.Tamanho.id_referencia_tamanho,
+                        Id_referencia_cor: tamanho.Cor.id_referencia_cor,
+                        Quantidade: tamanho.Quantidade != null ? tamanho.Quantidade : 0
+                    }
+
+                    pedido_Referencia_Tamanhos.push(pedido_Referencia_Tamanho);
                 }
-
-                pedido_Referencia_Tamanhos.push(pedido_Referencia_Tamanho);
             }
+
+            referenciaPedido.Pedido_Referencia_Tamanhos = pedido_Referencia_Tamanhos;
         }
-
-        referenciaPedido.Pedido_Referencia_Tamanhos = pedido_Referencia_Tamanhos;
-
         return referenciaPedido;
     }
 
     self.enviaPedidoReferencia = function () {
 
-        var pedido_referencia = self.criaPedidoReferencia(self.addEditRef.Id(), self.addEditRef.Campos());
+        var pedido_referencia = self.criaPedidoReferencia(self.addEditRef.Id(), self.addEditRef.Campos(), self.addEditRef.QtdGrade());
+
+        var existQtds = self.existQuantidades(pedido_referencia.Pedido_Referencia_Tamanhos);
 
         var pedidoReferencia = ko.toJSON(pedido_referencia);
+
+        if (!self.addEditRef.QtdGrade() && !existQtds) {
+            $('#modalAddEditRef').modal('toggle');
+            return;
+        }
 
         $.ajax({
             type: 'POST',
@@ -330,6 +347,22 @@ function viewModel() {
             self.getReferenciasJaAdd();
 
         });
+    }
+
+    self.existQuantidades = function (pedido_referencia_tamanhos) {
+
+
+        for (var i = 0; i < pedido_referencia_tamanhos.length; i++) {
+
+            var pedido_referencia_tamanho = pedido_referencia_tamanhos[i];
+
+            if (pedido_referencia_tamanho.Quantidade > 0) {
+                return true;
+                break;
+            }
+        }
+
+        return false;
     }
 
     self.refJaAdicionadas = function () {

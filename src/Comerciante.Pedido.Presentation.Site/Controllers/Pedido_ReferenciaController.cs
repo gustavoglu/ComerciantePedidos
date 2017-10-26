@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Comerciante.Pedido.Application.ViewModels;
 using Comerciante.Pedido.Application.Interfaces;
 using System;
+using System.Linq;
 
 namespace Comerciante.Pedido.Presentation.Site.Controllers
 {

@@ -11,11 +11,11 @@
                 <button class="btn btn-info btn-block pull-left">Finalizar Pedido</button>
             </div>
         </div>
-        <div class="panel panel-primary pull-right" style="margin:15px">
+        <div class="panel panel-primary pull-right" style="margin:10px">
             <div class="panel-heading">
                 <h2 class="panel-title">Totais</h2>
             </div>
-            <div class="" style="padding:15px">
+            <div class="" style="padding:5px">
                 <h3 class="text-success">Total Pedido: R$ <span class="text-success" data-bind="text : ViewModel.totais.totalPedido"></span></h3>
                 <h4 class="text-info"> Total Peças: <span class="text-info" data-bind="text : ViewModel.totais.totalPecas"></span></h4>
                 <h4 class="text-info">Total Referências: <span class="text-info" data-bind="text : ViewModel.totais.totalReferencias"></span></h4>
@@ -24,8 +24,8 @@
     </div>
 
     <div class="form-group">
-        <h2 class="text-center">Referências</h2>
-        <hr />
+        @*<h2 class="text-center">Referências</h2>
+        <hr />*@
     </div>
         <div class="col-lg-8">
             @Html.Partial("_Referencia")
@@ -37,9 +37,9 @@
     <div id="modalAddEditRef" class="modal fade">
         <div class="modal-dialog">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h2 data-bind="text : ViewModel.addEditRef.Codigo">Adicionar </h2>
-                </div>
+                @*<div class="modal-header">
+                    <h4 data-bind="text : ViewModel.addEditRef.Codigo"></h4>
+                </div>*@
                 <div class="modal-body">
                     <div id="modalBodyAddEditRef">
                         @Html.Partial("_AddEditRef")

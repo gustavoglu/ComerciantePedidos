@@ -101,14 +101,10 @@ namespace Comerciante.Pedido.Application.Services
         public TotalPedidoViewModel TrazerTotais(Guid id)
         {
             var pedidoReferencias = _pedido_referenciaRepository.TrazerAtivosIncludePedido_Referencia_TamanhosPorPedido(id).ToList();
-            var pedidoReferenciasTams = from pedidoRef in pedidoReferencias
-                                        from pedRefTams in pedidoRef.Pedido_Referencia_Tamanhos
-                                        where pedRefTams.Quantidade > 0
-                                        select pedRefTams;
 
             double totalPedido = _pedidoRepository.TrazerPorId(id).Total;
             int totalReferencias = pedidoReferencias.Count;
-            int totalPecas = pedidoReferenciasTams.ToList().Sum(prf => prf.Quantidade);
+            int totalPecas = pedidoReferencias.Sum(prf => prf.Quantidade);
 
             return new TotalPedidoViewModel { TotalPecas = totalPecas, TotalPedido = totalPedido, TotalReferencias = totalReferencias };
 

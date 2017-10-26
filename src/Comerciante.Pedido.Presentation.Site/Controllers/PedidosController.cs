@@ -34,7 +34,7 @@ namespace Comerciante.Pedido.Presentation.Site.Controllers
         public JsonResult ReferenciasJaAdicionadas([FromBody]Guid id)
         {
             var pedidoReferencias = _pedido_ReferenciaAppService.TrazerAtivosPorPedido(id);
-            return Json(pedidoReferencias);
+            return Json(pedidoReferencias.OrderByDescending(pr => pr.Referencia.Codigo));
         }
 
         [Route("Pedidos/ReferenciasAdicionadas/{id:Guid}")]

@@ -50,6 +50,9 @@ namespace Comerciante.Pedido.Application.Services
 
         public Pedido_ReferenciaViewModel Criar(Pedido_ReferenciaViewModel Pedido_ReferenciaViewModel)
         {
+            double somaTotal = 0;
+
+            int quantidadePecas = 0;
 
             var pedido = _pedidoRepository.TrazerPorId(Pedido_ReferenciaViewModel.Id_pedido.Value);
 
@@ -62,13 +65,23 @@ namespace Comerciante.Pedido.Application.Services
                 this.Deletar(pedido_Referencia.Id.Value);
             }
 
-            var pedido_Referencia_TamanhosMaiorZero = Pedido_ReferenciaViewModel.Pedido_Referencia_Tamanhos.Where(prt => prt.Quantidade > 0);
+            if (Pedido_ReferenciaViewModel.Pedido_Referencia_Tamanhos.Any())// && referencia.Grade)
+            {
+                var pedido_Referencia_TamanhosMaiorZero = Pedido_ReferenciaViewModel.Pedido_Referencia_Tamanhos.Where(prt => prt.Quantidade > 0);
 
-            Pedido_ReferenciaViewModel.Quantidade = pedido_Referencia_TamanhosMaiorZero.Sum(prt => prt.Quantidade);
+                quantidadePecas = pedido_Referencia_TamanhosMaiorZero.Sum(prt => prt.Quantidade);
 
-            double somaTotal = SomaTotalPedido_Referencia_Tamanhos(pedido_Referencia_TamanhosMaiorZero, referencia);
+                somaTotal = SomaTotalPedido_Referencia_Tamanhos(pedido_Referencia_TamanhosMaiorZero, referencia);
+                
+            }
+            else
+            {
+                somaTotal = referencia.Preco * Pedido_ReferenciaViewModel.Quantidade;
+                quantidadePecas = Pedido_ReferenciaViewModel.Quantidade;
+            }
 
             Pedido_ReferenciaViewModel.Total = somaTotal;
+            Pedido_ReferenciaViewModel.Quantidade = quantidadePecas;
 
             var model = _mapper.Map<Pedido_Referencia>(Pedido_ReferenciaViewModel);
             var pedidoReferenciaCriado = _mapper.Map<Pedido_ReferenciaViewModel>(_pedido_ReferenciaRepository.Criar(model));
@@ -95,7 +108,6 @@ namespace Comerciante.Pedido.Application.Services
 
             if (pedido_referencia_tamanhos.Any())
                 _pedido_Referencia_TamanhoRepository.Deletar(pedido_referencia_tamanhos);
-
 
             var linhas = _pedido_ReferenciaRepository.Deletar(id);
 
