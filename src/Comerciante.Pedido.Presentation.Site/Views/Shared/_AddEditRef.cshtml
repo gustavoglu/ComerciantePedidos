@@ -37,12 +37,12 @@
                 <td class="text-center center-block" data-bind="text : Cor.descricao"></td>
                 <!-- ko foreach :  Campos -->
                 <td>
-                    <input class="input-sm center-block" data-bind="textInput : Quantidade" size="6">
+                    <input class="input-sm center-block" data-bind="numeric,textInput : Quantidade" size="6">
                 </td>
                 <!-- /ko -->
-                <td>
+                @*<td>
                     <button data-bind="click : umDeCada" class="btn btn-info">Um de cada</button>
-                </td>
+                </td>*@
             </tr>
         </tbody>
     </table>

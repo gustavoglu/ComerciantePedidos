@@ -294,7 +294,7 @@ function viewModel() {
                 var pedido_Referencia_Tamanho = {
                     Id_referencia_tamanho: tamanho.Tamanho.id_referencia_tamanho,
                     Id_referencia_cor: tamanho.Cor.id_referencia_cor,
-                    Quantidade: tamanho.Quantidade
+                    Quantidade: tamanho.Quantidade ? tamanho.Quantidade : 0 
                 }
 
                 pedido_Referencia_Tamanhos.push(pedido_Referencia_Tamanho);

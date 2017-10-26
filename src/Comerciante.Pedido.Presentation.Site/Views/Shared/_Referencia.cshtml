@@ -1,7 +1,8 @@
 ﻿<div data-bind="foreach : ViewModel.listReferencias" >
         <div class="col-sm-2 col-lg-4">
             <div class="thumbnail">
-                <div id="carousel" class="carousel slide left" data-ride="carousel" data-interval="6000">
+                <img width="200" height="200" data-bind="attr:{src : ImagemA }" class="img-responsive center-block" />
+                @*<div id="carousel" class="carousel slide left" data-ride="carousel" data-interval="6000">
 
                     <ol class="carousel-indicators">
                         <li data-target="#carousel" data-slide-to="0" class="active"></li>
@@ -15,9 +16,8 @@
                         <div class="item">
                             <img width="200" height="200" data-bind="attr:{src : ImagemB }" class="img-responsive center-block" />
                         </div>
-                    </div>
-                </div>
-
+                    </div>*@
+                
                 <div class="caption">
                     <h2 class="text-left" data-bind="text : Codigo" />
                     <h3 class="text-left" data-bind="text : Descricao" />
@@ -29,6 +29,9 @@
                     <span>Adicionar ao Pedido</span>
                 </button>
             </div>
+
+           
+            </div>
         </div>
-    </div>
+    
 
