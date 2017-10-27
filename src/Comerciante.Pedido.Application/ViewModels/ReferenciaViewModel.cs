@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Comerciante.Pedido.Application.ViewModels.Enums;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
@@ -27,6 +28,8 @@ namespace Comerciante.Pedido.Application.ViewModels
         public string ImgUri { get; set; }
 
         public bool Grade { get; set; }
+
+        public TipoReferenciaViewModel? Tipo { get; set; } = TipoReferenciaViewModel.Outros;
 
         public virtual ICollection<Referencia_TamanhoViewModel> Referencia_Tamanhos { get; set; }
 

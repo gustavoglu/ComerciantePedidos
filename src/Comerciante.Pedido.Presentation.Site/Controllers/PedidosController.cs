@@ -7,6 +7,7 @@ using Comerciante.Pedido.Application.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Comerciante.Pedido.Application.Interfaces;
 using Microsoft.AspNetCore.Routing;
+using Comerciante.Pedido.Application.ViewModels.Enums;
 
 namespace Comerciante.Pedido.Presentation.Site.Controllers
 {
@@ -16,18 +17,22 @@ namespace Comerciante.Pedido.Presentation.Site.Controllers
         private readonly IPedidoAppService _pedidoAppService;
         private readonly IPedido_ReferenciaAppService _pedido_ReferenciaAppService;
         private readonly IReferenciaAppService _referenciaAppService;
-        public PedidosController(IPedidoAppService pedidoAppService, IReferenciaAppService referenciaAppService, IPedido_ReferenciaAppService pedido_ReferenciaAppService)
+        private readonly IEmailAppService _emailAppService;
+        public PedidosController(IPedidoAppService pedidoAppService, IReferenciaAppService referenciaAppService, IPedido_ReferenciaAppService pedido_ReferenciaAppService, IEmailAppService emailAppService)
         {
             _pedido_ReferenciaAppService = pedido_ReferenciaAppService;
             _referenciaAppService = referenciaAppService;
             _pedidoAppService = pedidoAppService;
+            _emailAppService = emailAppService;
         }
 
         [HttpGet]
         public IActionResult MeusPedidos()
         {
-            var pedidos = _pedidoAppService.TrazerAtivos();
-            return View(pedidos);
+            var meusPedidos = (from pedido in _pedidoAppService.TrazerAtivos()
+                              select new MeusPedidosViewModel { Pedido = pedido, TotalPedido = _pedidoAppService.TrazerTotais(pedido.Id.Value) }).ToList();
+
+            return View(meusPedidos.OrderByDescending(mp => mp.Pedido.Numero).ToList());
         }
 
         [HttpPost]
@@ -58,9 +63,18 @@ namespace Comerciante.Pedido.Presentation.Site.Controllers
         {
             if (!id_pedido.HasValue || id_pedido == Guid.Empty) return RedirectToAction("MeusPedidos");
             var pedido = _pedidoAppService.TrazerPorId(id_pedido.Value);
+
+            if (pedido.Finalizado)
+            {
+                var pedidoReaberto = _pedidoAppService.Reabrir(id_pedido.Value);
+                pedido = pedidoReaberto;
+            }
+
+            var tipoReferencias = Enum.GetValues(typeof(TipoReferenciaViewModel)).Cast<TipoReferenciaViewModel>().Select(e => e.ToString());
+
             var referencias = _referenciaAppService.TrazerAtivos().ToList();
             var addEditReferencias = from referencia in referencias select new AddEditReferenciaViewModel(referencia);
-            return View("Editar", new EditarPedidoViewModel { Pedido = pedido, AddEditReferencias = addEditReferencias.ToList() });
+            return View("Editar", new EditarPedidoViewModel { Pedido = pedido, AddEditReferencias = addEditReferencias.ToList(), TipoReferencias = tipoReferencias.ToList() });
         }
 
         [HttpDelete]
@@ -83,6 +97,14 @@ namespace Comerciante.Pedido.Presentation.Site.Controllers
             return Json(totalPedido);
         }
 
+        [HttpPost]
+        public JsonResult FinalizarPedido([FromBody]Guid id_pedido)
+        {
+            if (id_pedido == null || id_pedido == Guid.Empty) return Json(null);
+            var pedidoFinalizado = _pedidoAppService.Finalizar(id_pedido);
+            _emailAppService.EnviaEmail(_emailAppService.CriaTabela(id_pedido),"gustavoglu@hotmail.com",1);
+            return Json(pedidoFinalizado);
+        }
 
         private List<AddEditReferenciaViewModel> AddEditRefMockList()
         {

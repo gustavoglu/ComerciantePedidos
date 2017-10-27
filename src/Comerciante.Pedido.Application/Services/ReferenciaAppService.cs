@@ -6,6 +6,8 @@ using Comerciante.Pedido.Domain.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Comerciante.Pedido.Application.ViewModels.Enums;
+using Comerciante.Pedido.Domain.Models.Enums;
 
 namespace Comerciante.Pedido.Application.Services
 {
@@ -62,6 +64,12 @@ namespace Comerciante.Pedido.Application.Services
         public ReferenciaViewModel TrazerPorId(Guid id)
         {
             return _mapper.Map<ReferenciaViewModel>(_referenciaRepository.TrazerPorId(id));
+        }
+
+        public IEnumerable<ReferenciaViewModel> TrazerAtivoPorTipo(TipoReferenciaViewModel? tipo)
+        {
+            var parseTipo = Enum.Parse(typeof(TipoReferenciaViewModel),tipo.ToString());
+            return _mapper.Map<IEnumerable<ReferenciaViewModel>>(_referenciaRepository.TrazerAtivoPorTipo((TipoReferencia)parseTipo).ToList());
         }
 
         public IEnumerable<ReferenciaViewModel> TrazerTodos()

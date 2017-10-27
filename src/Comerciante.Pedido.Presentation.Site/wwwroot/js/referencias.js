@@ -2,10 +2,14 @@
 ko.virtualElements.allowedBindings.foreachprop = true;
 var ViewModel = new viewModel();
 ko.applyBindings(ViewModel);
+var ready = false;
 
 $(document).ready(function () {
 
     var modelJS = ko.toJS(modelSer);
+
+    ViewModel.listTipos.push('Todas');
+    $('#selectTipo').select().val('Todas');
 
     for (var i = 0; i < modelJS.length; i++) {
 
@@ -25,6 +29,7 @@ $(document).ready(function () {
 
     ViewModel.getReferenciasJaAdd();
 
+    ready = true;
 });
 
 function viewModel() {
@@ -33,10 +38,73 @@ function viewModel() {
     self.selectedRow = ko.observable();
     self.listReferencias = ko.observableArray();
     self.listReferenciasJaAdd = ko.observableArray();
+    self.listTipos = ko.observableArray(tiposSer);
+    self.listTiposDefault = ko.observableArray(['Todos']);
+    self.tipo = ko.observable();
 
+    self.trocaDeTipo = function () {
 
-    self.teste = function (row) {
-        //alert(ko.toJSON(row));
+        if (!ready) return;
+
+        var tipo = $('#selectTipo').find(':selected').text();
+        if (!tipo) return;
+
+        self.getRefPorTipo(tipo);
+
+    }
+
+    self.getRefPorTipo = function (tipo) {
+
+        $.ajax({
+            type: 'POST',
+            dataType: 'json',
+            contentType: 'application/json',
+            url: '/Referencias/TrazerPorTipo',
+            data: ko.toJSON(tipo)
+        }).done(function (data) {
+
+            if (data)
+                self.populaReferencias(data);
+
+        });
+
+    }
+
+    self.populaReferencias = function (referencias) {
+
+        if (self.listReferencias().length > 0)
+            self.listReferencias.removeAll();
+
+        ko.utils.arrayForEach(referencias, function (model) {
+
+            var cores = model.cores;
+            var tamanhos = ViewModel.criaTamanhos(model.tamanhos);
+            var imagemA = model.referencia.referencia_Imagens[0].uri;
+            var imagemB = model.referencia.referencia_Imagens[1].uri;
+            var campos = ViewModel.criaCampos(cores, tamanhos);
+            var Referencia = new ViewModel.referencia(model.referencia.id, model.referencia.codigo, model.referencia.descricao, model.referencia.preco, imagemA, imagemB, tamanhos, cores, campos, model.referencia.grade);
+
+            ViewModel.listReferencias.push(Referencia);
+
+        });
+
+    }
+
+    self.finalizarPedido = function () {
+
+        var id = ko.toJSON(pedidoSer.id);
+
+        $.ajax({
+            type: 'POST',
+            dataType: 'json',
+            contentType: 'application/json',
+            url: '/Pedidos/FinalizarPedido',
+            data: id
+        }).done(function (data) {
+            if (data)
+                window.location.href = '/Pedidos/MeusPedidos';
+        });
+
     }
 
     self.totais = {
@@ -368,5 +436,7 @@ function viewModel() {
     self.refJaAdicionadas = function () {
         window.location.href = '/Pedidos/ReferenciasAdicionadas/' + pedidoSer.id;
     }
+
+
 
 }

@@ -5,6 +5,8 @@ using Comerciante.Pedido.Infra.Data.Context;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Linq.Expressions;
+using Comerciante.Pedido.Domain.Models.Enums;
 
 namespace Comerciante.Pedido.Infra.Data.Repository
 {
@@ -25,6 +27,18 @@ namespace Comerciante.Pedido.Infra.Data.Repository
                 .Where(r => r.Deletado == false);
         }
 
+        public override IEnumerable<Referencia> PesquisarAtivos(Expression<Func<Referencia, bool>> predicate)
+        {
+            return DbSet
+               .Include(r => r.Referencia_Cores)
+                   .ThenInclude(rc => rc.Cor)
+               .Include(r => r.Referencia_Tamanhos)
+                   .ThenInclude(rt => rt.Tamanho)
+               .Include(r => r.Referencia_Imagens)
+               .Where(r => r.Deletado == false)
+               .Where(predicate);
+        }
+
         public override Referencia TrazerPorId(Guid id)
         {
             return DbSet
@@ -34,6 +48,17 @@ namespace Comerciante.Pedido.Infra.Data.Repository
                     .ThenInclude(rt => rt.Tamanho)
                 .Include(r => r.Referencia_Imagens)
                 .FirstOrDefault(r => r.Deletado == false && r.Id == id);
+        }
+
+        public IEnumerable<Referencia> TrazerAtivoPorTipo(TipoReferencia tipo)
+        {
+            return this.DbSet
+                  .Include(r => r.Referencia_Cores)
+                    .ThenInclude(rc => rc.Cor)
+                .Include(r => r.Referencia_Tamanhos)
+                    .ThenInclude(rt => rt.Tamanho)
+                .Include(r => r.Referencia_Imagens)
+                .Where(r => r.Deletado == false && r.Tipo == tipo);
         }
     }
 }

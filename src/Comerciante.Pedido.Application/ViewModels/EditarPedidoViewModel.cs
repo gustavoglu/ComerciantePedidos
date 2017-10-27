@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Comerciante.Pedido.Application.ViewModels.Enums;
+using System.Collections.Generic;
 
 namespace Comerciante.Pedido.Application.ViewModels
 {
@@ -7,5 +8,7 @@ namespace Comerciante.Pedido.Application.ViewModels
         public PedidoViewModel Pedido { get; set; }
 
         public List<AddEditReferenciaViewModel> AddEditReferencias { get; set; }
+
+        public List<string> TipoReferencias { get; set; }
     }
 }

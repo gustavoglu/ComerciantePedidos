@@ -1,5 +1,5 @@
 ﻿@using Comerciante.Pedido.Application.ViewModels;
-@model List<PedidoViewModel>
+@model List<MeusPedidosViewModel>
 
 
 @{
@@ -14,15 +14,21 @@
         <thead>
             <tr>
                 <th>Ped. Numero</th>
-                <th>Total</th>
+                <th>Total R$</th>
+                <th>Total Peças</th>
+                <th>Total Referências</th>
+                <th>Finalizado</th>
             </tr>
         </thead>
         <tbody data-bind="foreach : ViewModel.pedidos">
             <tr>
-                <td data-bind="text : numero"></td>
-                <td data-bind="text : total"></td>
+                <td data-bind="text : Numero"></td>
+                <td data-bind="text : TotalPedido"></td>
+                <td data-bind="text : TotalPecas"></td>
+                <td data-bind="text : TotalReferencias"></td>
+                <td data-bind="text : Finalizado"></td>
                 <td>
-                    <div class="col-md-offset-8 col-md-4" style="float: right">
+                    <div class="">
                         <button data-bind="click : ViewModel.editarPedido" class="btn btn-warning">
                             <span class="glyphicon glyphicon-edit"></span>
                             <span>Editar</span>
@@ -30,6 +36,10 @@
                         <button data-bind="click : ViewModel.excluirPedido" class="btn btn-danger">
                             <span class="glyphicon glyphicon-remove"></span>
                             <span>Excluir</span>
+                        </button>
+                        <button data-bind="click : ViewModel.finalizarPedido,visible : Finalizado() == 'Não'" class="btn btn-info">
+                            <span class="glyphicon glyphicon-ok"></span>
+                            <span>Finalizar</span>
                         </button>
                     </div>
 

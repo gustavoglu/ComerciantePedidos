@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 
 namespace Comerciante.Pedido.Infra.Data.Repository
 {
@@ -22,7 +23,7 @@ namespace Comerciante.Pedido.Infra.Data.Repository
                 Include(pr => pr.Pedido_Referencia_Tamanhos)
                 .FirstOrDefault(pr => pr.Id == id);
 
-             DbSet.Remove(obj);
+            DbSet.Remove(obj);
             return this.Save();
         }
 
@@ -44,6 +45,19 @@ namespace Comerciante.Pedido.Infra.Data.Repository
         {
             return DbSet.Where(pr => pr.Deletado == false && pr.Id_pedido == id_pedido)
                 .Include(pr => pr.Pedido_Referencia_Tamanhos);
+        }
+
+        public async Task<IEnumerable<Pedido_Referencia>> TrazerAtivosPorPedidoAllInclude(Guid id_pedido)
+        {
+            return await DbSet.AsNoTracking()
+                .Include(pr => pr.Referencia)
+                .Include(pr => pr.Pedido_Referencia_Tamanhos)
+                    .ThenInclude(pr => pr.Referencia_Cor)
+                    .ThenInclude(pr => pr.Cor)
+                .Include(pr => pr.Pedido_Referencia_Tamanhos)
+                    .ThenInclude(pr => pr.Referencia_Tamanho)
+                    .ThenInclude(pr => pr.Tamanho)
+                .Where(pr => pr.Deletado == false && pr.Id_pedido == id_pedido).ToListAsync();
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Comerciante.Pedido.Domain.Core.Models;
+using Comerciante.Pedido.Domain.Models.Enums;
 using System.Collections.Generic;
 
 namespace Comerciante.Pedido.Domain.Models
@@ -12,6 +13,8 @@ namespace Comerciante.Pedido.Domain.Models
         public double Preco { get; set; }
 
         public bool Grade { get; set; }
+
+        public TipoReferencia? Tipo { get; set; } = TipoReferencia.Outros;
 
         //Entity Framework
         public virtual ICollection<Referencia_Colecao> Referencia_Colecoes { get; set; }

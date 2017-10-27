@@ -73,9 +73,23 @@ namespace Comerciante.Pedido.Application.Services
             this._pedidoRepository.Dispose();
         }
 
+        public PedidoViewModel Finalizar(Guid id_pedido)
+        {
+            var pedido = _pedidoRepository.TrazerPorId(id_pedido);
+            pedido.Finalizado = true;
+            return _mapper.Map<PedidoViewModel>(_pedidoRepository.Atualizar(pedido));
+        }
+
         public int NovoNumero()
         {
             return this.TrazerTodos().ToList().Count + 1;
+        }
+
+        public PedidoViewModel Reabrir(Guid id_pedido)
+        {
+            var pedido = _pedidoRepository.TrazerPorId(id_pedido);
+            pedido.Finalizado = false;
+            return _mapper.Map<PedidoViewModel>(_pedidoRepository.Atualizar(pedido));
         }
 
         public IEnumerable<PedidoViewModel> TrazerAtivos()

@@ -14,6 +14,7 @@ namespace Comerciante.Pedido.Domain.Models
 
         public Guid? Id_colecao { get; set; }
 
+        public bool Finalizado { get; set; } = false;
 
         //Entity Framework
         public Colecao Colecao { get; set; }

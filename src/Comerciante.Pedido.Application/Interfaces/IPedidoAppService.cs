@@ -25,5 +25,9 @@ namespace Comerciante.Pedido.Application.Interfaces
         int NovoNumero();
 
         TotalPedidoViewModel TrazerTotais(Guid id);
+
+        PedidoViewModel Finalizar(Guid id_pedido);
+
+        PedidoViewModel Reabrir(Guid id_pedido);
     }
 }

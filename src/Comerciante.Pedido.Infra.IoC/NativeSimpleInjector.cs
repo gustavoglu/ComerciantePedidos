@@ -51,7 +51,7 @@ namespace Comerciante.Pedido.Infra.IoC
             services.AddScoped<IReferencia_TamanhoAppService, Referencia_TamanhoAppService>();
             services.AddScoped<IReferenciaAppService, ReferenciaAppService>();
             services.AddScoped<IReferencia_ImagemAppService, Referencia_ImagemAppService>();
-
+            services.AddScoped<IEmailAppService, EmailAppService>();
             //Identity
             services.AddSingleton<IEmailSender, EmailSender>();
             services.AddSingleton<IUser, AspNetUser>();

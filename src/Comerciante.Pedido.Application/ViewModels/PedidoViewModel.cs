@@ -13,5 +13,7 @@ namespace Comerciante.Pedido.Application.ViewModels
         public Guid? Id_cliente { get; set; }
 
         public Guid? Id_colecao { get; set; }
+
+        public bool Finalizado { get; set; } = false;
     }
 }

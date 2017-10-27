@@ -1,4 +1,5 @@
 ﻿using Comerciante.Pedido.Application.ViewModels;
+using Comerciante.Pedido.Application.ViewModels.Enums;
 using System;
 using System.Collections.Generic;
 
@@ -21,5 +22,7 @@ namespace Comerciante.Pedido.Application.Interfaces
         IEnumerable<ReferenciaViewModel> TrazerAtivos();
 
         IEnumerable<ReferenciaViewModel> TrazerDeletados();
+
+        IEnumerable<ReferenciaViewModel> TrazerAtivoPorTipo(TipoReferenciaViewModel? tipo);
     }
 }
