@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 using Comerciante.Pedido.Application.Interfaces;
 using Microsoft.AspNetCore.Routing;
 using Comerciante.Pedido.Application.ViewModels.Enums;
+using Comerciante.Pedido.Application.Services;
 
 namespace Comerciante.Pedido.Presentation.Site.Controllers
 {
@@ -30,7 +31,7 @@ namespace Comerciante.Pedido.Presentation.Site.Controllers
         public IActionResult MeusPedidos()
         {
             var meusPedidos = (from pedido in _pedidoAppService.TrazerAtivos()
-                              select new MeusPedidosViewModel { Pedido = pedido, TotalPedido = _pedidoAppService.TrazerTotais(pedido.Id.Value) }).ToList();
+                               select new MeusPedidosViewModel { Pedido = pedido, TotalPedido = _pedidoAppService.TrazerTotais(pedido.Id.Value) }).ToList();
 
             return View(meusPedidos.OrderByDescending(mp => mp.Pedido.Numero).ToList());
         }
@@ -102,9 +103,11 @@ namespace Comerciante.Pedido.Presentation.Site.Controllers
         {
             if (id_pedido == null || id_pedido == Guid.Empty) return Json(null);
             var pedidoFinalizado = _pedidoAppService.Finalizar(id_pedido);
-            _emailAppService.EnviaEmail(_emailAppService.CriaTabela(id_pedido),"gustavoglu@hotmail.com",1);
+
+            _emailAppService.EnviaEmail(id_pedido);
             return Json(pedidoFinalizado);
         }
+
 
         private List<AddEditReferenciaViewModel> AddEditRefMockList()
         {

@@ -49,7 +49,7 @@ namespace Comerciante.Pedido.Infra.Data.Repository
 
         public async Task<IEnumerable<Pedido_Referencia>> TrazerAtivosPorPedidoAllInclude(Guid id_pedido)
         {
-            return await DbSet.AsNoTracking()
+            return await DbSet
                 .Include(pr => pr.Referencia)
                 .Include(pr => pr.Pedido_Referencia_Tamanhos)
                     .ThenInclude(pr => pr.Referencia_Cor)

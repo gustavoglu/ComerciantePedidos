@@ -1,11 +1,12 @@
 ﻿using System;
+using System.Threading.Tasks;
 
 namespace Comerciante.Pedido.Application.Interfaces
 {
-    public interface IEmailAppService
+    public interface IEmailAppService : IDisposable
     {
-        string CriaTabela(Guid id_pedido);
+        Task<string> CriaTabela(Guid id_pedido);
 
-        void EnviaEmail(string body, string usuario, int pedidoNumero);
+        void EnviaEmail(Guid id_pedido);
     }
 }

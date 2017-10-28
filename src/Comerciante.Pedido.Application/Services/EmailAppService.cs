@@ -1,10 +1,12 @@
 ﻿using Comerciante.Pedido.Application.Interfaces;
+using Comerciante.Pedido.Domain.Interfaces;
 using Comerciante.Pedido.Domain.Interfaces.Repository;
 using Comerciante.Pedido.Domain.Models;
 using System;
 using System.Linq;
 using System.Net;
 using System.Net.Mail;
+using System.Threading.Tasks;
 
 namespace Comerciante.Pedido.Application.Services
 {
@@ -12,15 +14,21 @@ namespace Comerciante.Pedido.Application.Services
     {
 
         private readonly IPedido_ReferenciaRepository _pedido_ReferenciaRepository;
+        private readonly IPedidoRepository _pedidoRepository;
+        private readonly IPedidoAppService _pedidoAppService;
+        private readonly IUser _user;
 
-        public EmailAppService(IPedido_ReferenciaRepository pedido_ReferenciaRepository)
+        public EmailAppService(IPedido_ReferenciaRepository pedido_ReferenciaRepository, IPedidoRepository pedidoRepository, IPedidoAppService pedidoAppService, IUser user)
         {
+            _pedidoRepository = pedidoRepository;
+            _pedidoAppService = pedidoAppService;
             _pedido_ReferenciaRepository = pedido_ReferenciaRepository;
+            _user = user;
         }
 
-        public string CriaTabela(Guid id_pedido)
+        public async Task<string> CriaTabela(Guid id_pedido)
         {
-            var pedido_referencias = _pedido_ReferenciaRepository.TrazerAtivosPorPedidoAllInclude(id_pedido);
+            var pedido_referencias = await _pedido_ReferenciaRepository.TrazerAtivosPorPedidoAllInclude(id_pedido);
             if (!pedido_referencias.Any()) return string.Empty;
 
             string tds = "";
@@ -28,7 +36,7 @@ namespace Comerciante.Pedido.Application.Services
                 tds = tds + CriaTdPedidoRef(pedido_referencia);
 
             string table =
-                "<table>" +
+                "<table border='1'>" +
                     "<thead>" +
                         "<tr>" +
                             "<th>Ref.</th>" +
@@ -65,7 +73,7 @@ namespace Comerciante.Pedido.Application.Services
             {
                 if (pedido_referencia.Pedido_Referencia_Tamanhos.Any())
                 {
-                    foreach (var Pedido_Referencia_Tamanho in pedido_referencia.Pedido_Referencia_Tamanhos)
+                    foreach (var Pedido_Referencia_Tamanho in pedido_referencia.Pedido_Referencia_Tamanhos.Where(prt => prt.Quantidade > 0))
                     {
                         string td =
                               "<tr>" +
@@ -83,15 +91,22 @@ namespace Comerciante.Pedido.Application.Services
             return tds;
         }
 
-        public async void EnviaEmail(string body, string usuario, int pedidoNumero)
+        public async void EnviaEmail(Guid id_pedido)
         {
+            string table = await this.CriaTabela(id_pedido);
+            var pedido = _pedidoRepository.TrazerPorId(id_pedido);
+            var totaisViewModel = _pedidoAppService.TrazerTotais(id_pedido);
+            string usuario = _user.UserName;
+            string totais = $"TOTAL : {totaisViewModel.TotalPedido} R$ | TOTAL PEÇAS : {totaisViewModel.TotalPecas} | TOTAL REFERENCIAS : { totaisViewModel.TotalReferencias}";
+            string body = totais + "\n\n" + table;
+
             var message = new MailMessage();
 
             message.To.Add(new MailAddress("gustavoglu@gmail.com"));
             message.From = (new MailAddress("gustavoglu@hotmail.com"));
             message.Body = body;
             message.IsBodyHtml = true;
-            message.Subject = $"Pedido { pedidoNumero} / Usuario { usuario } Finalizado ";
+            message.Subject = $"Pedido { pedido.Numero} / Usuario { usuario } Finalizado ";
 
             using (var smtp = new SmtpClient())
             {
@@ -107,6 +122,13 @@ namespace Comerciante.Pedido.Application.Services
                 smtp.EnableSsl = true;
                 await smtp.SendMailAsync(message);
             }
+        }
+
+        public void Dispose()
+        {
+            this._pedidoAppService.Dispose();
+            this._pedidoRepository.Dispose();
+            _pedido_ReferenciaRepository.Dispose();
         }
     }
 }
