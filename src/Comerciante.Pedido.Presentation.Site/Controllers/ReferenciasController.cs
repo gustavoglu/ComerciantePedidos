@@ -17,6 +17,20 @@ namespace Comerciante.Pedido.Presentation.Site.Controllers
             _referenciaAppService = referenciaAppService;
         }
 
+        [HttpGet]
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public JsonResult Criar([FromBody]ReferenciaViewModel referencia)
+        {
+            if (referencia == null) return null;
+            var referenciaCriada = _referenciaAppService.Criar(referencia);
+            return Json(referenciaCriada);
+        }
+
         [HttpPost]
         public JsonResult TrazerPorTipo([FromBody]TipoReferenciaViewModel? tipo)
         {
