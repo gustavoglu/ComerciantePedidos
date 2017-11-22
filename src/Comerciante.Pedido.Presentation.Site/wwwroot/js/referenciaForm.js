@@ -1,9 +1,10 @@
-﻿var viewModel = new ViewModel();
+﻿var model = ko.toJS(viewModelJs);
+var viewModel = new ViewModel();
 ko.applyBindings(viewModel);
 
 $(document).ready(function () {
 
-    criaCoresETamanhos(viewModelJs.cores, viewModelJs.tamanhos);
+    criaCoresETamanhos(model.cores, model.tamanhos);
 
 
 });
@@ -15,18 +16,18 @@ function ViewModel() {
     self.codigo = ko.observable();
     self.preco = ko.observable();
     self.grade = ko.observable();
-    self.tipos = ko.arrayObservable();
-    self.cores = ko.arrayObservable();
-    self.tamanhos = ko.arrayObservable();
+    self.tipos = ko.observableArray();
+    self.cores = ko.observableArray();
+    self.tamanhos = ko.observableArray();
     self.tipo = ko.observable();
 
 }
 
 function cor(id,descricao,selecionado) {
     var self = this;
-    self.id = ko.observable(id);
-    self.descricao = ko.observable(descricao);
-    self.selecionado = ko.observable(selecionado);
+    self.Id = ko.observable(id);
+    self.Descricao = ko.observable(descricao);
+    self.Selecionado = ko.observable(selecionado);
 }
 
 function tamanho(id, descricao, selecionado) {
@@ -39,13 +40,14 @@ function tamanho(id, descricao, selecionado) {
 
 function criaCoresETamanhos(cores,tamanhos) {
 
-    ko.arrayForEach(cores, data){
+    ko.utils.arrayForEach(cores, function (data) {
+        alert(ko.toJSON(data));
         var cor = new cor(data.id, data.descricao, false);
         viewModel.cores.push(cor);
-    }
+    });
 
-    ko.arrayForEach(tamanhos, data){
+    ko.utils.arrayForEach(tamanhos, function (data) {
         var tamanho = new tamanho(data.id, data.descricao, false);
-        viewModel.cores.push(cor);
-    }
+        viewModel.tamanhos.push(tamanho);
+    });
 }
