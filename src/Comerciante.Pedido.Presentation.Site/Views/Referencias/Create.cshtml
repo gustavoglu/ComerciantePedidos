@@ -1,0 +1,79 @@
+﻿@using Comerciante.Pedido.Application.ViewModels
+@model ReferenciaFormViewModel
+@{
+    ViewData["Title"] = "Nova Referência";
+    var viewModelSer = @Json.Serialize(Model);
+}
+
+<h2>Nova Referência</h2>
+<div>
+    
+    <div>
+        <label>Descrição</label>
+        <input type="text" data-bind="textInput : viewModel.descricao" />
+    </div>
+    
+    <div>
+        <label>Código</label>
+        <input type="text" data-bind="textInput : viewModel.codigo" />
+    </div>
+
+    <div>
+        <label>Preço</label>
+        <input type="number" data-bind="textInput : viewModel.preco" />
+    </div>
+
+    <div>
+        <label>Grade</label>
+        <input type="checkbox" data-bind="viewModel.grade"/>
+    </div>
+
+    <select data-bind="options : viewModel.tipos , selectedOptions : viewModel.tipo"></select>
+
+    <h2>Cores</h2>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Descrição</th>
+                <th>Selecionar</th>
+            </tr>
+        </thead>
+        <tbody data-bind="foreach : viewModel.cores">
+            <tr>
+                <td data-bind="text : descricao"></td>
+                <td><input type="checkbox" data-bind="selecionado" /></td>
+            </tr>
+        </tbody>
+    </table>
+
+
+    <h2>Tamanhos</h2>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Descrição</th>
+                <th>Selecionar</th>
+            </tr>
+        </thead>
+        <tbody data-bind="foreach : viewModel.tamanhos">
+            <tr>
+                <td data-bind="text : descricao"></td>
+                <td><input type="checkbox" data-bind="selecionado" /></td>
+            </tr>
+        </tbody>
+    </table>
+
+
+
+</div>
+
+
+@section scripts {
+    <script>
+        var viewModelJs = ko.toJS('@viewModelSer');
+    </script>
+    <script src="~/js/referenciaForm.js"></script>
+
+
+}
+

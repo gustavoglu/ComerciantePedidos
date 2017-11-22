@@ -11,16 +11,22 @@ namespace Comerciante.Pedido.Presentation.Site.Controllers
     {
 
         private readonly IReferenciaAppService _referenciaAppService;
+        private readonly ICorAppService _corAppService;
+        private readonly ITamanhoAppService _tamanhoAppService;
 
-        public ReferenciasController(IReferenciaAppService referenciaAppService)
-        {
+        public ReferenciasController(IReferenciaAppService referenciaAppService, ITamanhoAppService tamanhoAppService, ICorAppService corAppService)        {
             _referenciaAppService = referenciaAppService;
+            _corAppService = corAppService;
+            _tamanhoAppService = tamanhoAppService;
         }
 
         [HttpGet]
         public IActionResult Create()
         {
-            return View();
+            var tamanhos = _tamanhoAppService.TrazerAtivos();
+            var cores = _corAppService.TrazerAtivos();
+            ReferenciaFormViewModel form = new ReferenciaFormViewModel { Referencia = new ReferenciaViewModel(), Cores = cores,Tamanhos = tamanhos };
+            return View(form);
         }
 
         [HttpPost]
