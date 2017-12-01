@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using Comerciante.Pedido.Application.ViewModels.Enums;
+using System;
+using System.Collections.Generic;
 
 namespace Comerciante.Pedido.Application.ViewModels
 {
@@ -10,6 +12,6 @@ namespace Comerciante.Pedido.Application.ViewModels
 
         public IEnumerable<CorViewModel> Cores { get; set; }
 
-        //public IEnumerable<TipoReferenciaViewModel> Tipos = Enum.GetValues(typeof(TipoReferenciaViewModel));
+        public IEnumerable<string> Tipos = Enum.GetNames(typeof(TipoReferenciaViewModel));
     }
 }

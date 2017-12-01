@@ -25,6 +25,7 @@ namespace Comerciante.Pedido.Presentation.Site.Controllers
         {
             var tamanhos = _tamanhoAppService.TrazerAtivos();
             var cores = _corAppService.TrazerAtivos();
+            var tipos = Enum.GetNames(typeof(TipoReferenciaViewModel));
             ReferenciaFormViewModel form = new ReferenciaFormViewModel { Referencia = new ReferenciaViewModel(), Cores = cores,Tamanhos = tamanhos };
             return View(form);
         }

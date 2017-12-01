@@ -1,53 +1,169 @@
 ﻿var model = ko.toJS(viewModelJs);
-var viewModel = new ViewModel();
+var referencia = model.referencia;
+var viewModel = new ViewModel(referencia.id,referencia.codigo, referencia.descricao, referencia.preco, referencia.grade, referencia.tipo, referencia.referencia_Tamanhos, referencia.referencia_Cores);
 ko.applyBindings(viewModel);
 
 $(document).ready(function () {
 
-    criaCoresETamanhos(model.cores, model.tamanhos);
-
-
+    alert(ko.toJSON(model));
+    criaCoresETamanhos(model.cores, model.tamanhos, referencia.referencia_Cores, referencia.referencia_Tamanhos);
 });
 
-function ViewModel() {
+function ViewModel(id,descricao,codigo,preco,grade,tipo,tamanhos,cores) {
 
-    var self = this;
-    self.descricao = ko.observable();
-    self.codigo = ko.observable();
-    self.preco = ko.observable();
-    self.grade = ko.observable();
-    self.tipos = ko.observableArray();
-    self.cores = ko.observableArray();
-    self.tamanhos = ko.observableArray();
-    self.tipo = ko.observable();
-
-}
-
-function cor(id,descricao,selecionado) {
-    var self = this;
-    self.Id = ko.observable(id);
-    self.Descricao = ko.observable(descricao);
-    self.Selecionado = ko.observable(selecionado);
-}
-
-function tamanho(id, descricao, selecionado) {
     var self = this;
     self.id = ko.observable(id);
     self.descricao = ko.observable(descricao);
-    self.selecionado = ko.observable(selecionado);
+    self.codigo = ko.observable(codigo);
+    self.preco = ko.observable(preco);
+    self.grade = ko.observable(grade);
+    self.tipos = ko.observableArray(model.tipos);
+    self.cores = ko.observableArray();
+    self.tamanhos = ko.observableArray();
+    self.tipo = ko.observableArray([tipo ? tipo : 'RovitexTeen']);
+
+
+    self.cor = function(id, descricao, selecionado) {
+        var self = this;
+        self.id = ko.observable(id);
+        self.descricao = ko.observable(descricao);
+        self.selecionado = ko.observable(selecionado);
+    }
+
+    self.tamanho = function(id, descricao, selecionado) {
+        var self = this;
+        self.id = ko.observable(id);
+        self.descricao = ko.observable(descricao);
+        self.selecionado = ko.observable(selecionado);
+    }
+
+    self.salvar = function () {
+
+        var coresEscolhidas = [];
+        var tamanhosEscolhidos = [];
+
+        ko.utils.arrayForEach(ko.toJS(viewModel.cores), function (data) {
+            if (data.selecionado) 
+                coresEscolhidas.push(data);
+        });
+        ko.utils.arrayForEach(ko.toJS(viewModel.tamanhos), function (data) {
+            if (data.selecionado)
+                tamanhosEscolhidos.push(data);
+        });
+
+        criaReferencia(viewModel.descricao(), viewModel.codigo(), viewModel.preco(), viewModel.grade(), viewModel.tipo()[0], coresEscolhidas, tamanhosEscolhidos);
+    }
+
 }
 
+function criaReferencia(descricao,codigo,preco,grade,tipo,cores,tamanhos) {
 
-function criaCoresETamanhos(cores,tamanhos) {
+    var coresViewModel = [];
+    var tamanhosViewModel = [];
+
+    ko.utils.arrayForEach(cores, function (cor) {
+
+        var corViewModel = criaCorViewModel(cor.id);
+        coresViewModel.push(corViewModel)
+    });
+
+    ko.utils.arrayForEach(tamanhos, function (tamanho) {
+
+        var tamanhoViewModel = criaTamanhoViewModel(tamanho.id);
+        tamanhosViewModel.push(tamanhoViewModel)
+    });
+
+    var referencia = {
+
+        Codigo: codigo,
+        Descricao: descricao,
+        Preco: preco,
+        Grade: grade,
+        Tipo: tipo,
+        Referencia_Tamanhos: tamanhosViewModel,
+        Referencia_Cores: coresViewModel
+    }
+
+    alert(ko.toJSON(referencia));
+}
+
+function criaCorViewModel(id_cor) {
+
+    return {
+
+        Id_referencia: null,
+        Id_cor: id_cor,
+        Preco : null
+    }
+}
+
+function criaTamanhoViewModel(id_tamanho) {
+
+    return {
+
+        Id_referencia: null,
+        Id_tamanho: id_tamanho,
+        Preco: null
+    }
+}
+
+function criaCoresETamanhos(cores,tamanhos,coresJaExistentes,tamanhosJaExistentes) {
 
     ko.utils.arrayForEach(cores, function (data) {
-        alert(ko.toJSON(data));
-        var cor = new cor(data.id, data.descricao, false);
+
+        var exist = corExist(data.id, coresJaExistentes);
+        var cor = new viewModel.cor(data.id, data.descricao, exist);
         viewModel.cores.push(cor);
     });
 
     ko.utils.arrayForEach(tamanhos, function (data) {
-        var tamanho = new tamanho(data.id, data.descricao, false);
+
+        var exist = tamanhoExist(data.id, tamanhosJaExistentes);
+        var tamanho = new viewModel.tamanho(data.id, data.descricao, exist);
         viewModel.tamanhos.push(tamanho);
     });
+}
+
+function corExist(id_cor, coresJaExistentes) {
+
+    var corExist = false;
+
+    ko.utils.arrayForEach(coresJaExistentes, function (corExistente) {
+
+        if (corExistente.id_cor == id_cor) corExist = true;
+    });
+
+    return corExist;
+}
+
+function tamanhoExist(id_tamanho, tamanhosJaExistentes) {
+
+    var tamanhoExist = false;
+
+    ko.utils.arrayForEach(tamanhosJaExistentes, function (tamanhoExistente) {
+        if (tamanhoExistente.id_tamanho == id_tamanho) tamanhoExist = true;
+    });
+
+    return tamanhoExist;
+}
+
+
+function atualizaCoresETamanhos(cores, tamanhos) {
+
+    if (cores.length == 0 && tamanhos.length == 0) return;
+
+    if (cores.length > 0) {
+
+        ko.utils.arrayForEach(cores, function (corExistente) {
+
+            ko.tils.arrayForEach(ko.toJS(viewModel.cores), function (cor) {
+
+
+
+            });
+
+        });
+
+    }
+
 }
