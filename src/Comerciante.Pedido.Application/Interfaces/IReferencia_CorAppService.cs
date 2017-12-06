@@ -14,11 +14,15 @@ namespace Comerciante.Pedido.Application.Interfaces
 
         int Deletar(Guid id);
 
+        int Deletar(IEnumerable<Referencia_CorViewModel> id);
+
         Referencia_CorViewModel TrazerPorId(Guid id);
 
         IEnumerable<Referencia_CorViewModel> TrazerTodos();
 
         IEnumerable<Referencia_CorViewModel> TrazerAtivos();
+
+        IEnumerable<Referencia_CorViewModel> TrazerPorReferencia(Guid id_referencia);
 
         IEnumerable<Referencia_CorViewModel> TrazerDeletados();
     }

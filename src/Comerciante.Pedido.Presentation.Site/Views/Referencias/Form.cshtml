@@ -3,9 +3,11 @@
 @{
     ViewData["Title"] = "Nova Referência";
     var viewModelSer = @Json.Serialize(Model);
+    var titulo = Model.Referencia.Descricao == null ? "Nova Referência" : Model.Referencia.Descricao;
+
 }
 
-<h2>Nova Referência</h2>
+<h2>@titulo</h2>
 <div>
     <div class="form-horizontal">
         <div class="form-group">
@@ -93,6 +95,7 @@
     <script>
         var viewModelJs = ko.toJS(@viewModelSer);
     </script>
+    <script src="~/js/util/enumConvert.js"></script>
     <script src="~/js/referenciaForm.js"></script>
 
 

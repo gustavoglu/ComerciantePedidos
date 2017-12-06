@@ -1,12 +1,14 @@
 ﻿var model = ko.toJS(viewModelJs);
 var referencia = model.referencia;
-var viewModel = new ViewModel(referencia.id,referencia.codigo, referencia.descricao, referencia.preco, referencia.grade, referencia.tipo, referencia.referencia_Tamanhos, referencia.referencia_Cores);
+var viewModel = new ViewModel(referencia.id, referencia.codigo, referencia.descricao, referencia.preco,
+                                referencia.grade, referencia.tipo, referencia.referencia_Tamanhos, referencia.referencia_Cores);
 ko.applyBindings(viewModel);
 
 $(document).ready(function () {
 
-    alert(ko.toJSON(model));
-    criaCoresETamanhos(model.cores, model.tamanhos, referencia.referencia_Cores, referencia.referencia_Tamanhos);
+    criaCoresETamanhos(model.cores, model.tamanhos,
+                        referencia.referencia_Cores, referencia.referencia_Tamanhos);
+
 });
 
 function ViewModel(id,descricao,codigo,preco,grade,tipo,tamanhos,cores) {
@@ -20,7 +22,7 @@ function ViewModel(id,descricao,codigo,preco,grade,tipo,tamanhos,cores) {
     self.tipos = ko.observableArray(model.tipos);
     self.cores = ko.observableArray();
     self.tamanhos = ko.observableArray();
-    self.tipo = ko.observableArray([tipo ? tipo : 'RovitexTeen']);
+    self.tipo = ko.observableArray([tipo ? referenciaTipoConvert(tipo) : 'RovitexTeen']);
 
 
     self.cor = function(id, descricao, selecionado) {
@@ -51,9 +53,41 @@ function ViewModel(id,descricao,codigo,preco,grade,tipo,tamanhos,cores) {
                 tamanhosEscolhidos.push(data);
         });
 
-        criaReferencia(viewModel.descricao(), viewModel.codigo(), viewModel.preco(), viewModel.grade(), viewModel.tipo()[0], coresEscolhidas, tamanhosEscolhidos);
+        var referencia = criaReferencia(viewModel.descricao(), viewModel.codigo(), viewModel.preco(),
+                        viewModel.grade(), viewModel.tipo()[0], coresEscolhidas, tamanhosEscolhidos);
+
+       
+        enviaRequest(referencia);
+
     }
 
+}
+
+function enviaRequest(referencia) {
+
+    if (referencia.Id) {
+        $.ajax({
+            type: 'PUT',
+            contentType: 'application/json',
+            data: ko.toJSON(referencia),
+            url: '/Referencias/Atualizar'
+
+        }).done(function (data) {
+
+        });
+
+        return;
+    }
+
+    $.ajax({
+        type: 'POST',
+        contentType: 'application/json',
+        data: ko.toJSON(referencia),
+        url: '/Referencias/Criar'
+
+    }).done(function (data) {
+
+    });
 }
 
 function criaReferencia(descricao,codigo,preco,grade,tipo,cores,tamanhos) {
@@ -62,19 +96,19 @@ function criaReferencia(descricao,codigo,preco,grade,tipo,cores,tamanhos) {
     var tamanhosViewModel = [];
 
     ko.utils.arrayForEach(cores, function (cor) {
-
-        var corViewModel = criaCorViewModel(cor.id);
+   
+        var corViewModel = criaCorViewModel(cor.id, this.referencia.id);
         coresViewModel.push(corViewModel)
     });
 
     ko.utils.arrayForEach(tamanhos, function (tamanho) {
 
-        var tamanhoViewModel = criaTamanhoViewModel(tamanho.id);
+        var tamanhoViewModel = criaTamanhoViewModel(tamanho.id, this.referencia.id);
         tamanhosViewModel.push(tamanhoViewModel)
     });
 
     var referencia = {
-
+        Id : this.referencia.id,
         Codigo: codigo,
         Descricao: descricao,
         Preco: preco,
@@ -84,24 +118,24 @@ function criaReferencia(descricao,codigo,preco,grade,tipo,cores,tamanhos) {
         Referencia_Cores: coresViewModel
     }
 
-    alert(ko.toJSON(referencia));
+    return referencia;
 }
 
-function criaCorViewModel(id_cor) {
+function criaCorViewModel(id_cor, id_referencia) {
 
     return {
 
-        Id_referencia: null,
+        Id_referencia: id_referencia,
         Id_cor: id_cor,
         Preco : null
     }
 }
 
-function criaTamanhoViewModel(id_tamanho) {
-
+function criaTamanhoViewModel(id_tamanho, id_referencia) {
+    
     return {
 
-        Id_referencia: null,
+        Id_referencia: id_referencia,
         Id_tamanho: id_tamanho,
         Preco: null
     }

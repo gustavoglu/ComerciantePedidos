@@ -44,6 +44,12 @@ namespace Comerciante.Pedido.Application.Services
             return _referencia_CorRepository.Deletar(id);
         }
 
+        public int Deletar(IEnumerable<Referencia_CorViewModel> referencia_cores)
+        {
+            var models = _mapper.Map<IEnumerable<Referencia_Cor>>(referencia_cores);
+            return _referencia_CorRepository.Deletar(models);
+        }
+
         public void Dispose()
         {
             this._referencia_CorRepository.Dispose();
@@ -62,6 +68,11 @@ namespace Comerciante.Pedido.Application.Services
         public Referencia_CorViewModel TrazerPorId(Guid id)
         {
             return _mapper.Map<Referencia_CorViewModel>(_referencia_CorRepository.TrazerPorId(id));
+        }
+
+        public IEnumerable<Referencia_CorViewModel> TrazerPorReferencia(Guid id_referencia)
+        {
+            return _mapper.Map<IEnumerable<Referencia_CorViewModel>>(_referencia_CorRepository.PesquisarAtivos(rc => rc.Id_referencia == id_referencia).ToList());
         }
 
         public IEnumerable<Referencia_CorViewModel> TrazerTodos()

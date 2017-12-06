@@ -14,11 +14,15 @@ namespace Comerciante.Pedido.Application.Interfaces
 
         int Deletar(Guid id);
 
+        int Deletar(IEnumerable<Referencia_TamanhoViewModel> id);
+
         Referencia_TamanhoViewModel TrazerPorId(Guid id);
 
         IEnumerable<Referencia_TamanhoViewModel> TrazerTodos();
 
         IEnumerable<Referencia_TamanhoViewModel> TrazerAtivos();
+
+        IEnumerable<Referencia_TamanhoViewModel> TrazerPorReferencia(Guid id_referencia);
 
         IEnumerable<Referencia_TamanhoViewModel> TrazerDeletados();
     }

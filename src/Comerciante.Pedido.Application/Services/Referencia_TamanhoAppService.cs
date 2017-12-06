@@ -45,6 +45,12 @@ namespace Comerciante.Pedido.Application.Services
             return _referencia_TamanhoRepository.Deletar(id);
         }
 
+        public int Deletar(IEnumerable<Referencia_TamanhoViewModel> referencia_tamanhos)
+        {
+            var models = _mapper.Map<IEnumerable<Referencia_Tamanho>>(referencia_tamanhos);
+            return _referencia_TamanhoRepository.Deletar(models);
+        }
+
         public void Dispose()
         {
             this._referencia_TamanhoRepository.Dispose();
@@ -63,6 +69,11 @@ namespace Comerciante.Pedido.Application.Services
         public Referencia_TamanhoViewModel TrazerPorId(Guid id)
         {
             return _mapper.Map<Referencia_TamanhoViewModel>(_referencia_TamanhoRepository.TrazerPorId(id));
+        }
+
+        public IEnumerable<Referencia_TamanhoViewModel> TrazerPorReferencia(Guid id_referencia)
+        {
+            return _mapper.Map<IEnumerable<Referencia_TamanhoViewModel>>(_referencia_TamanhoRepository.PesquisarAtivos(rt => rt.Id_referencia == id_referencia).ToList());
         }
 
         public IEnumerable<Referencia_TamanhoViewModel> TrazerTodos()
