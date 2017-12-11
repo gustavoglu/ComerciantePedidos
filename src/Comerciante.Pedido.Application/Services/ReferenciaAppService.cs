@@ -85,15 +85,9 @@ namespace Comerciante.Pedido.Application.Services
         {
             var referencia_cores = _referencia_CorAppService.TrazerPorReferencia(id_referencia);
 
-            var coresParaExcluir = from corSelecionada in coresSelecionadas
-                                   from referencia_cor in referencia_cores
-                                   where corSelecionada.Id_cor != referencia_cor.Id_cor
-                                   select referencia_cor;
+            var coresParaExcluir = referencia_cores.Where(rc => coresSelecionadas.ToList().Exists(c => c.Id_cor == rc.Id_cor) == false );
 
-            var coresJaExistentes = from corSelecionada in coresSelecionadas
-                                    from referencia_cor in referencia_cores
-                                    where corSelecionada.Id_cor == referencia_cor.Id_cor
-                                    select referencia_cor;
+            var coresJaExistentes = referencia_cores.Where(rc => coresSelecionadas.ToList().Exists(c => c.Id_cor == rc.Id_cor) == true);
 
             if (coresParaExcluir.Any())
                 _referencia_CorAppService.Deletar(coresParaExcluir.Distinct());
@@ -119,15 +113,9 @@ namespace Comerciante.Pedido.Application.Services
         {
             var referencia_tamanhos = _referencia_TamanhoAppService.TrazerPorReferencia(id_referencia);
 
-            var tamanhosParaExcluir = from tamanhoSelecionado in tamanhosSelecionados
-                                      from referencia_tamanho in referencia_tamanhos
-                                      where tamanhoSelecionado.Id_tamanho != referencia_tamanho.Id_tamanho
-                                      select referencia_tamanho;
+            var tamanhosParaExcluir = referencia_tamanhos.Where(rc => tamanhosSelecionados.ToList().Exists(c => c.Id_tamanho == rc.Id_tamanho) == false);
 
-            var tamanhosJaExistentes = from tamanhoSelecionado in tamanhosSelecionados
-                                       from referencia_tamanho in referencia_tamanhos
-                                       where tamanhoSelecionado.Id_tamanho == referencia_tamanho.Id_tamanho
-                                       select referencia_tamanho;
+            var tamanhosJaExistentes = referencia_tamanhos.Where(rc => tamanhosSelecionados.ToList().Exists(c => c.Id_tamanho == rc.Id_tamanho) == true);
 
             if (tamanhosParaExcluir.Any())
                 _referencia_TamanhoAppService.Deletar(tamanhosParaExcluir.Distinct());

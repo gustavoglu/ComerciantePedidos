@@ -15,7 +15,7 @@ namespace Comerciante.Pedido.Infra.Data.Repository
         public int Deletar(IEnumerable<Referencia_Tamanho> referencia_tamanhos)
         {
             foreach (var referencia_tamanho in referencia_tamanhos)
-                DbSet.Remove(referencia_tamanho);
+                DbSet.Remove(this.DbSet.Find(referencia_tamanho.Id.Value));
 
             return Save();
         }

@@ -72,7 +72,8 @@ namespace Comerciante.Pedido.Application.Services
 
         public IEnumerable<Referencia_CorViewModel> TrazerPorReferencia(Guid id_referencia)
         {
-            return _mapper.Map<IEnumerable<Referencia_CorViewModel>>(_referencia_CorRepository.PesquisarAtivos(rc => rc.Id_referencia == id_referencia).ToList());
+            var ref_cores = _referencia_CorRepository.PesquisarAtivos(rc => rc.Id_referencia == id_referencia).ToList();
+            return _mapper.Map<IEnumerable<Referencia_CorViewModel>>(ref_cores);
         }
 
         public IEnumerable<Referencia_CorViewModel> TrazerTodos()

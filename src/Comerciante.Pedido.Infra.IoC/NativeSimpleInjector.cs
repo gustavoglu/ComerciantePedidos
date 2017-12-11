@@ -59,6 +59,11 @@ namespace Comerciante.Pedido.Infra.IoC
             services.AddSingleton<IEmailSender, EmailSender>();
             services.AddSingleton<IUser, AspNetUser>();
 
+            //BlobServices
+            services.AddScoped<IAzureStorageHelper, AzureStorageHelper>();
+            services.AddScoped<IBlobAppService, BlobAppService>();
+
+
         }
     }
 }

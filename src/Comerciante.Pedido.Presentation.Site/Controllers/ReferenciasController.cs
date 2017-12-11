@@ -4,6 +4,9 @@ using Microsoft.AspNetCore.Mvc;
 using Comerciante.Pedido.Application.Interfaces;
 using Comerciante.Pedido.Application.ViewModels.Enums;
 using Comerciante.Pedido.Application.ViewModels;
+using Microsoft.AspNetCore.Http;
+using System.Threading.Tasks;
+using System.IO;
 
 namespace Comerciante.Pedido.Presentation.Site.Controllers
 {
@@ -15,13 +18,18 @@ namespace Comerciante.Pedido.Presentation.Site.Controllers
         private readonly ITamanhoAppService _tamanhoAppService;
         private readonly IReferencia_CorAppService _referencia_CorAppService;
         private readonly IReferencia_TamanhoAppService _referencia_TamanhoAppService;
+        private readonly IBlobAppService _blobAppService;
 
-        public ReferenciasController(IReferenciaAppService referenciaAppService, ITamanhoAppService tamanhoAppService, ICorAppService corAppService, IReferencia_CorAppService referencia_CorAppService, IReferencia_TamanhoAppService referencia_TamanhoAppService)        {
+        public ReferenciasController(IReferenciaAppService referenciaAppService, ITamanhoAppService tamanhoAppService,
+                                        ICorAppService corAppService, IReferencia_CorAppService referencia_CorAppService,
+                                        IReferencia_TamanhoAppService referencia_TamanhoAppService, IBlobAppService blobAppService)
+        {
             _referenciaAppService = referenciaAppService;
             _corAppService = corAppService;
             _tamanhoAppService = tamanhoAppService;
             _referencia_CorAppService = referencia_CorAppService;
             _referencia_TamanhoAppService = referencia_TamanhoAppService;
+            _blobAppService = blobAppService;
         }
 
         [HttpGet]
@@ -30,7 +38,7 @@ namespace Comerciante.Pedido.Presentation.Site.Controllers
             var tamanhos = _tamanhoAppService.TrazerAtivos();
             var cores = _corAppService.TrazerAtivos();
             var tipos = Enum.GetNames(typeof(TipoReferenciaViewModel));
-            ReferenciaFormViewModel form = new ReferenciaFormViewModel { Referencia =  new ReferenciaViewModel(), Cores = cores, Tamanhos = tamanhos };
+            ReferenciaFormViewModel form = new ReferenciaFormViewModel { Referencia = new ReferenciaViewModel(), Cores = cores, Tamanhos = tamanhos };
 
             if (id != null)
             {
@@ -40,8 +48,18 @@ namespace Comerciante.Pedido.Presentation.Site.Controllers
                 if (referencia == null) return NotFound();
                 form.Referencia = referencia;
             }
-        
+
             return View(form);
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> UploadImagem(IFormFile file)
+        {
+            if (file is null || file.Length == 0)
+                return Json("Arquivo não enviado");
+
+            string uri = await _blobAppService.Upload("referencias", file.FileName, file.OpenReadStream());
+            return Json("Ok");
         }
 
         [HttpPost]

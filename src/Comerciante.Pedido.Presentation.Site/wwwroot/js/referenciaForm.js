@@ -24,6 +24,16 @@ function ViewModel(id,descricao,codigo,preco,grade,tipo,tamanhos,cores) {
     self.tamanhos = ko.observableArray();
     self.tipo = ko.observableArray([tipo ? referenciaTipoConvert(tipo) : 'RovitexTeen']);
 
+    self.salvarImagem = function () {
+
+        var input = document.getElementById('inputFile');
+        var file = input.files[0];
+
+        $.ajax({
+            type: 'POST',
+        });
+        //alert(input.files[0]);
+    }
 
     self.cor = function(id, descricao, selecionado) {
         var self = this;
